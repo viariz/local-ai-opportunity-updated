@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Redirect…</title>
+<meta name="robots" content="noindex">
+<script>
+var p={"introduction": "introduction", "the-three-caps": "the-three-caps", "the-three-paths": "the-lesser-two", "precedents": "precedents", "a-new-computer": "a-new-computer", "next-gen-chips": "next-gen-chips", "a-million-new-computers": "a-million-new-computers", "endnotes": "endnotes"};
+var s=location.pathname.split('/').pop().replace(/\.html$/i,'');
+var id=p[s]||"introduction";
+location.replace("introduction.html#"+id);
+</script>
+<meta http-equiv="refresh" content="0;url=introduction.html">
+</head><body></body></html>

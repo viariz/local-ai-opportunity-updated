@@ -1,0 +1,10 @@
+---
+description: Static essay repo — where to edit and how to rebuild
+alwaysApply: true
+---
+
+Before changing essay HTML, figures, or chapter CSS, read [AGENTS.md](../../AGENTS.md) at the repo root.
+
+- **Preview:** `full/index.html` (generated).
+- **Edit:** `full/_sources/<chapter>.html`, then `python build_single_page.py` from repo root.
+- **Do not** treat `full/index.html`, legacy `full/_legacy/*.html`, or `roadmap-timeline.js` as canonical for Fig. 10 — use `_sources/next-gen-chips.html`.

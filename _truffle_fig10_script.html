@@ -1,0 +1,173 @@
+<script>
+      (function(){
+        var root = document.querySelector('.arc-tl');
+        if (!root) return;
+        var out = root.querySelector('.arc-tl-detail');
+        var photo = root.querySelector('.arc-tl-photo');
+        var hits = root.querySelectorAll('.arc-tl-hit');
+        var arcHits = root.querySelectorAll('.arc-tl-arc-hit');
+        var tickWraps = root.querySelectorAll('.arc-tl-svg .tick-wrap');
+        var timer = 0;
+        var pinned = '0';
+        var displayedEv = null;
+        function metaFor(ev){
+          return root.querySelector('.arc-tl-hit[data-ev="' + ev + '"]');
+        }
+        function detailPartsFor(ev){
+          var label = metaFor(ev);
+          if (!label) return [];
+          var parts = [];
+          var d1 = label.getAttribute('data-detail');
+          if (d1) parts.push(d1);
+          var d2 = label.getAttribute('data-detail-2');
+          if (d2) parts.push(d2);
+          return parts;
+        }
+        function detailSignature(ev){
+          return detailPartsFor(ev).join('\n');
+        }
+        function renderDetail(parts){
+          out.innerHTML = '';
+          parts.forEach(function(text){
+            var p = document.createElement('p');
+            p.textContent = text;
+            out.appendChild(p);
+          });
+        }
+        function imgFor(ev){
+          var label = metaFor(ev);
+          return label ? label.getAttribute('data-img') : '';
+        }
+        var hotTickByEv = [0, 1, 2, 3, 5];
+        function clearHoverFx(){
+          root.querySelectorAll('.is-hot').forEach(function(el){ el.classList.remove('is-hot'); });
+          setTickStates(tickIndexForEv(pinned));
+        }
+        function tickIndexForEv(ev){
+          var i = Number(ev);
+          if (isNaN(i) || i < 0 || i > 4) return 0;
+          return hotTickByEv[i];
+        }
+        function evFromTickIdx(idx){
+          if (idx >= tickWraps.length - 1) return '4';
+          return String(Math.min(idx, 4));
+        }
+        function tickIndexFromLine(line){
+          var cls = line.getAttribute('class') || '';
+          var m = cls.match(/\btick-(\d+)\b/);
+          return m ? Number(m[1]) : -1;
+        }
+        function clearTickStates(){
+          root.querySelectorAll('.arc-tl-svg line.tick').forEach(function(line){
+            line.removeAttribute('data-tick-state');
+          });
+        }
+        function setTickStates(anchorIdx){
+          clearTickStates();
+          root.querySelectorAll('.arc-tl-svg line.tick').forEach(function(line){
+            var i = tickIndexFromLine(line);
+            if (i < 0) return;
+            if (i === anchorIdx - 1 || i === anchorIdx + 1) line.dataset.tickState = 'near';
+            else line.dataset.tickState = 'dim';
+          });
+        }
+        function setNear(ev, optAnchorTick){
+          root.querySelectorAll('.is-hot').forEach(function(el){ el.classList.remove('is-hot'); });
+          var i = Number(ev);
+          if (isNaN(i)) return;
+          var anchorTick = optAnchorTick != null ? Number(optAnchorTick) : tickIndexForEv(ev);
+          setTickStates(anchorTick);
+          hits.forEach(function(btn){
+            if (Number(btn.getAttribute('data-ev')) === i) btn.classList.add('is-hot');
+          });
+          root.querySelectorAll('.arc-tl-spine-hit').forEach(function(btn){
+            if (Number(btn.getAttribute('data-ev')) === i) btn.classList.add('is-hot');
+          });
+        }
+        function applyContent(ev){
+          ev = String(ev);
+          displayedEv = ev;
+          renderDetail(detailPartsFor(ev));
+          if (photo) {
+            var label = metaFor(ev);
+            photo.src = imgFor(ev);
+            photo.alt = label ? label.getAttribute('aria-label') : '';
+          }
+        }
+        function showContent(ev){
+          if (ev == null) return;
+          ev = String(ev);
+          if (displayedEv === ev) return;
+          var nextSig = detailSignature(ev);
+          var prevSig = displayedEv != null ? detailSignature(displayedEv) : '';
+          clearTimeout(timer);
+          if (displayedEv != null && prevSig && nextSig !== prevSig) {
+            root.classList.add('is-fading');
+            timer = setTimeout(function(){
+              applyContent(ev);
+              requestAnimationFrame(function(){ root.classList.remove('is-fading'); });
+            }, 75);
+          } else {
+            root.classList.remove('is-fading');
+            applyContent(ev);
+          }
+        }
+        function pin(ev){
+          if (ev == null) return;
+          ev = String(ev);
+          pinned = ev;
+          root.dataset.on = ev;
+          showContent(ev);
+          setTickStates(tickIndexForEv(ev));
+        }
+        function preview(ev, optHotTick){
+          ev = String(ev);
+          root.dataset.hover = ev;
+          setNear(ev, optHotTick);
+          showContent(ev);
+        }
+        function releaseHover(){
+          root.removeAttribute('data-hover');
+          clearHoverFx();
+          showContent(pinned);
+        }
+        var allowHoverPreview = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        function bindTarget(el, ev, focusable, optHotTick){
+          ev = String(ev);
+          if (allowHoverPreview) {
+            el.addEventListener('mouseenter', function(){ preview(ev, optHotTick); });
+          }
+          if (focusable) {
+            el.addEventListener('focus', function(){ preview(ev, optHotTick); });
+            el.addEventListener('blur', function(){
+              setTimeout(function(){
+                if (!root.contains(document.activeElement) && !root.matches(':hover')) releaseHover();
+              }, 0);
+            });
+          }
+          el.addEventListener('click', function(e){
+            e.preventDefault();
+            pin(ev);
+          });
+        }
+        hits.forEach(function(btn){
+          bindTarget(btn, btn.getAttribute('data-ev'), true);
+        });
+        root.querySelectorAll('.arc-tl-spine-hit').forEach(function(btn){
+          bindTarget(btn, btn.getAttribute('data-ev'), true);
+        });
+        arcHits.forEach(function(btn){
+          bindTarget(btn, btn.getAttribute('data-ev'), false);
+        });
+        tickWraps.forEach(function(wrap, idx){
+          bindTarget(wrap, evFromTickIdx(idx), false, idx);
+        });
+        if (allowHoverPreview) {
+          root.addEventListener('mouseleave', function(){
+            if (root.contains(document.activeElement)) return;
+            releaseHover();
+          });
+        }
+        pin(pinned);
+      })();
+      </script>

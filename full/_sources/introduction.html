@@ -1,0 +1,1246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Local AI Opportunity</title>
+<meta name="description" content="Why AI will diffuse through society as a GPU per person.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#f4f4f4">
+<meta name="application-name" content="The Local AI Opportunity">
+<meta name="author" content="@iamgingertrash">
+<meta name="apple-mobile-web-app-title" content="Local AI">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="The Local AI Opportunity">
+<meta property="og:title" content="The Local AI Opportunity">
+<meta property="og:description" content="Why AI will diffuse through society as a GPU per person.">
+<meta property="og:url" content="https://local.deepshard.org/introduction">
+<link rel="canonical" href="https://local.deepshard.org/introduction">
+<meta property="og:image" content="https://local.deepshard.org/og/introduction.png?v=0ced27db1d8f">
+<meta property="og:image:secure_url" content="https://local.deepshard.org/og/introduction.png?v=0ced27db1d8f">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Local AI Opportunity. Why AI will diffuse through society as a GPU per person. Rising token demand leaves a shaded gap above constrained cloud supply: unmet demand, the opportunity for local inference.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@iamgingertrash">
+<meta name="twitter:title" content="The Local AI Opportunity">
+<meta name="twitter:description" content="Why AI will diffuse through society as a GPU per person.">
+<meta name="twitter:image" content="https://local.deepshard.org/og/introduction.png?v=0ced27db1d8f">
+<meta name="twitter:image:alt" content="The Local AI Opportunity. Why AI will diffuse through society as a GPU per person. Rising token demand leaves a shaded gap above constrained cloud supply: unmet demand, the opportunity for local inference.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{
+  font-family:"ABC Diatype Rounded";
+  src:url("fonts/ABCDiatypeRounded-Light.woff2") format("woff2");
+  font-weight:300;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"ABC Diatype Rounded";
+  src:url("fonts/ABCDiatypeRounded-Regular.woff2") format("woff2");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"Truffle Sans";
+  src:url("fonts/TruffleSans.ttf") format("truetype");
+  font-weight:1 1000;
+  font-stretch:100%;
+  font-style:normal;
+  font-display:swap;
+}
+/* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
+:root{
+  --paper:#F4F4F4;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
+  --ink:#1F2122;
+  --ink-soft:#5c6164;
+  --rule:rgba(31,33,34,.28);
+  --wash:rgba(31,33,34,.06);
+  --sans:"ABC Diatype Rounded","Helvetica Neue",Arial,sans-serif;
+  --display:"Truffle Sans","ABC Diatype Rounded",sans-serif;
+  color-scheme:light;
+}
+
+html{background:var(--paper); scrollbar-gutter:stable both-edges;}
+
+/* Leave breathing room when following contents or section links. */
+html{scroll-padding-top:clamp(40px,5vh,64px);}
+@media(max-width:999px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+}
+
+body{
+  margin:0;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:400; font-synthesis:weight; font-size:16px; line-height:1.7;
+  padding-left:max(40px, env(safe-area-inset-left, 0px));
+  padding-right:max(40px, env(safe-area-inset-right, 0px));
+  padding-block:0;
+  -webkit-font-smoothing:antialiased;
+}
+.book{max-width:44em; margin:0 auto;}
+.legacy-anchor{display:block; height:0;}
+p{margin:0 0 1em; text-align:left;}
+a{color:inherit; text-decoration:none;}
+.prose a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; text-decoration-color:var(--ink-soft);}
+.sc{text-transform:uppercase; letter-spacing:.14em; font-size:.82em; font-weight:400;}
+em{font-style:italic;font-synthesis:weight style;}
+strong, b{font-weight:500;}
+sup.fn{font-size:.6em; line-height:0; vertical-align:super;}
+sup.fn a{text-decoration:none; color:var(--ink-soft); font-weight:400;}
+
+/* ---- left rail ---- */
+#rail{
+  position:fixed; left:max(22px, env(safe-area-inset-left, 0px)); top:50%;
+  transform:translateY(-50%); z-index:8;
+  width:44px; padding:12px 0;
+  opacity:0; pointer-events:none; transition:opacity .15s ease;
+}
+#rail.show{opacity:1; pointer-events:auto;}
+#rail ol{list-style:none; margin:0; padding:0; position:relative;}
+#rail li{
+  position:relative; height:13px; margin:0; padding:0;
+  font-size:12px; line-height:1.4; font-weight:400; white-space:nowrap;
+  color:var(--ink-soft);
+}
+#rail .rail-track{position:absolute;left:0;overflow:visible;pointer-events:none;}
+#rail .rail-track path{fill:none;vector-effect:non-scaling-stroke;}
+#rail .dot{display:none;}
+#rail li a, #rail li > .rail-label{
+  display:block; width:44px; height:13px; color:inherit; text-decoration:none;
+}
+#rail .rail-title{
+  position:absolute; left:52px; top:50%; padding:8px 12px;
+  background:#F7F7F7;
+  border:none;
+  border-radius:999px;
+  box-shadow:0 4px 20px rgba(31,33,34,.08), 0 1px 3px rgba(31,33,34,.04);
+  color:#1F2122; font-size:12px; line-height:1.35; font-weight:400;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translate(4px,-50%) scale(.98); transform-origin:left center;
+  transition:opacity .12s ease, transform .18s cubic-bezier(.2,.8,.2,1), visibility 0s linear .18s;
+}
+#rail li.preview .rail-title, #rail:not(.is-previewing) li:hover .rail-title, #rail li:has(a:focus-visible) .rail-title{
+  opacity:1; visibility:visible; pointer-events:auto;
+  transform:translate(0,-50%) scale(1);
+  transition:opacity .12s ease, transform .18s cubic-bezier(.2,.8,.2,1), visibility 0s;
+}
+#rail:has(a:focus-visible) li.preview:not(:has(a:focus-visible)) .rail-title{
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+#rail li.here .rail-title{font-weight:500;}
+#rail li.soon .rail-title{color:var(--ink-soft);}
+#rail li a::before{content:"";position:absolute;left:-8px;top:0;width:calc(100% + 8px);height:100%;}
+#rail li a:focus-visible{outline:none;}
+@media (prefers-reduced-motion: reduce){
+  #rail, #rail li::before, #rail .rail-tick, #rail .rail-title{transition:none!important;}
+}
+@media (max-width:999px){ #rail{display:none;} }
+
+/* ---- top bar (narrow screens) ---- */
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top, 0px); z-index:10; background:var(--paper);}
+#topbar{
+  position:fixed; top:env(safe-area-inset-top, 0px); left:0; right:0; z-index:9;
+  background:var(--paper);
+  border-bottom:1px solid var(--rule);
+  font-size:14px;
+  padding-left:max(40px, env(safe-area-inset-left, 0px));
+  padding-right:max(40px, env(safe-area-inset-right, 0px));
+  opacity:0; pointer-events:none; transition:opacity .25s ease;
+}
+@media (prefers-reduced-motion: reduce){ #topbar{transition:none;} }
+#topbar.show{opacity:1; pointer-events:auto;}
+@media (max-width:999px){
+  /* Shell is visible on narrow viewports even before footer scripts run (single-page bundle). */
+  #topbar{opacity:1; pointer-events:auto;}
+  #topbar:not(.show) .where{opacity:0; visibility:hidden;}
+}
+@media (min-width:1000px){ #topbar{display:none;} }
+#topbar .inner{max-width:44em; margin:0 auto; display:flex; justify-content:space-between; align-items:baseline; gap:16px; padding-block:9px;}
+#topbar .where{color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; text-transform:uppercase; letter-spacing:.12em;}
+#topbar .toc-link{text-transform:uppercase; letter-spacing:.1em; font-size:11px; font-weight:400; color:var(--ink-soft); white-space:nowrap;}
+
+/* ---- interactive hovers ---- */
+@media (hover:hover){
+  #topbar .toc-link{transition:color .2s ease;}
+  #topbar .toc-link:hover{color:var(--ink);}
+  .titlepage .eyebrow a{transition:color .2s ease;}
+  .titlepage .eyebrow a:hover{color:var(--ink);}
+  .readline a{transition:color .2s ease, border-color .2s ease;}
+  .readline a:hover{color:var(--ink); border-bottom-color:var(--ink);}
+  .captabs button{transition:color .2s ease, border-color .2s ease;}
+  .captabs button:hover:not(.active){color:var(--ink);}
+  .prose a{transition:text-decoration-color .2s ease, color .2s ease;}
+  .prose a:hover{text-decoration-color:var(--ink); color:var(--ink);}
+}
+@media (prefers-reduced-motion: reduce){
+  #topbar .toc-link, .titlepage .eyebrow a, .readline a, .captabs button, .prose a{transition:none;}
+}
+
+/* ---- title page ---- */
+.titlepage{box-sizing:border-box; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding-block:8vh;}
+.titlepage-hero{display:flex; flex-direction:column; align-items:center; text-align:center; flex:1; justify-content:center; min-height:0;}
+.titlepage .eyebrow{text-transform:uppercase; letter-spacing:.26em; font-size:13px; font-weight:400; color:var(--ink-soft); margin:0 0 1.35em;}
+.titlepage .eyebrow a{text-decoration:none; color:inherit;}
+.titlepage .eyebrow + h1{margin-top:0;}
+.titlepage h1{font-family:var(--display);font-weight:100;font-variation-settings:"wght" 100;font-synthesis:none;font-size:clamp(1.55em,3.6vw,2.05em);line-height:1.22;letter-spacing:.04em;text-transform:none;margin:.15em 0 0;white-space:nowrap;text-wrap:nowrap;}
+
+.thesis{margin-top:1.35em; max-width:34em; font-size:1.02em; line-height:1.6; color:var(--ink-soft); text-align:center; text-wrap:balance;}
+.titlepage h1+.thesis{margin-top:12px;}
+/* Chapter title dock: after each full-page chapter title scrolls away, show it here until the next chapter's title does the same */
+#chapter-sticky-dock{
+  position:fixed;
+  left:0;right:0;
+  top:max(env(safe-area-inset-top,0px),var(--chapter-sticky-offset,0px));
+  z-index:11;
+  padding:7px max(40px, env(safe-area-inset-right, 0px)) 5px max(40px, env(safe-area-inset-left, 0px));
+  background:var(--paper);
+  border-bottom:1px solid var(--rule);
+  box-sizing:border-box;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(-8px);
+  transition:opacity .2s ease, transform .2s ease, visibility 0s linear .2s;
+}
+#chapter-sticky-dock.is-visible{
+  opacity:1;
+  visibility:visible;
+  transform:none;
+  pointer-events:none;
+  transition:opacity .2s ease, transform .2s ease, visibility 0s;
+}
+#chapter-sticky-dock .chapter-sticky-inner{
+  max-width:44em;
+  width:100%;
+  margin:0 auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-sizing:border-box;
+  min-height:0;
+}
+#chapter-sticky-dock .chapter-sticky-title{
+  min-width:0;
+  flex:1 1 auto;
+  text-align:center;
+}
+#chapter-sticky-dock .chapter-sticky-inner h1{
+  font-family:var(--sans);
+  font-weight:400;
+  font-synthesis:none;
+  font-size:clamp(.64em,1.2vw,.74em);
+  line-height:1.25;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin:0;
+  padding-block:0;
+  text-wrap:balance;
+  color:color-mix(in srgb, var(--ink-soft) 76%, var(--paper));
+}
+@media (max-width:999px){
+  #chapter-sticky-dock{display:none!important;}
+}
+@media (prefers-reduced-motion: reduce){
+  #chapter-sticky-dock{transition:none;}
+}
+.thesis em{font-style:normal; font-weight:400; color:var(--ink);}
+.byline{margin-top:3.4em; line-height:1.45;}
+.byline .names{font-weight:400; letter-spacing:.01em;}
+.author-link{display:inline-flex;align-items:center;gap:.55em;color:var(--ink-soft);transition:color .15s ease;}
+.author-link:hover,.author-link:focus-visible{color:var(--ink);}
+.author-link:focus-visible{outline:1px solid currentColor;outline-offset:5px;}
+.titlepage .dateline{margin:0 0 3.4em; font-size:.9em; color:var(--ink-soft);}
+.dateline{margin-top:1.6em; font-size:.9em; color:var(--ink-soft);}
+.readline{margin-top:4.2em;}
+.readline a{text-transform:uppercase; letter-spacing:.22em; font-size:12px; font-weight:400; border-bottom:1px solid var(--rule); padding-bottom:3px;}
+
+/* ---- chapters ---- */
+.part{margin-top:7em;}
+.part header{text-align:center; margin-bottom:2.6em;}
+.part header .kicker{text-transform:uppercase; letter-spacing:.24em; font-size:12px; font-weight:400; color:var(--ink-soft);}
+.part header h2{font-weight:400; font-size:.82em; letter-spacing:.18em; text-transform:uppercase; line-height:1.35; margin:0; text-align:center; text-wrap:balance;}
+.sect{margin-top:3.2em;}
+.sect h4{font-weight:500; font-size:1.02em; letter-spacing:.03em; line-height:1.35; margin:0 0 1em; text-align:left; padding-top:1.5em; border-top:1px solid var(--rule);}
+.sect > h4:first-child{margin-top:.4em;}
+.part .sect:not(:first-of-type) > h4{margin-top:3.8em;}
+.sect .prose > p.callline:first-child{font-weight:500; font-size:1.02em; letter-spacing:.03em; line-height:1.35; margin:0 0 1em; padding-top:1.5em; border-top:1px solid var(--rule);}
+.part .sect:not(:first-of-type) .prose > p.callline:first-child{margin-top:3.8em;}
+.sect.sect-display{margin:0;}
+.sect.sect-display.sect-display-break{margin:22vh 0;}
+.sect.sect-display + .sect{margin-top:0;}
+.cutouts + .prose{margin-top:2.2em;}
+.sect h4.display-title + .cutouts{margin-top:1.15em;}
+figure.fig-chart{margin:3.2em 0 2.8em;}
+figure.fig-chart figcaption{margin-top:1.05em; margin-bottom:1.6em;}
+.part.part-lede{margin-top:3.2em;}
+.part.part-lede > blockquote.bigquote:first-child{margin:0 0 10vh;}
+.part.part-lede .sect.sect-display{margin-top:14vh;}
+/* Truffle Sans: chapter titlepages (.titlepage h1) and pull-quote style .display-title only — in-flow section headings use body sans */
+.sect.sect-display > h4:first-child{
+  font-family:var(--sans);
+  font-weight:500;
+  font-size:1.54em;
+  letter-spacing:.015em;
+  line-height:1.35;
+  margin:1.15em 0;
+  text-align:center;
+  padding-top:0;
+  border-top:none;
+}
+.sect h4.display-title{
+  font-family:var(--display);
+  font-weight:100;
+  font-variation-settings:"wght" 100;
+  font-synthesis:none;
+  font-size:1.54em;
+  letter-spacing:.015em;
+  line-height:1.35;
+  margin:1.15em 0;
+  text-align:center;
+  padding-top:0;
+  border-top:none;
+}
+.sect h4.display-title{margin-bottom:2.4em;}
+.asterism{text-align:center; letter-spacing:1.1em; padding-left:1.1em; margin:2.6em 0; color:var(--ink-soft);}
+.prose > p:last-child{margin-bottom:0;}
+
+
+/* Original May 2026 Apple Note */
+figure.apple-note,.apple-note-window{
+  margin:1.8em 0 2em;
+  width:100%; box-sizing:border-box; overflow:hidden;
+  border:1px solid #dcdcdc; border-radius:12px;
+  background:#fff; color:#383838;
+  box-shadow:0 2px 5px rgba(0,0,0,.035),0 14px 36px -18px rgba(0,0,0,.22);
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  font-synthesis:none; font-weight:400; letter-spacing:normal;
+}
+.apple-note .apple-note-toolbar{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  min-height:44px; padding:0 17px; border-bottom:1px solid #e6e6e6;
+  background:linear-gradient(#fafafa,#f6f6f6); color:#8b8b8b;
+}
+.apple-note .apple-note-app{display:flex; align-items:center; gap:8px; font-size:12px; font-weight:500; color:#777;}
+.apple-note .apple-note-icon{display:block; width:20px; height:22px; border:1px solid #e3d7a9; border-radius:4px; background:linear-gradient(#f7ce45 0 7px,#fff 7px); box-shadow:0 1px 1px rgba(0,0,0,.04); position:relative;}
+.apple-note .apple-note-icon:after{content:""; position:absolute; left:4px; right:4px; top:11px; height:1px; background:#ddd; box-shadow:0 4px #ddd,0 8px #ddd;}
+.apple-note .apple-note-tools{display:flex; align-items:center; gap:19px;}
+.apple-note .apple-note-tools svg{width:18px; height:18px; display:block; flex:none; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;}
+.apple-note .apple-note-date{margin:0; padding:13px 18px 0; text-align:center; font-size:11px; line-height:1.5; color:#969696;}
+.apple-note .apple-note-toggle{position:relative; display:flex; align-items:center; justify-content:center; width:100%; height:145px; margin:0; padding:0; border:0; background:transparent; font:inherit; text-align:left; overflow:hidden; cursor:pointer; isolation:isolate;}
+.apple-note .apple-note-preview{position:absolute; inset:23px 28px auto; z-index:-2; filter:blur(4px); opacity:.42; pointer-events:none; user-select:none; font-size:14px; line-height:1.46; color:#383838;}
+.apple-note .apple-note-preview span{display:block; margin-bottom:1.15em;}
+.apple-note .apple-note-toggle:before{content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(transparent,rgba(255,255,255,.62) 55%,#fff);}
+.apple-note .apple-note-toggle-label{display:inline-flex; align-items:center; gap:9px; padding:10px 17px; border:0; background:transparent; box-shadow:none; color:#645a3d; font-size:14px; line-height:1.4; font-weight:500;}
+.apple-note .apple-note-toggle-label:after{content:"→"; font-size:16px; font-weight:400; line-height:1;}
+.apple-note .apple-note-toggle:hover .apple-note-toggle-label{color:#866600;}
+.apple-note .apple-note-toggle:focus-visible{outline:2px solid #c89b13; outline-offset:-5px; border-radius:8px;}
+html.apple-note-modal-open{overflow:hidden;}
+dialog.apple-note-modal{
+  position:fixed; inset:0; margin:auto; padding:0; border:0;
+  width:min(780px,calc(100vw - 48px)); max-width:none;
+  max-height:calc(100vh - 64px); max-height:calc(100dvh - 64px);
+  overflow:visible; background:transparent; color:#383838;
+  opacity:0; transform:translateY(18px) scale(.97); filter:blur(3px);
+  transition:opacity .28s ease,transform .38s cubic-bezier(.22,1,.36,1),filter .28s ease;
+}
+dialog.apple-note-modal.is-visible{opacity:1; transform:translateY(0) scale(1); filter:blur(0);}
+dialog.apple-note-modal::backdrop{
+  background:rgba(28,30,35,0); backdrop-filter:blur(0); -webkit-backdrop-filter:blur(0);
+  transition:background .3s ease,backdrop-filter .3s ease,-webkit-backdrop-filter .3s ease;
+}
+dialog.apple-note-modal.is-visible::backdrop{background:rgba(28,30,35,.18); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);}
+.apple-note-modal .apple-note-window{
+  display:flex; flex-direction:column; margin:0; width:100%;
+  max-height:calc(100vh - 64px); max-height:calc(100dvh - 64px);
+  box-shadow:0 8px 30px rgba(0,0,0,.1),0 28px 100px rgba(0,0,0,.18);
+}
+.apple-note-modal .apple-note-toolbar{flex-shrink:0; min-height:48px;}
+.apple-note-modal .apple-note-scroll{overflow-y:auto; overscroll-behavior:contain; min-height:0;}
+.apple-note .apple-note-dismiss{
+  display:inline-flex; align-items:center; justify-content:center; flex:none;
+  width:32px; height:32px; padding:0; border:0; border-radius:50%;
+  background:transparent; color:#777; cursor:pointer;
+}
+.apple-note .apple-note-dismiss:hover{background:rgba(0,0,0,.055); color:#333;}
+.apple-note .apple-note-dismiss:focus-visible{outline:2px solid #c89b13; outline-offset:2px;}
+.apple-note .apple-note-dismiss svg{width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round;}
+@media(max-width:600px){
+  dialog.apple-note-modal{width:calc(100vw - 24px); max-height:calc(100vh - 32px); max-height:calc(100dvh - 32px);}
+  .apple-note-modal .apple-note-window{max-height:calc(100vh - 32px); max-height:calc(100dvh - 32px);}
+}
+@media(prefers-reduced-motion:reduce){
+  dialog.apple-note-modal,dialog.apple-note-modal::backdrop{transition:none;}
+  dialog.apple-note-modal{transform:none; filter:none;}
+}
+.apple-note .apple-note-body{padding:26px 28px 30px; font-size:14px; line-height:1.46; overflow-wrap:anywhere; text-align:left;}
+.apple-note .apple-note-body p{margin:0 0 1.15em; font-size:inherit; line-height:inherit; font-weight:400; letter-spacing:normal; text-align:left;}
+.apple-note .apple-note-body ol{list-style:decimal outside; margin:0; padding:0 0 0 1.65em; font-size:inherit; line-height:inherit;}
+.apple-note .apple-note-body li{display:list-item; padding:0; margin:0 0 .25em; font-size:inherit; line-height:inherit; font-weight:400; letter-spacing:normal;}
+.apple-note .apple-note-body li.apple-note-redacted{filter:blur(5px); opacity:.65; user-select:none; pointer-events:none;}
+.apple-note .apple-note-redacted span{display:inline-block; width:var(--w); height:.55em; margin-right:.23em; border-radius:1px; background:#555; vertical-align:.08em;}
+.apple-note .apple-note-confidential{position:relative; margin-top:.25em;}
+.apple-note .apple-note-body .apple-note-confidential-message{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; margin:0; padding:16px; text-align:center; font-size:14px; color:#645a3d; background:radial-gradient(ellipse at center,rgba(255,255,255,.97) 0%,rgba(255,255,255,.8) 22%,rgba(255,255,255,0) 68%); pointer-events:none;}
+.apple-note .apple-note-body li:last-child{margin-bottom:0;}
+.apple-note .apple-note-body li::marker{font-variant-numeric:tabular-nums; color:#383838;}
+@media(max-width:600px){
+  .apple-note .apple-note-body{padding:23px 18px 25px; font-size:13px; line-height:1.5;}
+  .apple-note .apple-note-toolbar{padding:0 13px;}
+  .apple-note .apple-note-tools{gap:13px;}
+  .apple-note .apple-note-decoration{display:none;}
+}
+
+/* ---- scrollytelling intro ---- */
+#scrolly.scrolly{display:grid; grid-template-columns:1fr 1.25fr; column-gap:1.75em; gap:1.75em; margin:2.5em 0 3em; align-items:start;}
+.scrolly-steps{display:flex; flex-direction:column; min-width:0;}
+.step-content{display:flex; flex-direction:column;}
+.step{min-height:80vh; display:flex; flex-direction:column; justify-content:center; opacity:.3; transition:opacity .35s ease;}
+.step .when{text-transform:uppercase; letter-spacing:.16em; font-size:11px; font-weight:400; color:var(--ink-soft); margin-bottom:.6em;}
+.step p{margin:0;}
+.step p + p{margin-top:.85em;}
+.chat{margin:2.5em 0 3em; display:flex; flex-direction:column; gap:1.05em; font-size:.84em; line-height:1.45; --chat-stroke:color-mix(in srgb, var(--ink) 40%, transparent); --chat-fill:color-mix(in srgb, var(--ink) 4%, transparent); --chat-r:20px; --chat-pad-x:14px;}
+.chat .msg{min-width:0; display:flex;}
+.chat .msg.user{justify-content:flex-end; padding-left:1.25em;}
+.chat .msg.bot{justify-content:flex-start; padding-right:1.25em;}
+.chat .bubble-shell{display:inline-block; position:relative; max-width:min(100%, 32em); vertical-align:top;}
+.chat .bubble{display:block; position:relative; min-width:0; padding:9px var(--chat-pad-x); box-sizing:border-box;}
+.chat .bot .bubble{border:none; background:var(--chat-fill); border-radius:var(--chat-r) var(--chat-r) var(--chat-r) 4px;}
+.chat .user .bubble-shell{padding-right:8px;}
+.chat .user .bubble{position:relative; z-index:1; border:0.7px solid var(--chat-stroke); background:var(--paper); border-radius:var(--chat-r); border-bottom-right-radius:4px;}
+.chat .user .user-bubble-tail{position:absolute; z-index:0; right:1px; bottom:0; width:12px; height:14px; pointer-events:none; overflow:visible;}
+.chat .user .user-bubble-tail path{fill:var(--paper); stroke:none;}
+.chat .bot{min-width:0; font-weight:500;}
+.chat .trunc{display:inline-block; margin-left:.35em; padding:.12em .45em; border-radius:4px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.72em; font-style:normal; font-weight:500; letter-spacing:.05em; text-transform:lowercase; color:var(--ink-soft); background:color-mix(in srgb, var(--ink) 6%, transparent); border:0.7px solid color-mix(in srgb, var(--ink) 11%, transparent); vertical-align:.1em;}
+.chat .tools{display:flex; flex-direction:column; gap:.28em; padding:0; margin:0; border:none; background:transparent;}
+.chat .tc{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.82em; line-height:1.55; color:color-mix(in srgb, var(--ink) 70%, transparent); font-weight:500; min-width:0; overflow-wrap:break-word;}
+.chat .tc b{color:var(--ink); font-weight:600;}
+.chat .tc.res{color:var(--ink); margin-top:.15em; font-family:var(--sans); font-size:.88em; line-height:1.5;}
+.chat .tc.res b{font-weight:500;}
+.callline{font-weight:400; font-size:1.05em; letter-spacing:.01em; margin-block:1.1em;}
+.bigquote{margin:2.1em 0; max-width:none; text-align:left; font-style:italic; font-size:1.02em; line-height:1.65; padding-left:1em; border-left:1px solid var(--ink);}
+.bigquote .attr{display:block; margin-top:.8em; font-style:normal; font-size:.72em; text-transform:uppercase; letter-spacing:.16em; color:var(--ink-soft);}
+.step.active{opacity:1;}
+.scrolly-chart{position:sticky; top:14vh; height:72vh; display:flex; align-items:center; justify-content:flex-end; min-width:0;}
+.scrolly-chart svg{width:calc(100% * 440 / 560); max-width:calc(100% * 440 / 560); height:auto; max-height:100%; margin-left:auto;}
+@media (min-width:1000px){
+  #scrolly .step:last-child .step-content{
+    position:sticky; top:var(--scrolly-copy-top, 14vh);
+  }
+}
+.scrolly-chart #tokcurve{stroke-width:1.92; stroke-opacity:0.4;}
+.chart-grid line{stroke:color-mix(in srgb, var(--ink) 22%, transparent); stroke-width:1;}
+#mini-chart #tokcurve-m{stroke-width:1.76; stroke-opacity:0.4;}
+.scrolly-chart .marker,
+#mini-chart .marker{opacity:0; transition:opacity .35s ease;}
+.scrolly-chart .marker.on,
+#mini-chart .marker.on{opacity:.26;}
+.scrolly-chart .marker.on.active,
+#mini-chart .marker.on.active{opacity:1;}
+@media (prefers-reduced-motion: reduce){
+  .step, .scrolly-chart .marker, #mini-chart .marker{transition:none;}
+  .step{opacity:1;}
+}
+#mini-chart{display:none;}
+@media (max-width:700px){
+  .titlepage h1{white-space:normal;text-wrap:balance;}
+  body{
+    padding-left:max(18px, env(safe-area-inset-left, 0px));
+    padding-right:max(18px, env(safe-area-inset-right, 0px));
+  }
+  body.scrolly-mini-active{padding-bottom:calc(100px + env(safe-area-inset-bottom, 0px));}
+  #topbar{
+    font-size:16px;
+    padding-left:max(18px, env(safe-area-inset-left, 0px));
+    padding-right:max(18px, env(safe-area-inset-right, 0px));
+  }
+  #topbar .toc-link{font-size:13px;}
+  .step .when, .part header .kicker{font-size:13px;}
+  .chat{font-size:1em; margin:3.5em 0 4em; gap:1.55em;}
+  .chat .tools{gap:.45em;}
+  
+  #scrolly.scrolly{
+    display:block;
+    grid-template-columns:unset;
+    column-gap:0;
+    gap:0;
+    margin-bottom:4em;
+  }
+  #scrolly .scrolly-steps{width:100%; max-width:100%;}
+  #scrolly .scrolly-chart{display:none!important;}
+  #scrolly .step{min-height:auto; opacity:1; padding:4.5rem 0 5rem; box-sizing:border-box;}
+  #scrolly .step + .step{margin-top:3.5rem; padding-top:6rem; border-top:1px solid color-mix(in srgb, var(--rule) 55%, transparent);}
+  #scrolly .step .when{margin-bottom:1.15em;}
+  #scrolly .step > p, #scrolly .step-content > p{margin-top:1em;}
+  #mini-chart{
+    display:flex; flex-direction:column; align-items:stretch; justify-content:flex-end;
+    position:fixed; left:0; right:0; bottom:0; width:100%; z-index:30;
+    background:var(--paper); border-top:1px solid var(--rule);
+    padding:6px max(18px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px));
+    box-sizing:border-box; transform:translateY(110%); transition:transform .3s ease;
+  }
+  #mini-chart.show{transform:none;}
+  #mini-chart svg{
+    display:block; width:100%; max-width:44em; height:auto; min-height:88px; max-height:28vh;
+    margin-inline:auto;
+  }
+  #mini-chart #stage-name-m{font-size:18px!important; font-weight:500!important;}
+  #mini-chart #stage-chip-m{font-size:16px!important; letter-spacing:1px!important;}
+  #mini-chart svg text.figtext{dominant-baseline:middle;}
+}
+@media (prefers-reduced-motion: reduce){ #mini-chart{transition:none;} }
+
+/* ---- news cutouts ---- */
+.cutouts{display:flex; flex-wrap:wrap; gap:1.2em; margin:2.2em 0; align-items:flex-start;}
+.cutouts figure{margin:0; flex:1 1 240px; min-width:0;}
+.cutouts img{width:100%; height:auto; display:block; border:none; outline:none; border-radius:12px;}
+.cutouts figcaption{margin-top:.78em; font-size:.72em; color:var(--ink-soft); text-align:left; line-height:1.45;}
+
+/* ---- figures ---- */
+figure{margin:2.8em 0; padding:0; max-width:100%;}
+.book figure:not(.arc-tl) img, .book figure:not(.arc-tl) video, img.quoteface, img.arc-tl-photo{border:none; outline:none; border-radius:12px; box-shadow:0 12px 40px rgba(31,33,34,.05), 0 4px 14px rgba(31,33,34,.025);}
+.fig-motion{max-width:100%; filter:drop-shadow(0 12px 40px rgba(31,33,34,.05)) drop-shadow(0 4px 14px rgba(31,33,34,.024));}
+.book figure:not(.arc-tl):has(> video){line-height:0; margin:0; overflow:visible; border-radius:0; box-shadow:none; background:transparent;}
+.book figure:not(.arc-tl):has(> video) video{display:block; width:100%; max-width:100%; height:auto; margin:0; padding:0; border:0; border-radius:12px; box-shadow:none; background:var(--paper);}
+.book figure.no-img-shadow img, figure.no-img-shadow .product-img img{border-radius:0!important; box-shadow:none!important;}
+.book figure img, .book figure video{display:block; width:100%; max-width:100%; height:auto;}
+figure svg{display:block; width:100%; height:auto;}
+figcaption{margin-top:.95em; font-size:.72em; letter-spacing:.04em; line-height:1.5; color:var(--ink-soft); text-align:left;}
+.figtext, svg text{font-family:var(--sans); font-weight:400;}
+.supply-demand-chart .curve-demand{fill:none; stroke:var(--ink); stroke-width:1.92; stroke-opacity:.4; stroke-linecap:round;}
+.supply-demand-chart .curve-supply{fill:none; stroke:var(--ink); stroke-width:1.6; stroke-opacity:.4; stroke-linecap:round;}
+.supply-demand-chart .curve-counter{stroke:var(--ink-soft); stroke-width:1; stroke-opacity:.45; stroke-dasharray:2 5;}
+.supply-demand-chart .layer-fill-unmet{fill:var(--wash); fill-opacity:.85;}
+.supply-demand-chart .layer-fill-caps{fill:url(#hatch1); fill-opacity:.55;}
+.supply-demand-chart .fig-layer{cursor:pointer; outline:none; transition:opacity .3s ease;}
+.supply-demand-chart .fig-layer .fig-label{transition:fill .3s ease, opacity .3s ease;}
+.supply-demand-chart .fig-layer .layer-fill,
+.supply-demand-chart .fig-layer .layer-stroke{transition:opacity .3s ease, fill-opacity .3s ease, stroke-opacity .3s ease;}
+.supply-demand-chart.is-hovering .fig-layer:not(.is-active){opacity:.3;}
+.supply-demand-chart .fig-layer.is-active .layer-fill-unmet{fill-opacity:1;}
+.supply-demand-chart .fig-layer.is-active .layer-fill-caps{fill-opacity:.85;}
+.supply-demand-chart .fig-layer.is-active .curve-demand,
+.supply-demand-chart .fig-layer.is-active .curve-supply,
+.supply-demand-chart .fig-layer.is-active .curve-counter{stroke-opacity:1;}
+.supply-demand-chart .fig-layer.is-active .fig-label{fill:var(--ink); opacity:1;}
+.supply-demand-chart .fig-layer.is-active .fig-label-served{opacity:.55;}
+.supply-demand-chart .fig-label-served{opacity:.55;}
+.supply-demand-chart .fig-label{font-family:var(--sans); font-weight:400; font-size:13px; letter-spacing:.02em;}
+.supply-demand-chart .fig-caps-tooltip text.figtext{font-size:14px!important;font-weight:500!important;fill:var(--ink)!important;font-style:normal!important;letter-spacing:.01em;}
+.supply-demand-chart .fig-label tspan{font-family:inherit; font-weight:inherit; font-size:inherit;}
+.supply-demand-chart .fig-caps-tooltip{opacity:0; pointer-events:none; transition:opacity .2s ease;}
+.supply-demand-chart.show-caps-tooltip .fig-caps-tooltip{opacity:1;}
+.supply-demand-chart .fig-caps-tooltip-box{fill:var(--paper); stroke:var(--rule); stroke-width:1;}
+.supply-demand-chart .hit-line{fill:none; stroke:transparent; stroke-width:20; pointer-events:stroke;}
+.supply-demand-chart .fig-label-hit{fill:transparent; cursor:pointer;}
+@media (prefers-reduced-motion: reduce){
+  .supply-demand-chart .fig-layer,
+  .supply-demand-chart .fig-layer .layer-fill,
+  .supply-demand-chart .fig-layer .layer-stroke,
+  .supply-demand-chart .fig-layer .fig-label{transition:none;}
+}
+
+/* ---- worked table ---- */
+table.worked{width:100%; border-collapse:collapse; margin:2.2em 0; font-size:.9em; line-height:1.5; font-variant-numeric:tabular-nums;}
+table.worked td{padding:.6em .2em; vertical-align:baseline; border-bottom:1px solid var(--rule);}
+table.worked tr:first-child td,table.worked tr:first-child th{border-top:1px solid var(--rule);}
+table.worked th{font-weight:400; font-size:.72em; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); text-align:left; padding:.6em .2em .5em; border-bottom:1px solid var(--rule);}
+table.worked th+th, table.worked.cmp td+td{text-align:right;}
+.figrow{display:flex; gap:1.4em; flex-wrap:wrap; align-items:flex-start;}
+.figrow svg{flex:1 1 260px; min-width:0; height:auto;}
+table.worked td:last-child{text-align:right; white-space:nowrap; font-weight:400;}
+table.worked td:first-child{padding-right:1.4em;}
+
+/* ---- endnotes ---- */
+.endnotes{margin-top:7em; border-top:1px solid var(--rule); padding-top:2.4em; font-size:.8em; line-height:1.6; color:var(--ink-soft);}
+.endnotes .label{text-align:left; text-transform:uppercase; letter-spacing:.2em; font-size:11px; font-weight:400; color:var(--ink-soft); margin-bottom:2em;}
+.endnotes ol{margin:0; padding-left:1.6em;}
+.endnotes li{margin-bottom:.9em;}
+.endnotes a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:2px; text-decoration-color:var(--ink-soft);}
+
+/* ---- end mark ---- */
+.endmark{margin:5em 0 6em; text-align:left; color:var(--ink-soft); line-height:2;}
+.endmark-nav{display:flex; justify-content:space-between; align-items:baseline; gap:1.5em 2.5em; flex-wrap:wrap;}
+.endmark-nav .readline{margin-top:4.2em;}
+.endmark-nav .readline-next{margin-left:auto; text-align:right;}
+@media (max-width:700px){
+  .endmark-nav{flex-direction:column; align-items:stretch; gap:.4em;}
+  .endmark-nav .readline-prev + .readline-next{margin-top:0;}
+  .endmark-nav .readline-next{margin-left:0; text-align:right;}
+}
+
+.endmark .sc{color:var(--ink);}
+@media (min-width:701px) and (max-width:999px){
+  .scrolly{display:block;}
+  .scrolly-chart{position:relative; top:auto; height:auto; margin-bottom:1.5em;}
+  .step{min-height:0; opacity:1;}
+}
+
+@media (max-width:480px){
+  body{font-size:16px;}
+  table.worked{font-size:.9em;}
+  table.worked td:last-child{white-space:normal;}
+  .chat .tc{font-size:.86em;}
+  .cutouts{gap:1em;}
+}
+@media (max-width:700px){
+  #introduction figure:has(> svg.supply-demand-chart){width:100%; max-width:100%; margin-inline:0;}
+  #introduction svg.supply-demand-chart{display:block; width:100%; max-width:100%; height:auto;}
+  #introduction svg.supply-demand-chart .fig-label{font-size:15.5px;}
+  #introduction svg.supply-demand-chart .fig-label-served{font-size:12.5px!important;}
+  #introduction svg.supply-demand-chart .fig-caps-label-wrap .fig-label,
+  #introduction svg.supply-demand-chart .fig-caps-label-wrap text{font-size:12px!important;}
+  #introduction svg.supply-demand-chart .fig-layer-unmet .fig-label:nth-of-type(1){transform:translate(12px,-6px);}
+  #introduction svg.supply-demand-chart .fig-layer-unmet .fig-label:nth-of-type(2){transform:translate(12px,-4px);}
+  #introduction svg.supply-demand-chart .fig-layer-demand .fig-label{transform:translate(-8px,4px);}
+  #introduction svg.supply-demand-chart .fig-layer-supply .fig-label{transform:translate(-6px,-8px);}
+  #introduction svg.supply-demand-chart .fig-caps-label-wrap .fig-label text{transform:translate(-4px,-2px);}
+  #introduction svg.supply-demand-chart > .figtext text{font-size:13px;}
+  .supply-demand-chart .fig-caps-label-wrap{cursor:pointer;}
+  #introduction svg.supply-demand-chart .fig-caps-tooltip text.figtext{font-size:15px!important;font-weight:500!important;fill:var(--ink)!important;}
+  #introduction svg.supply-demand-chart .fig-caps-tooltip text.figtext:nth-of-type(1){transform:translate(0,-2px);}
+  #introduction svg.supply-demand-chart .fig-caps-tooltip text.figtext:nth-of-type(2){transform:translate(0,2px);}
+}
+</style>
+<script src="navigation.js"></script>
+<script src="reading-rail.js"></script>
+<script>
+(function(){
+  try{
+    var KEY='truffle-loc', NAV='truffle-nav';
+    var PAGES=["introduction","the-three-caps","the-three-paths","precedents","a-new-computer","next-gen-chips","a-million-new-computers","endnotes"];
+    var LEGACY={"":"introduction","home":"introduction","introduction":"introduction","introduction.html":"introduction","index":"introduction","index.html":"introduction","caps":"the-three-caps","caps.html":"the-three-caps","the-three-caps":"the-three-caps","the-three-caps.html":"the-three-caps","two":"the-three-paths","two.html":"the-three-paths","the-three-paths":"the-three-paths","the-three-paths.html":"the-three-paths","precedents":"precedents","precedents.html":"precedents","a-new-computer":"a-new-computer","a-new-computer.html":"a-new-computer","computer":"a-new-computer","computer.html":"a-new-computer","the-roadmap":"next-gen-chips","the-roadmap.html":"next-gen-chips","roadmap":"next-gen-chips","roadmap.html":"next-gen-chips","next-gen-chips":"next-gen-chips","next-gen-chips.html":"next-gen-chips","million":"a-million-new-computers","million.html":"a-million-new-computers","a-million-new-computers":"a-million-new-computers","a-million-new-computers.html":"a-million-new-computers","endnotes":"endnotes","endnotes.html":"endnotes","notes":"endnotes","notes.html":"endnotes"};
+    var path=location.pathname.replace(/^\/|\/$/g,'');
+    var here=LEGACY[path] || path;
+    if(PAGES.indexOf(here)<0) here='introduction';
+    var nav=sessionStorage.getItem(NAV); sessionStorage.removeItem(NAV);
+    var saved=null; try{ saved=JSON.parse(sessionStorage.getItem(KEY)||'null'); }catch(e){}
+    if(saved) saved.p=LEGACY[saved.p] || saved.p;
+    if(!nav && saved){
+      if(saved.p===here && saved.y && !location.hash && !window.__essayAnchorNavigation && performance.getEntriesByType('navigation')[0]?.type === 'reload'){
+        window.addEventListener('load', function(){ setTimeout(function(){ window.scrollTo({top: saved.y, behavior: 'instant'}); }, 0); });
+      }
+    }
+    function save(){ try{ sessionStorage.setItem(KEY, JSON.stringify({p:here, y:Math.round(window.scrollY)})); }catch(e){} }
+    window.addEventListener('scroll', save, {passive:true});
+    window.addEventListener('pagehide', save);
+    document.addEventListener('DOMContentLoaded', function(){
+      save();
+      document.addEventListener('click', function(e){
+        var t=e.target, a=null;
+        while(t && t!==document){ if(t.tagName==='A'){ a=t; break; } t=t.parentNode; }
+        if(a){ var h=a.getAttribute('href')||''; if(h && h.charAt(0)!=='#'){ try{ sessionStorage.setItem(NAV,'1'); }catch(e2){} } }
+      }, true);
+    });
+  }catch(e){}
+})();
+</script>
+</head>
+<body>
+<div id="chapter-sticky-dock" aria-hidden="true"><div class="chapter-sticky-inner"><div class="chapter-sticky-title"></div></div></div>
+<div class="book" lang="en">
+
+<!-- ============ TITLE PAGE ============ -->
+<section class="titlepage" id="top">
+  <div class="titlepage-hero">
+    <div class="dateline">November 1, 2026</div>
+    <h1>The Local AI Opportunity</h1>
+    <p class="thesis">Why AI will diffuse through society as a GPU per person</p>
+    <div class="byline">
+      <div class="names"><a class="author-link" href="https://x.com/iamgingertrash" target="_blank" rel="noopener noreferrer"><span>@iamgingertrash</span></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OVERTURE ============ -->
+<section class="part" id="introduction" data-title="Introduction">
+  <div class="prose">
+    <p>Every era of computing has had its own way of running the meter. On a mainframe, you bought time: a few minutes on an expensive machine that belonged to somebody else. The internet made us familiar with bandwidth. We learned to think of a connection as a pipe, and paid for a wider one when we wanted more to flow through it. Now we are learning to count tokens, the little pieces of language a model reads and produces as it works.</p>
+    <p>As tokens get cheaper, we can afford to give the machine jobs that would once have seemed extravagant. Something similar happened when Britain learned to get more work out of a ton of coal. A more efficient steam engine saved its owner fuel, but it also made steam power affordable to the next factory owner, who had previously done without. Multiply that decision across an industrializing country and the coal saved by individual engines was overtaken by the coal burned in new ones. William Stanley Jevons described the result in 1865:</p>
+    <blockquote class="bigquote">&ldquo;It is wholly a confusion of ideas to suppose that the economical use of fuel is equivalent to a diminished consumption. The very contrary is the truth.&rdquo;<span class="attr">W. Stanley Jevons, The Coal Question, 1865</span></blockquote>
+    <p>Since ChatGPT arrived, we have kept spending the savings on more ambitious requests. A question that once seemed worth a short answer becomes worth an afternoon of research; a useful coding suggestion makes us wonder whether the model could build the whole thing. As these jobs become affordable and reliable, they enter the routine, and our idea of normal use expands to include them.</p>
+  </div>
+  <div class="scrolly" id="scrolly">
+    <div class="scrolly-steps">
+      <div class="step">
+        <div class="when">2023 &middot; Chatbots</div>
+        <p>The first chatbots answered simple questions:</p>
+        <div class="chat">
+          <div class="msg user"><span class="bubble-shell"><svg class="user-bubble-tail" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 14C0 7.2 4.8 2 12 2V14H0Z"/></svg><span class="bubble">What is the capital of France?</span></span></div>
+          <div class="msg bot"><span class="bubble-shell"><span class="bubble">Paris is the capital of France.</span></span></div>
+          <div class="msg user"><span class="bubble-shell"><svg class="user-bubble-tail" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 14C0 7.2 4.8 2 12 2V14H0Z"/></svg><span class="bubble">How many ounces are in a pound?</span></span></div>
+          <div class="msg bot"><span class="bubble-shell"><span class="bubble">There are 16 ounces in a pound.</span></span></div>
+        </div>
+        <p>Each exchange cost a few dozen tokens, and a whole day of use rarely crossed 100.</p>
+      </div>
+      <div class="step">
+        <div class="when">2025 &middot; Early agents</div>
+        <p>Then came short-horizon agents that could do small jobs on their own, like answering email, browsing the web, or running a piece of research for you:</p>
+        <div class="chat">
+          <div class="msg user"><span class="bubble-shell"><svg class="user-bubble-tail" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 14C0 7.2 4.8 2 12 2V14H0Z"/></svg><span class="bubble">Who are the 5 biggest home-battery makers, and how do their prices compare?</span></span></div>
+          <div class="msg bot"><span class="bubble-shell"><span class="bubble"><span class="tools">
+            <span class="tc"><b>web.search</b>(&ldquo;biggest home battery manufacturers&rdquo;)</span>
+            <span class="tc"><b>browser.read</b>(14 pages)</span>
+            <span class="tc"><b>docs.extract</b>(spec_sheets: Tesla, BYD, LG, Enphase, Sonnen)</span>
+            <span class="tc"><b>calc.normalize</b>(&ldquo;$ / kWh installed&rdquo;)</span>
+            <span class="tc res">&rarr; Powerwall 3 &asymp; $1,000/kWh; BYD undercuts it at&hellip; <span class="trunc">truncated</span></span>
+          </span></span></span></div>
+        </div>
+        <p>One of these chats ran to 5,000 tokens or more, and nobody minded, because the work was worth it.</p>
+      </div>
+      <div class="step">
+        <div class="when">2026&ndash;27 &middot; Strong agents</div>
+        <p>Now there are strong agents that carry a long task from start to finish, building a piece of software end to end or reverse-engineering an app, in runs that last tens of hours:</p>
+        <div class="chat">
+          <div class="msg user"><span class="bubble-shell"><svg class="user-bubble-tail" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 14C0 7.2 4.8 2 12 2V14H0Z"/></svg><span class="bubble">Port our billing service off the legacy API and migrate the tests.</span></span></div>
+          <div class="msg bot"><span class="bubble-shell"><span class="bubble"><span class="tools">
+            <span class="tc"><b>repo.read</b>(212 files)</span>
+            <span class="tc"><b>code.map</b>(&ldquo;legacy_api.*&rdquo;) &rarr; 47 call sites</span>
+            <span class="tc"><b>code.rewrite</b>(&ldquo;billing/client.ts&rdquo;)</span>
+            <span class="tc"><b>tests.run</b>() &rarr; 14 failures</span>
+            <span class="tc"><b>tests.run</b>() &rarr; pass</span>
+            <span class="tc res"><b>webhooks.migrate</b>() &mdash; day 2&hellip; <span class="trunc">truncated</span></span>
+          </span></span></span></div>
+        </div>
+        <p>A run like that burns 100,000 tokens without trying, and the number climbs with every improvement in memory, context, and tool use, because each one makes a longer run worth paying for.</p>
+      </div>
+      <div class="step">
+        <div class="step-content">
+        <div class="when">2027&frac12; and beyond &middot; Always-on</div>
+        <p>The last step is the loop that never closes: an agent that is never prompted and never stops.</p>
+        <p>New information is just another injection into its stream of tokens, and it runs all day and all night on behalf of 1 human. The first of these are already here, in Grok Bot, Instinct, Muse, and Dot. The curve goes vertical when they become ordinary.</p>        </div>
+      </div>
+    </div>
+    <div class="scrolly-chart">
+      <svg viewBox="0 0 440 500" role="img" aria-label="Tokens consumed, 2023 to beyond 2027, rising gently through chatbots and agents, then going vertical for always-on agents.">
+        <defs>
+          <symbol id="agent-icon-chatbots" viewBox="0 0 44 44" fill="none">
+            <path d="M44 42H0L22 2L44 42Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </symbol>
+          <symbol id="agent-icon-early-agents" viewBox="0 0 44 44" fill="none">
+            <path d="M3 3H41V41H3V3Z" fill="none" stroke="currentColor" stroke-width="2"/>
+          </symbol>
+          <symbol id="agent-icon-strong-agents" viewBox="0 0 44 44" fill="none">
+            <path d="M22 2L42 18.25L34.5 42H9.5L2 18.25L22 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </symbol>
+          <symbol id="agent-icon-247-agents" viewBox="0 0 44 44" fill="none">
+            <path d="M41 22C41 32.4934 32.4934 41 22 41C11.5066 41 3 32.4934 3 22C3 11.5066 11.5066 3 22 3C32.4934 3 41 11.5066 41 22Z" fill="none" stroke="currentColor" stroke-width="2"/>
+          </symbol>
+        </defs>
+        <g class="chart-grid">
+          <line x1="54" y1="337.5" x2="440" y2="337.5"/>
+          <line x1="54" y1="235" x2="440" y2="235"/>
+          <line x1="54" y1="132.5" x2="440" y2="132.5"/>
+          <line x1="54" y1="30" x2="440" y2="30"/>
+          <line x1="54" y1="440" x2="440" y2="440"/>
+        </g>
+        <text class="figtext" x="54" y="18" font-size="14.5" letter-spacing="1" fill="var(--ink-soft)" style="text-transform:uppercase">Tokens consumed</text>
+        <text class="figtext" id="stage-chip" x="440" y="18" font-size="17" letter-spacing="2" text-anchor="end" font-weight="400" fill="var(--ink)">2023</text>
+        <path id="tokcurve" d="M 54.0 437.0 C 62.8 436.2 83.6 434.5 101.8 432.7 C 120.0 430.9 134.5 429.4 153.0 427.1 C 171.5 424.8 184.1 423.1 202.5 420.0 C 220.9 416.9 235.5 414.0 253.1 410.3 C 270.7 406.6 283.2 403.9 298.4 399.8 C 313.6 395.7 324.4 392.8 336.1 388.0 C 347.8 383.2 353.4 381.3 362.2 373.7 C 371.0 366.1 377.7 356.1 383.9 346.5 C 390.1 336.9 392.7 329.6 396.2 321.1 C 401.5 310.0 405.0 291.0 409.2 272.5 C 414.0 250.0 420.0 210.0 425.2 170.0 C 430.5 128.0 435.0 75.0 440.0 30.0" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/>
+        <g class="marker figtext" data-x="54" fill="var(--ink)">
+          <circle cx="54" cy="437" r="3.15"/>
+          <use href="#agent-icon-chatbots" x="60" y="396" width="20" height="20"/>
+          <text x="90" y="406" font-size="17.5" font-weight="400" dominant-baseline="middle">Chatbots</text>
+        </g>
+        <g class="marker figtext" data-x="202.5" fill="var(--ink)">
+          <circle cx="202.5" cy="420" r="3.15"/>
+          <use href="#agent-icon-early-agents" x="166" y="364" width="20" height="20"/>
+          <text x="196" y="374" font-size="17.5" font-weight="400" dominant-baseline="middle">Early agents</text>
+        </g>
+        <g class="marker figtext" data-x="336.1" fill="var(--ink)">
+          <circle cx="336.1" cy="388" r="3.15"/>
+          <use href="#agent-icon-strong-agents" x="224" y="314" width="20" height="20"/>
+          <text x="254" y="324" font-size="17.5" font-weight="400" dominant-baseline="middle">Strong agents</text>
+        </g>
+        <g class="marker figtext" data-x="395.5" fill="var(--ink)">
+          <circle cx="396" cy="321" r="3.15"/>
+          <use href="#agent-icon-247-agents" x="270" y="270" width="20" height="20"/>
+          <text x="300" y="280" font-size="17.5" font-weight="400" dominant-baseline="middle">24/7 Agents</text>
+        </g>
+        <g class="figtext" fill="var(--ink-soft)" font-size="15.5" text-anchor="middle">
+          <text x="54" y="462">2023</text>
+          <text x="128" y="462">2024</text>
+          <text x="202.5" y="462">2025</text>
+          <text x="276.7" y="462">2026</text>
+          <text x="350.9" y="462">2027</text>
+          <text x="425.2" y="462">2028</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="prose">
+    <p>We keep finding more work for AI, but supplying the tokens is becoming the harder problem. A more capable agent gives millions of people a reason to ask more of it, and that extra demand can arrive with a software update.</p>
+    <p>Those extra tokens, however, still have to come from machines running in datacenters.</p>
+    <p>Expanding those facilities means securing electricity, land, and permission to build, which can take years. The chart shows the opportunity created when demand for tokens pulls sharply away from the cloud’s capacity to supply them.<sup class="fn"><a href="/endnotes#note-interactive-model" aria-label="Source 1: interactive model" id="reference-interactive-model">1</a></sup></p>
+  </div>
+  <figure>
+    <svg class="supply-demand-chart" viewBox="0 0 720 420" role="img" aria-label="Token demand rising exponentially against a flattening cloud supply curve; the area between them is unmet demand, the opportunity for local inference.">
+      <defs>
+        <pattern id="hatch1" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="7" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+        </pattern>
+      </defs>
+      <g class="chart-grid" aria-hidden="true">
+        <line x1="40" y1="25" x2="660" y2="25"/>
+        <line x1="40" y1="111" x2="660" y2="111"/>
+        <line x1="40" y1="197" x2="660" y2="197"/>
+        <line x1="40" y1="284" x2="660" y2="284"/>
+        <line x1="40" y1="370" x2="660" y2="370"/>
+      </g>
+      <g class="fig-layer fig-layer-unmet" tabindex="0" role="button" aria-label="Unmet demand, the opportunity for local inference">
+        <title>Unmet demand — the opportunity</title>
+        <path class="layer-fill layer-fill-unmet" d="M 221.4 344.0 L 226.0 343.3 L 241.5 340.8 L 257.0 338.0 L 272.5 335.0 L 288.0 331.7 L 303.5 328.1 L 319.0 324.2 L 334.5 319.9 L 350.0 315.1 L 365.5 310.0 L 381.0 304.3 L 396.5 298.1 L 412.0 291.4 L 427.5 284.0 L 443.0 275.9 L 458.5 267.0 L 474.0 257.3 L 489.5 246.7 L 505.0 235.1 L 520.5 222.4 L 536.0 208.5 L 551.5 193.3 L 567.0 176.6 L 582.5 158.4 L 598.0 138.5 L 613.5 116.7 L 629.0 92.8 L 644.5 66.7 L 660.0 38.2 L 660.0 303.0 Z"/>
+        <text class="figtext fig-label" x="588" y="242" text-anchor="middle" fill="var(--ink)">Unmet demand</text>
+        <text class="figtext fig-label fig-label-served" x="588" y="258" font-style="italic" text-anchor="middle" fill="var(--ink-soft)">The opportunity</text>
+      </g>
+      <g class="fig-layer fig-layer-caps" tabindex="0" role="button" aria-label="Supply constrained by energy, land, and regulation">
+        <title>Three caps — supply held down by real-world limits</title>
+        <path class="layer-fill layer-fill-caps" d="M 40.0 360.9 L 660.0 303.0 L 660.0 335.8 L 644.5 336.0 L 629.0 336.3 L 613.5 336.5 L 598.0 336.7 L 582.5 337.0 L 567.0 337.2 L 551.5 337.5 L 536.0 337.8 L 520.5 338.1 L 505.0 338.4 L 489.5 338.7 L 474.0 339.1 L 458.5 339.4 L 443.0 339.8 L 427.5 340.2 L 412.0 340.7 L 396.5 341.1 L 381.0 341.6 L 365.5 342.1 L 350.0 342.6 L 334.5 343.1 L 319.0 343.7 L 303.5 344.3 L 288.0 345.0 L 272.5 345.6 L 257.0 346.3 L 241.5 347.1 L 226.0 347.8 L 210.5 348.7 L 195.0 349.5 L 179.5 350.4 L 164.0 351.4 L 148.5 352.4 L 133.0 353.4 L 117.5 354.5 L 102.0 355.7 L 86.5 356.9 L 71.0 358.2 L 55.5 359.5 L 40.0 360.9 Z"/>
+      </g>
+      <g class="fig-layer fig-layer-counter" tabindex="0" role="button" aria-label="Counterfactual unconstrained cloud supply">
+        <title>Counterfactual supply without energy, land, or regulation limits</title>
+        <line class="layer-stroke curve-counter" x1="40" y1="360.9" x2="660" y2="303.0"/>
+        <line class="hit-line" x1="40" y1="360.9" x2="660" y2="303.0"/>
+      </g>
+      <g class="fig-layer fig-layer-demand" tabindex="0" role="button" aria-label="Token demand curve">
+        <title>Token demand — rising exponentially</title>
+        <polyline class="layer-stroke curve-demand" points="40.0,360.9 55.5,360.1 71.0,359.1 86.5,358.1 102.0,357.0 117.5,355.8 133.0,354.4 148.5,353.0 164.0,351.4 179.5,349.6 195.0,347.7 210.5,345.6 226.0,343.3 241.5,340.8 257.0,338.0 272.5,335.0 288.0,331.7 303.5,328.1 319.0,324.2 334.5,319.9 350.0,315.1 365.5,310.0 381.0,304.3 396.5,298.1 412.0,291.4 427.5,284.0 443.0,275.9 458.5,267.0 474.0,257.3 489.5,246.7 505.0,235.1 520.5,222.4 536.0,208.5 551.5,193.3 567.0,176.6 582.5,158.4 598.0,138.5 613.5,116.7 629.0,92.8 644.5,66.7 660.0,38.2"/>
+        <polyline class="hit-line" points="40.0,360.9 55.5,360.1 71.0,359.1 86.5,358.1 102.0,357.0 117.5,355.8 133.0,354.4 148.5,353.0 164.0,351.4 179.5,349.6 195.0,347.7 210.5,345.6 226.0,343.3 241.5,340.8 257.0,338.0 272.5,335.0 288.0,331.7 303.5,328.1 319.0,324.2 334.5,319.9 350.0,315.1 365.5,310.0 381.0,304.3 396.5,298.1 412.0,291.4 427.5,284.0 443.0,275.9 458.5,267.0 474.0,257.3 489.5,246.7 505.0,235.1 520.5,222.4 536.0,208.5 551.5,193.3 567.0,176.6 582.5,158.4 598.0,138.5 613.5,116.7 629.0,92.8 644.5,66.7 660.0,38.2"/>
+        <text class="figtext fig-label" x="638" y="36" font-style="italic" text-anchor="end" fill="var(--ink)">Token demand</text>
+      </g>
+      <g class="fig-layer fig-layer-supply" tabindex="0" role="button" aria-label="Cloud supply curve">
+        <title>Cloud supply — flattening under real-world constraints</title>
+        <polyline class="layer-stroke curve-supply" points="40.0,360.9 55.5,359.5 71.0,358.2 86.5,356.9 102.0,355.7 117.5,354.5 133.0,353.4 148.5,352.4 164.0,351.4 179.5,350.4 195.0,349.5 210.5,348.7 226.0,347.8 241.5,347.1 257.0,346.3 272.5,345.6 288.0,345.0 303.5,344.3 319.0,343.7 334.5,343.1 350.0,342.6 365.5,342.1 381.0,341.6 396.5,341.1 412.0,340.7 427.5,340.2 443.0,339.8 458.5,339.4 474.0,339.1 489.5,338.7 505.0,338.4 520.5,338.1 536.0,337.8 551.5,337.5 567.0,337.2 582.5,337.0 598.0,336.7 613.5,336.5 629.0,336.3 644.5,336.0 660.0,335.8"/>
+        <polyline class="hit-line" points="40.0,360.9 55.5,359.5 71.0,358.2 86.5,356.9 102.0,355.7 117.5,354.5 133.0,353.4 148.5,352.4 164.0,351.4 179.5,350.4 195.0,349.5 210.5,348.7 226.0,347.8 241.5,347.1 257.0,346.3 272.5,345.6 288.0,345.0 303.5,344.3 319.0,343.7 334.5,343.1 350.0,342.6 365.5,342.1 381.0,341.6 396.5,341.1 412.0,340.7 427.5,340.2 443.0,339.8 458.5,339.4 474.0,339.1 489.5,338.7 505.0,338.4 520.5,338.1 536.0,337.8 551.5,337.5 567.0,337.2 582.5,337.0 598.0,336.7 613.5,336.5 629.0,336.3 644.5,336.0 660.0,335.8"/>
+        <text class="figtext fig-label" x="660" y="354" font-style="italic" text-anchor="end" fill="var(--ink)">Cloud supply</text>
+      </g>
+      <g class="figtext" fill="var(--ink-soft)" font-size="12" text-anchor="middle">
+        <text x="40" y="392">2026</text>
+        <text x="195" y="392">2027</text>
+        <text x="350" y="392">2028</text>
+        <text x="505" y="392">2029</text>
+        <text x="660" y="392">2030</text>
+      </g>
+      <g class="fig-caps-label-wrap" tabindex="0" aria-label="Supply, if energy, land, and regulation were not limiting factors">
+        <rect class="fig-label-hit" x="448" y="298" width="215" height="32"/>
+        <g class="figtext fig-label" transform="rotate(-5.34 655 313.5)" fill="var(--ink-soft)" font-style="italic" text-anchor="end" pointer-events="none">
+          <text x="655" y="313.5">Supply, if energy, land, and regulation</text>
+          <text x="655" y="325.5">were not limiting factors</text>
+        </g>
+      </g>
+      <g class="fig-caps-tooltip" aria-hidden="true" pointer-events="none">
+        <rect class="fig-caps-tooltip-box" x="418" y="238" width="298" height="58" rx="8"/>
+        <text class="figtext" x="432" y="262" font-size="14" font-weight="400" fill="var(--ink)">Supply, if energy, land, and regulation</text>
+        <text class="figtext" x="432" y="282" font-size="14" font-weight="400" fill="var(--ink)">were not limiting factors</text>
+      </g>
+    </svg>
+  </figure>
+  <div class="prose">
+    <p>Even if energy, land, and regulation were no obstacle, there would still be no obvious ceiling on the work we could find for intelligence. This creates a situation I described to some of my investors in May:</p>
+    <p class="callline">The Agentic Paradox</p>
+    <p>The better an agent becomes, the longer it is worth keeping it at work. Better memory and tool use can increase its consumption even without making the model larger. If the model also requires more computation per token, we are asking each machine to do more work for each user while every user wants more of its time.</p>
+    <figure class="apple-note" id="agentic-paradox-note" aria-label="Original Apple Note, May 6, 2026">
+      <div class="apple-note-toolbar">
+        <div class="apple-note-app"><span class="apple-note-icon" aria-hidden="true"></span><span>Notes</span></div>
+        <div class="apple-note-tools">
+          <svg class="apple-note-decoration" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 5-12 5 12M5 13h6m4 0c0-3 5-3 5 0v4m0-3c-5-2-6 3-2 3l2-1"/></svg>
+          <svg class="apple-note-decoration" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="7" r="3"/><path d="m3.5 7 1 1 2-2M12 7h9M12 17h9"/><circle cx="5" cy="17" r="3"/></svg>
+        </div>
+      </div>
+      <p class="apple-note-date"><time datetime="2026-05-06T17:35:00">May 6, 2026 at 5:35 PM</time> — Shared</p>
+        <button type="button" class="apple-note-toggle" data-open-apple-note aria-haspopup="dialog" aria-controls="agentic-paradox-dialog" aria-expanded="false">
+          <span class="apple-note-preview" aria-hidden="true">
+            <span>Every company looks unbeatable in their prime, blackberry, IBM, all looked like Anthropic / OpenAI at their prime</span>
+            <span>The thing people don’t account for usually are headwinds that appear small but grow increasingly powerful over time. The key issues around the labs are as follows;</span>
+          </span>
+          <span class="apple-note-toggle-label"><span class="apple-note-open">Read my May note to investors</span></span>
+        </button>
+    </figure>
+    <dialog class="apple-note-modal" id="agentic-paradox-dialog" aria-label="My May 6, 2026 note to investors">
+      <div class="apple-note apple-note-window">
+        <div class="apple-note-toolbar">
+          <div class="apple-note-app"><span class="apple-note-icon" aria-hidden="true"></span><span>Notes</span></div>
+          <button type="button" class="apple-note-dismiss" aria-label="Close note" autofocus><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button>
+        </div>
+        <div class="apple-note-scroll">
+      <p class="apple-note-date"><time datetime="2026-05-06T17:35:00">May 6, 2026 at 5:35 PM</time> — Shared</p>
+      <div class="apple-note-body">
+        <p>Every company looks unbeatable in their prime, blackberry, IBM, all looked like Anthropic / OpenAI at their prime</p>
+        <p>The thing people don’t account for usually are headwinds that appear small but grow increasingly powerful over time. The key issues around the labs are as follows;</p>
+        <ol>
+          <li>The popularity of AI and datacenter buildout is exceedingly weak. AI is less popular than ICE, and for reasons one does not expect. Most people think datacenters drink all the planets water, and we are going to see more bi-partisan coalitions around datacenter moratoriums. The midterms are approaching and it is very very unpopular to be pro AI. A lot of politicians will go against it.</li>
+          <li>This leads to another new issue; compute will become *even more scarce* than it is right now. Why? The problem is clear; Agents have a unique paradox of their utility — as models get better, even if you keep the size constant, agents have a longer time trajectory they can operate on, and thus demand for tokens trends to infinity. Agents are a loop. Language model outputs are not. A loop is eternal, and the length of the loop is completely dependant on the models own time horizon which is getting exponentially better with context compaction, memory and tool use. This results in a deadlock, if the models get bigger at the same time. You have a fixed compute because of moratorium, you have exponentially more demand because of agents, and you have less compute per user available because of larger model sizes</li>
+          <li>This leads to the next solution; buying the GPU yourself will be the only way you can avoid this extreme shortage altogether. Running local models will then unlock a brand new primitive no one is yet talking about; models that update their weights at night on a per user basis</li>
+        </ol>
+        <div class="apple-note-confidential">
+          <ol start="4" aria-hidden="true">
+          <li class="apple-note-redacted" aria-hidden="true"><span style="--w:2.1em"></span> <span style="--w:3.4em"></span> <span style="--w:1.2em"></span> <span style="--w:4.1em"></span> <span style="--w:2.7em"></span> <span style="--w:1.6em"></span> <span style="--w:3.8em"></span> <span style="--w:2.2em"></span> <span style="--w:1.1em"></span> <span style="--w:4.5em"></span> <span style="--w:2.8em"></span> <span style="--w:1.9em"></span> <span style="--w:3.1em"></span> <span style="--w:1.3em"></span> <span style="--w:2.5em"></span> <span style="--w:4.0em"></span> <span style="--w:1.7em"></span> <span style="--w:3.3em"></span> <span style="--w:2.1em"></span> <span style="--w:3.4em"></span> <span style="--w:1.2em"></span> <span style="--w:4.1em"></span> <span style="--w:2.7em"></span> <span style="--w:1.6em"></span> <span style="--w:3.8em"></span> <span style="--w:2.2em"></span> <span style="--w:1.1em"></span> <span style="--w:4.5em"></span> <span style="--w:2.8em"></span> <span style="--w:1.9em"></span> <span style="--w:3.1em"></span> <span style="--w:1.3em"></span> <span style="--w:2.5em"></span> <span style="--w:4.0em"></span> <span style="--w:1.7em"></span> <span style="--w:3.3em"></span> <span style="--w:2.1em"></span> <span style="--w:3.4em"></span> <span style="--w:1.2em"></span> <span style="--w:4.1em"></span> <span style="--w:2.7em"></span> <span style="--w:1.6em"></span> <span style="--w:3.8em"></span> <span style="--w:2.2em"></span> <span style="--w:1.1em"></span> <span style="--w:4.5em"></span> <span style="--w:2.8em"></span> <span style="--w:1.9em"></span> <span style="--w:3.1em"></span> <span style="--w:1.3em"></span> <span style="--w:2.5em"></span> <span style="--w:4.0em"></span> <span style="--w:1.7em"></span> <span style="--w:3.3em"></span> <span style="--w:2.1em"></span> <span style="--w:3.4em"></span> <span style="--w:1.2em"></span> <span style="--w:4.1em"></span> <span style="--w:2.7em"></span> <span style="--w:1.6em"></span> <span style="--w:3.8em"></span> <span style="--w:2.2em"></span> <span style="--w:1.1em"></span> <span style="--w:4.5em"></span> <span style="--w:2.8em"></span> <span style="--w:1.9em"></span></li>
+          <li class="apple-note-redacted" aria-hidden="true"><span style="--w:2.2em"></span> <span style="--w:1.1em"></span> <span style="--w:4.5em"></span> <span style="--w:2.8em"></span> <span style="--w:1.9em"></span> <span style="--w:3.1em"></span> <span style="--w:1.3em"></span> <span style="--w:2.5em"></span> <span style="--w:4.0em"></span> <span style="--w:1.7em"></span> <span style="--w:3.3em"></span> <span style="--w:2.1em"></span> <span style="--w:3.4em"></span> <span style="--w:1.2em"></span> <span style="--w:4.1em"></span> <span style="--w:2.7em"></span> <span style="--w:1.6em"></span> <span style="--w:3.8em"></span> <span style="--w:2.2em"></span> <span style="--w:1.1em"></span> <span style="--w:4.5em"></span> <span style="--w:2.8em"></span> <span style="--w:1.9em"></span> <span style="--w:3.1em"></span> <span style="--w:1.3em"></span> <span style="--w:2.5em"></span> <span style="--w:4.0em"></span> <span style="--w:1.7em"></span> <span style="--w:3.3em"></span> <span style="--w:2.1em"></span> <span style="--w:3.4em"></span> <span style="--w:1.2em"></span> <span style="--w:4.1em"></span> <span style="--w:2.7em"></span> <span style="--w:1.6em"></span> <span style="--w:3.8em"></span> <span style="--w:2.2em"></span> <span style="--w:1.1em"></span> <span style="--w:4.5em"></span> <span style="--w:2.8em"></span> <span style="--w:1.9em"></span> <span style="--w:3.1em"></span> <span style="--w:1.3em"></span> <span style="--w:2.5em"></span> <span style="--w:4.0em"></span> <span style="--w:1.7em"></span> <span style="--w:3.3em"></span> <span style="--w:2.1em"></span> <span style="--w:3.4em"></span> <span style="--w:1.2em"></span> <span style="--w:4.1em"></span> <span style="--w:2.7em"></span> <span style="--w:1.6em"></span> <span style="--w:3.8em"></span> <span style="--w:2.2em"></span> <span style="--w:1.1em"></span> <span style="--w:4.5em"></span> <span style="--w:2.8em"></span> <span style="--w:1.9em"></span> <span style="--w:3.1em"></span></li>
+        </ol>
+          <p class="apple-note-confidential-message">Sorry, the rest is confidential</p>
+        </div>
+      </div>
+        </div>
+      </div>
+    </dialog>
+<script>
+(function(){
+  var trigger = document.querySelector('[data-open-apple-note]');
+  var modal = document.getElementById('agentic-paradox-dialog');
+  if (!trigger || !modal) return;
+  var dismiss = modal.querySelector('.apple-note-dismiss');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var closing = false;
+  var closeTimer;
+  var backdropPress = false;
+
+  function openNote(){
+    if (modal.open) return;
+    closing = false;
+    document.documentElement.classList.add('apple-note-modal-open');
+    modal.showModal();
+    modal.querySelector('.apple-note-scroll').scrollTop = 0;
+    trigger.setAttribute('aria-expanded', 'true');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        if (modal.open && !closing) modal.classList.add('is-visible');
+      });
+    });
+  }
+  function closeNote(){
+    if (!modal.open || closing) return;
+    closing = true;
+    modal.classList.remove('is-visible');
+    closeTimer = window.setTimeout(function(){ modal.close(); }, reduceMotion.matches ? 0 : 300);
+  }
+  function outsideNote(event){
+    var rect = modal.getBoundingClientRect();
+    return event.target === modal && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom);
+  }
+  trigger.addEventListener('click', openNote);
+  dismiss.addEventListener('click', closeNote);
+  modal.addEventListener('cancel', function(event){ event.preventDefault(); closeNote(); });
+  modal.addEventListener('pointerdown', function(event){ backdropPress = outsideNote(event); });
+  modal.addEventListener('click', function(event){
+    if (backdropPress && outsideNote(event)) closeNote();
+    backdropPress = false;
+  });
+  modal.addEventListener('close', function(){
+    window.clearTimeout(closeTimer);
+    closing = false;
+    modal.classList.remove('is-visible');
+    document.documentElement.classList.remove('apple-note-modal-open');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.focus({preventScroll:true});
+  });
+})();
+</script>
+
+    <p>We think much of that unmet demand will eventually find its way onto a personal inference machine. A computer you buy and keep running, producing tokens throughout the day, with electricity as its main ongoing cost.</p>
+    <p>It is an incredibly unsexy idea at a time when sexy ideas command enormous premiums. But who really wants a computer you plug into the wall when you can have mass drivers on the Moon, or cover the Sahara with “intelligence factories,” the modern Mecca of AI psychosis victims?</p>
+    <p>A remarkably similar thing happened in the 1970s. Much of computing revolved around large machines owned by institutions, with users buying or being allocated time on them. The first personal computers looked unimpressive beside those installations. They had little memory, limited software, and owners who often had to work quite hard to make them useful.</p>
+    <p>But as the machines improved, someone who wanted to write a document or keep the accounts for a small business could increasingly do it on a computer of their own. Each useful new application gave another person a reason to buy one. Computing began spreading through purchases made by its users, into buildings that already existed, drawing on electricity already available there.</p>
+  </div>
+</section>
+
+<!-- ============ PART I ============ -->
+<section class="part" id="the-math-behind-agents" data-title="The Math Behind Agents" style="margin-top:1em">
+  <div class="sect" style="margin-top:0">
+    <div class="prose">
+      <p>Suppose 1 billion people each have a personal agent that reads their messages, follows their work on screen, and uses their apps to get things done. For this calculation, assume each agent generates 50 tokens a second, continuously. Serving that workload from datacenters would require:</p>
+    </div>
+    <table class="worked">
+      <tr><td>Tok/s required</td><td>5&thinsp;&times;&thinsp;10<sup>10</sup> tokens per second</td></tr>
+      <tr><td>Tokens per day</td><td>&asymp; 4.3 quadrillion</td></tr>
+      <tr><td>H200 equivalents</td><td>&asymp; 80,000,000 GPUs</td></tr>
+      <tr><td>Power at roughly 2 joules per token</td><td>100 GW, continuous</td></tr>
+      <tr><td>Energy per year</td><td>&asymp; 880 TWh</td></tr>
+      <tr><td>Cost to build</td><td>&asymp; $3.5 trillion</td></tr>
+    </table>
+    <div class="prose">
+      <p id="hundred-gigawatts">100 gigawatts is roughly the generating capacity of the entire <a href="https://www.eia.gov/electricity/Annual/table.php?t=epa_04_03.html" target="_blank" rel="noopener noreferrer">American nuclear fleet</a>. Under our assumptions, personal agents would keep the equivalent of that fleet occupied around the clock, before accounting for model training or other uses of AI.</p>
+      <p>The natural response is to build more datacenters. I expect we will build a great many. What I doubt is that they will arrive fast enough to keep up with what we want from them. Approving a construction budget does not settle when the electricity will be available, or whether the community chosen to host the project wants it there. Those decisions belong to utility planners, neighbors, and elected officials, none of whom is obliged to share an AI company’s timetable.</p>
+    </div>
+  </div>
+</section>
+
+<div class="endmark endmark-nav">
+  <div class="readline readline-next"><a href="/the-three-caps">The Three Caps →</a></div>
+</div>
+
+</div>
+
+<!-- ============ LEFT RAIL ============ -->
+<nav id="rail" aria-label="Contents">
+  <ol>
+    <li data-target="introduction"><span class="dot"></span><a href="/introduction" aria-label="Introduction"><span class="rail-title">Introduction</span></a></li>
+    <li><span class="dot"></span><a href="/the-three-caps" aria-label="The Three Caps"><span class="rail-title">The Three Caps</span></a></li>
+    <li><span class="dot"></span><a href="/the-three-paths" aria-label="The Three Paths"><span class="rail-title">The Three Paths</span></a></li>
+    <li><span class="dot"></span><a href="/precedents" aria-label="Precedents"><span class="rail-title">Precedents</span></a></li>
+    <li><span class="dot"></span><a href="/a-new-computer" aria-label="A New Computer"><span class="rail-title">A New Computer</span></a></li>
+    <li><span class="dot"></span><a href="/next-gen-chips" aria-label="Next-Gen Chips"><span class="rail-title">Next-Gen Chips</span></a></li>
+    <li><span class="dot"></span><a href="/a-million-new-computers" aria-label="A Million New Computers"><span class="rail-title">A Million New Computers</span></a></li>
+    <li><span class="dot"></span><a href="/endnotes" aria-label="Endnotes"><span class="rail-title">Endnotes</span></a></li>
+  </ol>
+</nav>
+
+<div id="mini-chart" aria-hidden="true">
+  <svg viewBox="0 0 440 170">
+    <g transform="translate(0,8) scale(1,0.3)">
+      <path id="tokcurve-m" d="M 54.0 437.0 C 62.8 436.2 83.6 434.5 101.8 432.7 C 120.0 430.9 134.5 429.4 153.0 427.1 C 171.5 424.8 184.1 423.1 202.5 420.0 C 220.9 416.9 235.5 414.0 253.1 410.3 C 270.7 406.6 283.2 403.9 298.4 399.8 C 313.6 395.7 324.4 392.8 336.1 388.0 C 347.8 383.2 353.4 381.3 362.2 373.7 C 371.0 366.1 377.7 356.1 383.9 346.5 C 390.1 336.9 392.7 329.6 396.2 321.1 C 401.5 310.0 405.0 291.0 409.2 272.5 C 414.0 250.0 420.0 210.0 425.2 170.0 C 430.5 128.0 435.0 75.0 440.0 30.0" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    </g>
+    <circle class="marker" cx="54.0" cy="139.1" r="2.8" fill="var(--ink)"/><circle class="marker" cx="202.5" cy="134.0" r="2.8" fill="var(--ink)"/><circle class="marker" cx="336.1" cy="124.4" r="2.8" fill="var(--ink)"/><circle class="marker" cx="396.0" cy="104.3" r="2.8" fill="var(--ink)"/>
+    <text id="stage-name-m" class="figtext" x="16" y="28" font-size="23" font-weight="400" fill="var(--ink)">Chatbots</text>
+    <text id="stage-chip-m" class="figtext" x="440" y="28" font-size="17" letter-spacing="2" text-anchor="end" fill="var(--ink-soft)">2023</text>
+  </svg>
+</div>
+
+<div id="topbar"><div class="inner"><span class="where" id="whereami"></span><a class="toc-link" href="#top">Top</a></div></div>
+
+<script>
+(function(){
+  var topbar = document.getElementById('topbar');
+  var where = document.getElementById('whereami');
+  var railEl = document.getElementById('rail');
+  var readingRail = (railEl && typeof window.createReadingRail === 'function')
+    ? window.createReadingRail(railEl)
+    : { update: function(){}, measure: function(){} };
+  var sections = Array.prototype.slice.call(document.querySelectorAll('[data-title]'));
+  var title = document.getElementById('top');
+  function syncChapterStickyOffset(){
+    document.documentElement.style.setProperty('--chapter-sticky-offset', '0px');
+  }
+  var chapterDock = document.getElementById('chapter-sticky-dock');
+  var chapterDockInner = chapterDock ? chapterDock.querySelector('.chapter-sticky-inner') : null;
+  var chapterDockTitle = chapterDockInner ? chapterDockInner.querySelector('.chapter-sticky-title') : null;
+  var chapterPages = chapterDockTitle ? Array.prototype.slice.call(document.querySelectorAll('section#top.titlepage, section.titlepage.chapter-title')) : [];
+  var chapterDockLast = -1;
+
+  function updateChapterStickyDock(scrollY){
+    if (!chapterDock || !chapterDockTitle || !chapterPages.length) return;
+    if (window.matchMedia('(max-width:999px)').matches) return;
+    var y = scrollY;
+    var onTitlePage = false;
+    for (var c = 0; c < chapterPages.length; c++) {
+      var pg = chapterPages[c];
+      var top = pg.offsetTop;
+      var bot = top + pg.offsetHeight;
+      if (y >= top && y < bot) {
+        onTitlePage = true;
+        break;
+      }
+    }
+    if (onTitlePage) {
+      chapterDock.classList.remove('is-visible');
+      chapterDock.setAttribute('aria-hidden', 'true');
+      chapterDockLast = -1;
+      return;
+    }
+    var active = -1;
+    for (var j = chapterPages.length - 1; j >= 0; j--) {
+      var p = chapterPages[j];
+      if (y >= p.offsetTop + p.offsetHeight) {
+        active = j;
+        break;
+      }
+    }
+    if (active < 0) {
+      chapterDock.classList.remove('is-visible');
+      chapterDock.setAttribute('aria-hidden', 'true');
+      chapterDockLast = -1;
+      return;
+    }
+    if (active !== chapterDockLast) {
+      chapterDockLast = active;
+      var sec = chapterPages[active];
+      chapterDockTitle.innerHTML = '';
+      if (active === 0) {
+        var introH = document.createElement('h1');
+        introH.textContent = 'Introduction';
+        chapterDockTitle.appendChild(introH);
+      } else {
+        var h1 = sec.querySelector('h1');
+        if (h1) chapterDockTitle.appendChild(h1.cloneNode(true));
+      }
+    }
+    chapterDock.classList.add('is-visible');
+    chapterDock.setAttribute('aria-hidden', 'false');
+  }
+
+  function onScroll(){
+    var y = window.scrollY || document.documentElement.scrollTop;
+    if (topbar && title) {
+      var past = y > title.offsetHeight - 220;
+      topbar.classList.toggle('show', past);
+    }
+    updateChapterStickyDock(y);
+    syncChapterStickyOffset();
+    var current = '';
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop - 140 <= y) current = sections[i].getAttribute('data-title');
+    }
+    if (where) where.textContent = current;
+    readingRail.update();
+    scrollyUpdate();
+  }
+
+  // scrollytelling: draw the token curve as the intro steps pass
+  var scrolly = document.getElementById('scrolly');
+  var tokcurve = document.getElementById('tokcurve');
+  var chip = document.getElementById('stage-chip');
+  var steps = scrolly ? Array.prototype.slice.call(scrolly.querySelectorAll('.step')) : [];
+  var markers = scrolly ? Array.prototype.slice.call(scrolly.querySelectorAll('.marker')) : [];
+  var chipText = ['2023', '2025', '2026–27', '2027½+'];
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var curveLen = 0, markerFrac = [];
+  if (tokcurve) {
+    curveLen = tokcurve.getTotalLength();
+    markers.forEach(function(m){
+      var mx = parseFloat(m.getAttribute('data-x'));
+      var lo = 0, hi = curveLen;
+      for (var k = 0; k < 24; k++) {
+        var mid = (lo + hi) / 2;
+        if (tokcurve.getPointAtLength(mid).x < mx) { lo = mid; } else { hi = mid; }
+      }
+      markerFrac.push(lo / curveLen);
+    });
+    if (!reduceMotion) {
+      tokcurve.style.strokeDasharray = curveLen;
+      tokcurve.style.strokeDashoffset = curveLen;
+    } else {
+      markers.forEach(function(m){ m.classList.add('on'); });
+    }
+  }
+  var mini = document.getElementById('mini-chart');
+  var miniCurve = document.getElementById('tokcurve-m');
+  var miniMarkers = mini ? Array.prototype.slice.call(mini.querySelectorAll('.marker')) : [];
+  var miniChip = document.getElementById('stage-chip-m');
+  var miniName = document.getElementById('stage-name-m');
+  var stageNames = ['Chatbots', 'Early agents', 'Strong agents', '24/7 Agents'];
+  var miniLen = 0;
+  if (miniCurve) {
+    miniLen = miniCurve.getTotalLength();
+    if (!reduceMotion) {
+      miniCurve.style.strokeDasharray = miniLen;
+      miniCurve.style.strokeDashoffset = miniLen;
+    } else {
+      miniMarkers.forEach(function(m){ m.classList.add('on'); });
+    }
+  }
+  function scrollyUpdate(){
+    if (!scrolly || !tokcurve || steps.length < 2) return;
+    var vh = window.innerHeight;
+    // Match the visible drawing, including its movement as the sticky chart exits.
+    if (window.matchMedia('(min-width:1000px)').matches) {
+      var chartSvg = scrolly.querySelector('.scrolly-chart > svg');
+      if (chartSvg) scrolly.style.setProperty('--scrolly-copy-top', chartSvg.getBoundingClientRect().top + 'px');
+    }
+    var m = vh * 0.5;
+    var centers = steps.map(function(st){
+      var sr = st.getBoundingClientRect();
+      return sr.top + sr.height / 2;
+    });
+    // s: continuous stage position; s = i exactly when step i is centered
+    var s;
+    if (m <= centers[0]) {
+      s = (m - centers[0]) / (centers[1] - centers[0]);
+    } else if (m >= centers[centers.length - 1]) {
+      var n = centers.length - 1;
+      s = n + (m - centers[n]) / (centers[n] - centers[n - 1]);
+    } else {
+      for (var i = 0; i < centers.length - 1; i++) {
+        if (m >= centers[i] && m <= centers[i + 1]) {
+          s = i + (m - centers[i]) / (centers[i + 1] - centers[i]);
+          break;
+        }
+      }
+    }
+    s = Math.max(-0.9, Math.min(3.75, s));
+    // piecewise map: stage position -> fraction of curve drawn
+    var sa = [-0.9, 0, 1, 2, 3, 3.75];
+    var fa = [0, markerFrac[0] || 0.05, markerFrac[1] || 0.4, markerFrac[2] || 0.72, markerFrac[3] || 0.88, 1];
+    var p = fa[fa.length - 1];
+    for (var k = 0; k < sa.length - 1; k++) {
+      if (s <= sa[k + 1]) {
+        p = fa[k] + (fa[k + 1] - fa[k]) * (s - sa[k]) / (sa[k + 1] - sa[k]);
+        break;
+      }
+    }
+    var activeIdx = Math.max(0, Math.min(steps.length - 1, Math.round(s)));
+    if (!reduceMotion) {
+      tokcurve.style.strokeDashoffset = curveLen * (1 - p);
+    }
+    for (var q = 0; q < markers.length; q++) {
+      var showMarker = reduceMotion || s >= q - 0.1;
+      if (!reduceMotion) markers[q].classList.toggle('on', showMarker);
+      markers[q].classList.toggle('active', showMarker && q === activeIdx);
+    }
+    for (var j = 0; j < steps.length; j++) steps[j].classList.remove('active');
+    steps[activeIdx].classList.add('active');
+    if (chip) chip.textContent = chipText[activeIdx] || chipText[0];
+    if (miniCurve && !reduceMotion) {
+      miniCurve.style.strokeDashoffset = miniLen * (1 - p);
+    }
+    for (var q2 = 0; q2 < miniMarkers.length; q2++) {
+      var showMini = reduceMotion || s >= q2 - 0.1;
+      if (!reduceMotion) miniMarkers[q2].classList.toggle('on', showMini);
+      miniMarkers[q2].classList.toggle('active', showMini && q2 === activeIdx);
+    }
+    if (miniChip) miniChip.textContent = chipText[activeIdx] || chipText[0];
+    if (miniName) miniName.textContent = stageNames[activeIdx] || stageNames[0];
+    if (mini) {
+      var rsc = scrolly.getBoundingClientRect();
+      var miniOn = rsc.top < vh * 0.75 && rsc.bottom > vh * 0.5;
+      mini.classList.toggle('show', miniOn);
+      document.body.classList.toggle('scrolly-mini-active', miniOn);
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', function(){ readingRail.measure(); onScroll(); });
+  onScroll();
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  }
+
+  var supplyChart = document.querySelector('.supply-demand-chart');
+  if (supplyChart) {
+    var supplyLayers = Array.prototype.slice.call(supplyChart.querySelectorAll('.fig-layer'));
+    function setSupplyActive(layer) {
+      supplyChart.classList.add('is-hovering');
+      supplyLayers.forEach(function(l){ l.classList.remove('is-active'); });
+      if (layer) layer.classList.add('is-active');
+    }
+    function clearSupplyActive() {
+      supplyChart.classList.remove('is-hovering');
+      supplyLayers.forEach(function(l){ l.classList.remove('is-active'); });
+    }
+    supplyChart.addEventListener('mouseleave', clearSupplyActive);
+    supplyLayers.forEach(function(layer){
+      layer.addEventListener('mouseenter', function(){ setSupplyActive(layer); });
+      layer.addEventListener('focus', function(){ setSupplyActive(layer); });
+      layer.addEventListener('blur', clearSupplyActive);
+    });
+    var capsLabelWrap = supplyChart.querySelector('.fig-caps-label-wrap');
+    if (capsLabelWrap) {
+      capsLabelWrap.addEventListener('mouseenter', function(){ supplyChart.classList.add('show-caps-tooltip'); });
+      capsLabelWrap.addEventListener('mouseleave', function(){ supplyChart.classList.remove('show-caps-tooltip'); });
+      capsLabelWrap.addEventListener('focus', function(){ supplyChart.classList.add('show-caps-tooltip'); });
+      capsLabelWrap.addEventListener('blur', function(){ supplyChart.classList.remove('show-caps-tooltip'); });
+    }
+  }
+})();
+
+</script>
+<script src="mobile-nav.js?v=6" defer></script>
+<script src="chart-interact.js"></script>
+<script src="mobile-fig-viewbox.js?v=7"></script>
+</body>
+</html>

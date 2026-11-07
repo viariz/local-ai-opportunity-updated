@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Endnotes · The Local AI Opportunity</title>
+<meta name="description" content="Why AI will diffuse through society as a GPU per person.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#f4f4f4">
+<meta name="application-name" content="The Local AI Opportunity">
+<meta name="author" content="@iamgingertrash">
+<meta name="apple-mobile-web-app-title" content="Local AI">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="The Local AI Opportunity">
+<meta property="og:title" content="The Local AI Opportunity — Endnotes">
+<meta property="og:description" content="Why AI will diffuse through society as a GPU per person.">
+<meta property="og:url" content="https://thesis.deepshard.org/endnotes">
+<link rel="canonical" href="https://thesis.deepshard.org/endnotes">
+<meta property="og:image" content="https://thesis.deepshard.org/og/endnotes.png?v=0ced27db1d8f">
+<meta property="og:image:secure_url" content="https://thesis.deepshard.org/og/endnotes.png?v=0ced27db1d8f">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Local AI Opportunity. Why AI will diffuse through society as a GPU per person. Rising token demand leaves a shaded gap above constrained cloud supply: unmet demand, served locally.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@iamgingertrash">
+<meta name="twitter:title" content="The Local AI Opportunity — Endnotes">
+<meta name="twitter:description" content="Why AI will diffuse through society as a GPU per person.">
+<meta name="twitter:image" content="https://thesis.deepshard.org/og/endnotes.png?v=0ced27db1d8f">
+<meta name="twitter:image:alt" content="The Local AI Opportunity. Why AI will diffuse through society as a GPU per person. Rising token demand leaves a shaded gap above constrained cloud supply: unmet demand, served locally.">
+<style>
+@font-face{
+  font-family:"ABC Diatype Rounded";
+  src:url("fonts/ABCDiatypeRounded-Light.woff2") format("woff2");
+  font-weight:300;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"ABC Diatype Rounded";
+  src:url("fonts/ABCDiatypeRounded-Regular.woff2") format("woff2");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"Truffle Sans";
+  src:url("fonts/TruffleSans.ttf") format("truetype");
+  font-weight:1 1000;
+  font-stretch:100%;
+  font-style:normal;
+  font-display:swap;
+}
+/* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
+:root{
+  --paper:#F4F4F4;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
+  --ink:#1F2122;
+  --ink-soft:#5c6164;
+  --rule:rgba(31,33,34,.28);
+  --wash:rgba(31,33,34,.06);
+  --sans:"ABC Diatype Rounded","Helvetica Neue",Arial,sans-serif;
+  --display:"Truffle Sans","ABC Diatype Rounded",sans-serif;
+  color-scheme:light;
+}
+
+html{background:var(--paper); scrollbar-gutter:stable both-edges;}
+
+/* Leave breathing room when following contents or section links. */
+html{scroll-padding-top:clamp(40px,5vh,64px);}
+@media(max-width:999px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+}
+
+body{
+  margin:0;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:400; font-synthesis:weight; font-size:16px; line-height:1.7;
+  padding-left:max(40px, env(safe-area-inset-left, 0px));
+  padding-right:max(40px, env(safe-area-inset-right, 0px));
+  padding-block:0;
+  -webkit-font-smoothing:antialiased;
+}
+.book{max-width:44em; margin:0 auto;}
+.legacy-anchor{display:block; height:0;}
+p{margin:0 0 1em; text-align:left;}
+a{color:inherit; text-decoration:none;}
+.prose a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; text-decoration-color:var(--ink-soft);}
+.sc{text-transform:uppercase; letter-spacing:.14em; font-size:.82em; font-weight:400;}
+em{font-style:italic;}
+strong, b{font-weight:500;}
+sup.fn{font-size:.6em; line-height:0; vertical-align:super;}
+sup.fn a{text-decoration:none; color:var(--ink-soft); font-weight:400;}
+
+/* ---- left rail ---- */
+#rail{
+  position:fixed; left:max(22px, env(safe-area-inset-left, 0px)); top:50%;
+  transform:translateY(-50%); z-index:8;
+  width:82px; padding:12px 0;
+  opacity:0; pointer-events:none; transition:opacity .15s ease;
+}
+#rail.show{opacity:1; pointer-events:auto;}
+#rail ol{list-style:none; margin:0; padding:0 0 14px; position:relative;}
+#rail li{
+  position:relative; height:28px; margin:0; padding:0;
+  font-size:13px; line-height:1.4; font-weight:400; white-space:nowrap;
+  color:var(--ink-soft);
+}
+#rail .rail-track{position:absolute;left:0;overflow:visible;pointer-events:none;}
+#rail .rail-track path{fill:none;stroke:var(--ink);stroke-width:1;vector-effect:non-scaling-stroke;}
+#rail .rail-track-base{opacity:.2;}
+#rail .rail-track-fill{opacity:1;}
+#rail .dot{display:none;}
+#rail li a, #rail li > .rail-label{
+  display:block; width:82px; height:28px; color:inherit; text-decoration:none;
+}
+#rail .rail-title{
+  position:absolute; left:72px; top:50%; padding:10px 14px;
+  background:#ebebeb; border:1px solid rgba(31,33,34,.06); border-radius:12px;
+  box-shadow:0 5px 18px rgba(31,33,34,.07);
+  color:var(--ink); font-size:13px; line-height:1.4;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translate(6px,-50%) scale(.98); transform-origin:left center;
+  transition:opacity .12s ease, transform .18s cubic-bezier(.2,.8,.2,1), visibility 0s linear .18s;
+}
+#rail li.preview .rail-title, #rail:not(.is-previewing) li:hover .rail-title, #rail li:has(a:focus-visible) .rail-title{
+  opacity:1; visibility:visible; pointer-events:auto;
+  transform:translate(0,-50%) scale(1);
+  transition:opacity .12s ease, transform .18s cubic-bezier(.2,.8,.2,1), visibility 0s;
+}
+#rail:has(a:focus-visible) li.preview:not(:has(a:focus-visible)) .rail-title{
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+#rail li.here .rail-title{font-weight:500;}
+#rail li.soon .rail-title{color:var(--ink-soft);}
+#rail li a::before{content:"";position:absolute;left:-14px;top:0;width:calc(100% + 14px);height:100%;}
+#rail li a:focus-visible{outline:none;}
+#rail li a:focus-visible .rail-title{outline:1px solid var(--ink); outline-offset:2px;}
+#rail .rail-percent{
+  position:absolute; left:34px; transform:translateY(-50%);
+  font-size:11px; line-height:20px; font-weight:400;
+  font-variant-numeric:tabular-nums; color:var(--ink); white-space:nowrap;
+  pointer-events:none; transition:opacity .12s ease;
+}
+#rail.is-previewing .rail-percent, #rail:hover .rail-percent{opacity:0;visibility:hidden;}
+@media (prefers-reduced-motion: reduce){
+  #rail, #rail li::before, #rail .rail-tick, #rail .rail-title, #rail .rail-percent{transition:none!important;}
+}
+@media (max-width:999px){ #rail{display:none;} }
+
+/* ---- top bar (narrow screens) ---- */
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top, 0px); z-index:10; background:var(--paper);}
+#topbar{
+  position:fixed; top:env(safe-area-inset-top, 0px); left:0; right:0; z-index:9;
+  background:var(--paper);
+  border-bottom:1px solid var(--rule);
+  font-size:14px;
+  padding-left:max(40px, env(safe-area-inset-left, 0px));
+  padding-right:max(40px, env(safe-area-inset-right, 0px));
+  opacity:0; pointer-events:none; transition:opacity .25s ease;
+}
+@media (prefers-reduced-motion: reduce){ #topbar{transition:none;} }
+#topbar.show{opacity:1; pointer-events:auto;}
+@media (min-width:1000px){ #topbar{display:none;} }
+#topbar .inner{max-width:44em; margin:0 auto; display:flex; justify-content:space-between; align-items:baseline; gap:16px; padding-block:9px;}
+#topbar .where{color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; text-transform:uppercase; letter-spacing:.12em;}
+#topbar .toc-link{text-transform:uppercase; letter-spacing:.1em; font-size:11px; font-weight:400; color:var(--ink-soft); white-space:nowrap;}
+
+/* ---- interactive hovers ---- */
+@media (hover:hover){
+  #topbar .toc-link{transition:color .2s ease;}
+  #topbar .toc-link:hover{color:var(--ink);}
+  .titlepage .eyebrow a{transition:color .2s ease;}
+  .titlepage .eyebrow a:hover{color:var(--ink);}
+  .readline a{transition:color .2s ease, border-color .2s ease;}
+  .readline a:hover{color:var(--ink); border-bottom-color:var(--ink);}
+  .captabs button{transition:color .2s ease, border-color .2s ease;}
+  .captabs button:hover:not(.active){color:var(--ink);}
+  .prose a{transition:text-decoration-color .2s ease, color .2s ease;}
+  .prose a:hover{text-decoration-color:var(--ink); color:var(--ink);}
+}
+@media (prefers-reduced-motion: reduce){
+  #topbar .toc-link, .titlepage .eyebrow a, .readline a, .captabs button, .prose a{transition:none;}
+}
+
+/* ---- title page ---- */
+.titlepage{box-sizing:border-box; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding-block:8vh;}
+.titlepage .eyebrow{text-transform:uppercase; letter-spacing:.26em; font-size:13px; font-weight:400; color:var(--ink-soft); margin:0 0 1.35em;}
+.titlepage .eyebrow a{text-decoration:none; color:inherit;}
+.titlepage .eyebrow + h1{margin-top:0;}
+.titlepage h1{font-family:var(--display);font-weight:100;font-variation-settings:"wght" 100;font-synthesis:none;font-size:clamp(1.55em,3.6vw,2.05em);line-height:1.22;letter-spacing:.04em;text-transform:none;margin:.15em 0 0;white-space:nowrap;text-wrap:nowrap;}
+
+.titlepage-rhythm{visibility:hidden; pointer-events:none; user-select:none;}
+.thesis{margin-top:1.35em; max-width:34em; font-size:1.02em; line-height:1.6; color:var(--ink-soft); text-align:center; text-wrap:balance;}
+.titlepage h1+.thesis{margin-top:12px;}
+.thesis em{font-style:normal; font-weight:400; color:var(--ink);}
+.byline{margin-top:3.4em; line-height:1.45;}
+.byline .names{font-weight:400; letter-spacing:.01em;}
+.byline .mail{font-size:.78em; color:var(--ink-soft);}
+.dateline{margin-top:1.6em; font-size:.9em; color:var(--ink-soft);}
+.readline{margin-top:4.2em;}
+.readline a{text-transform:uppercase; letter-spacing:.22em; font-size:12px; font-weight:400; border-bottom:1px solid var(--rule); padding-bottom:3px;}
+
+/* ---- chapters ---- */
+.part{margin-top:7em;}
+.part header{text-align:center; margin-bottom:2.6em;}
+.part header .kicker{text-transform:uppercase; letter-spacing:.24em; font-size:12px; font-weight:400; color:var(--ink-soft);}
+.part header h2{font-weight:400; font-size:.82em; letter-spacing:.18em; text-transform:uppercase; line-height:1.35; margin:0; text-align:center; text-wrap:balance;}
+.sect{margin-top:3.2em;}
+.sect h4{font-weight:500; font-size:1.02em; letter-spacing:.03em; line-height:1.35; margin:0 0 1em; text-align:left; padding-top:1.5em; border-top:1px solid var(--rule);}
+.sect > h4:first-child{margin-top:.4em;}
+.part .sect:not(:first-of-type) > h4{margin-top:3.8em;}
+.sect .prose > p.callline:first-child{font-weight:500; font-size:1.02em; letter-spacing:.03em; line-height:1.35; margin:0 0 1em; padding-top:1.5em; border-top:1px solid var(--rule);}
+.part .sect:not(:first-of-type) .prose > p.callline:first-child{margin-top:3.8em;}
+.sect.sect-display{margin:0;}
+.sect.sect-display.sect-display-break{margin:22vh 0;}
+.sect.sect-display + .sect{margin-top:0;}
+.cutouts + .prose{margin-top:2.2em;}
+.sect h4.display-title + .cutouts{margin-top:1.15em;}
+figure.fig-chart{margin:3.2em 0 2.8em;}
+figure.fig-chart figcaption{margin-top:1.05em; margin-bottom:1.6em;}
+.part.part-lede{margin-top:3.2em;}
+.part.part-lede > blockquote.bigquote:first-child{margin:0 0 10vh;}
+.part.part-lede .sect.sect-display{margin-top:14vh;}
+.sect.sect-display h4,.sect h4.display-title{font-family:var(--display);font-weight:100;font-variation-settings:"wght" 100;font-synthesis:none; font-size:1.54em; letter-spacing:.015em; line-height:1.35; margin:1.15em 0; text-align:center; padding-top:0; border-top:none;}
+.sect h4.display-title{margin-bottom:2.4em;}
+.asterism{text-align:center; letter-spacing:1.1em; padding-left:1.1em; margin:2.6em 0; color:var(--ink-soft);}
+.prose > p:last-child{margin-bottom:0;}
+
+/* ---- scrollytelling intro ---- */
+.scrolly{display:grid; grid-template-columns:1fr 1.25fr; gap:2.5em; margin:2.5em 0 3em; align-items:start;}
+.scrolly-steps{display:flex; flex-direction:column; min-width:0;}
+.step{min-height:80vh; display:flex; flex-direction:column; justify-content:center; opacity:.3; transition:opacity .35s ease;}
+.step .when{text-transform:uppercase; letter-spacing:.16em; font-size:11px; font-weight:400; color:var(--ink-soft); margin-bottom:.6em;}
+.step p{margin:0;}
+.step p + p{margin-top:.85em;}
+.chat{margin:2.5em 0 3em; display:flex; flex-direction:column; gap:1.05em; font-size:.84em; line-height:1.45; --chat-stroke:color-mix(in srgb, var(--ink) 40%, transparent); --chat-fill:color-mix(in srgb, var(--ink) 4%, transparent); --chat-r:20px; --chat-pad-x:14px;}
+.chat .msg{min-width:0; display:flex;}
+.chat .msg.user{justify-content:flex-end; padding-left:1.25em;}
+.chat .msg.bot{justify-content:flex-start; padding-right:1.25em;}
+.chat .bubble-shell{display:inline-block; position:relative; max-width:min(100%, 32em); vertical-align:top;}
+.chat .bubble{display:block; position:relative; min-width:0; padding:9px var(--chat-pad-x); box-sizing:border-box;}
+.chat .bot .bubble{border:none; background:var(--chat-fill); border-radius:var(--chat-r) var(--chat-r) var(--chat-r) 4px;}
+.chat .user .bubble-shell{padding-right:8px;}
+.chat .user .bubble{position:relative; z-index:1; border:0.7px solid var(--chat-stroke); background:var(--paper); border-radius:var(--chat-r); border-bottom-right-radius:4px;}
+.chat .user .user-bubble-tail{position:absolute; z-index:0; right:1px; bottom:0; width:12px; height:14px; pointer-events:none; overflow:visible;}
+.chat .user .user-bubble-tail path{fill:var(--paper); stroke:none;}
+.chat .bot{min-width:0; font-weight:500;}
+.chat .trunc{display:inline-block; margin-left:.35em; padding:.12em .45em; border-radius:4px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.72em; font-style:normal; font-weight:500; letter-spacing:.05em; text-transform:lowercase; color:var(--ink-soft); background:color-mix(in srgb, var(--ink) 6%, transparent); border:0.7px solid color-mix(in srgb, var(--ink) 11%, transparent); vertical-align:.1em;}
+.chat .tools{display:flex; flex-direction:column; gap:.28em; padding:0; margin:0; border:none; background:transparent;}
+.chat .tc{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.82em; line-height:1.55; color:color-mix(in srgb, var(--ink) 70%, transparent); font-weight:500; min-width:0; overflow-wrap:break-word;}
+.chat .tc b{color:var(--ink); font-weight:600;}
+.chat .tc.res{color:var(--ink); margin-top:.15em; font-family:var(--sans); font-size:.88em; line-height:1.5;}
+.chat .tc.res b{font-weight:500;}
+.callline{font-weight:400; font-size:1.05em; letter-spacing:.01em; margin-block:1.1em;}
+.bigquote{margin:2.1em 0; max-width:none; text-align:left; font-style:italic; font-size:1.02em; line-height:1.65; padding-left:1em; border-left:1px solid var(--ink);}
+.bigquote .attr{display:block; margin-top:.8em; font-style:normal; font-size:.72em; text-transform:uppercase; letter-spacing:.16em; color:var(--ink-soft);}
+.step.active{opacity:1;}
+.scrolly-chart{position:sticky; top:14vh; height:72vh; display:flex; align-items:center; min-width:0;}
+.scrolly-chart svg{width:100%; height:auto; max-height:100%;}
+.marker{opacity:0; transition:opacity .4s ease;}
+.marker.on{opacity:1;}
+@media (prefers-reduced-motion: reduce){
+  .step, .marker{transition:none;}
+  .step{opacity:1;}
+}
+@media (max-width:700px){
+  body{
+    padding-left:max(18px, env(safe-area-inset-left, 0px));
+    padding-right:max(18px, env(safe-area-inset-right, 0px));
+  }
+  #topbar{
+    font-size:16px;
+    padding-left:max(18px, env(safe-area-inset-left, 0px));
+    padding-right:max(18px, env(safe-area-inset-right, 0px));
+  }
+  #topbar .toc-link{font-size:13px;}
+  .step .when, .part header .kicker{font-size:13px;}
+  .chat{font-size:1em;}
+  .scrolly{display:block;}
+  .scrolly-chart{position:sticky; top:calc(env(safe-area-inset-top, 0px) + 38px); height:auto; background:var(--paper); z-index:2; padding-block:6px; border-bottom:1px solid var(--rule);}
+  .scrolly-chart svg{max-height:40vh; width:auto; max-width:100%; margin-inline:auto;}
+  .step{min-height:55vh;}
+}
+
+/* ---- news cutouts ---- */
+.cutouts{display:flex; flex-wrap:wrap; gap:1.2em; margin:2.2em 0; align-items:flex-start;}
+.cutouts figure{margin:0; flex:1 1 240px; min-width:0;}
+.cutouts img{width:100%; height:auto; display:block; border:none; outline:none;}
+.cutouts figcaption{margin-top:.78em; font-size:.72em; color:var(--ink-soft); text-align:left; line-height:1.45;}
+
+/* ---- figures ---- */
+figure{margin:2.8em 0; padding:0; max-width:100%;}
+.book figure:not(.arc-tl) img, .book figure:not(.arc-tl) video, img.quoteface, img.arc-tl-photo{border:none; outline:none; border-radius:12px; box-shadow:0 12px 40px rgba(31,33,34,.05), 0 4px 14px rgba(31,33,34,.025);}
+.fig-motion{max-width:100%; filter:drop-shadow(0 12px 40px rgba(31,33,34,.05)) drop-shadow(0 4px 14px rgba(31,33,34,.024));}
+.book figure:not(.arc-tl):has(> video){line-height:0; margin:0; overflow:visible; border-radius:0; box-shadow:none; background:transparent;}
+.book figure:not(.arc-tl):has(> video) video{display:block; width:100%; max-width:100%; height:auto; margin:0; padding:0; border:0; border-radius:12px; box-shadow:none; background:var(--paper);}
+.book figure.no-img-shadow img{border-radius:0; box-shadow:none;}
+.book figure img, .book figure video{display:block; width:100%; max-width:100%; height:auto;}
+figure svg{display:block; width:100%; height:auto;}
+figcaption{margin-top:.95em; font-size:.72em; letter-spacing:.04em; line-height:1.5; color:var(--ink-soft); text-align:left;}
+.figtext, svg text{font-family:var(--sans); font-weight:400;}
+
+/* ---- worked table ---- */
+table.worked{width:100%; border-collapse:collapse; margin:2.2em 0; font-size:.9em; line-height:1.5; font-variant-numeric:tabular-nums;}
+table.worked td{padding:.6em .2em; vertical-align:baseline; border-bottom:1px solid var(--rule);}
+table.worked tr:first-child td,table.worked tr:first-child th{border-top:1px solid var(--rule);}
+table.worked th{font-weight:400; font-size:.72em; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); text-align:left; padding:.6em .2em .5em; border-bottom:1px solid var(--rule);}
+table.worked th+th, table.worked.cmp td+td{text-align:right;}
+.figrow{display:flex; gap:1.4em; flex-wrap:wrap; align-items:flex-start;}
+.figrow svg{flex:1 1 260px; min-width:0; height:auto;}
+table.worked td:last-child{text-align:right; white-space:nowrap; font-weight:400;}
+table.worked td:first-child{padding-right:1.4em;}
+
+/* ---- endnotes ---- */
+.endnotes{margin-top:7em; border-top:1px solid var(--rule); padding-top:2.4em; font-size:.8em; line-height:1.6; color:var(--ink-soft);}
+.endnotes .label{text-align:left; text-transform:uppercase; letter-spacing:.2em; font-size:11px; font-weight:400; color:var(--ink-soft); margin-bottom:2em;}
+.endnotes ol{margin:0; padding-left:1.6em;}
+.endnotes li{margin-bottom:.9em;}
+.endnotes a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:2px; text-decoration-color:var(--ink-soft);}
+
+/* ---- end mark ---- */
+.endmark{margin:5em 0 6em; text-align:left; color:var(--ink-soft); line-height:2;}
+.endmark-nav{display:flex; justify-content:space-between; align-items:baseline; gap:1.5em 2.5em; flex-wrap:wrap;}
+.endmark-nav .readline{margin-top:4.2em;}
+.endmark-nav .readline-next{margin-left:auto; text-align:right;}
+@media (max-width:700px){
+  .endmark-nav{flex-direction:column; align-items:stretch; gap:.4em;}
+  .endmark-nav .readline-prev + .readline-next{margin-top:0;}
+  .endmark-nav .readline-next{margin-left:0; text-align:right;}
+}
+
+.endmark .sc{color:var(--ink);}
+@media (min-width:701px) and (max-width:999px){
+  .scrolly{display:block;}
+  .scrolly-chart{position:relative; top:auto; height:auto; margin-bottom:1.5em;}
+  .step{min-height:0; opacity:1;}
+}
+
+@media (max-width:480px){
+  body{font-size:16px;}
+  table.worked{font-size:.9em;}
+  table.worked td:last-child{white-space:normal;}
+  .chat .tc{font-size:.86em;}
+  .cutouts{gap:1em;}
+}
+/* ---- section tabs ---- */
+.captabs{display:flex; justify-content:center; gap:2em; margin:2.8em 0 0; border-bottom:1px solid var(--rule); flex-wrap:wrap;}
+.captabs button{appearance:none; background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-1px; padding:.55em .1em .7em; font-family:var(--sans); font-size:.92em; letter-spacing:.02em; font-weight:400; color:var(--ink-soft); cursor:pointer;}
+.captabs button.active{color:var(--ink); border-bottom-color:var(--ink);}
+.tabsect{margin-top:2.6em;}
+.tabsect.hiddentab{display:none;}
+</style>
+<script src="/navigation.js"></script>
+<script src="/reading-rail.js"></script>
+<script>
+(function(){
+  try{
+    var KEY='truffle-loc', NAV='truffle-nav';
+    var PAGES=["introduction","the-three-caps","the-three-paths","precedents","a-new-computer","next-gen-chips","a-million-new-computers","endnotes"];
+    var LEGACY={"":"introduction","home":"introduction","introduction":"introduction","introduction.html":"introduction","index":"introduction","index.html":"introduction","caps":"the-three-caps","caps.html":"the-three-caps","the-three-caps":"the-three-caps","the-three-caps.html":"the-three-caps","two":"the-three-paths","two.html":"the-three-paths","the-three-paths":"the-three-paths","the-three-paths.html":"the-three-paths","precedents":"precedents","precedents.html":"precedents","a-new-computer":"a-new-computer","a-new-computer.html":"a-new-computer","computer":"a-new-computer","computer.html":"a-new-computer","the-roadmap":"next-gen-chips","the-roadmap.html":"next-gen-chips","roadmap":"next-gen-chips","roadmap.html":"next-gen-chips","next-gen-chips":"next-gen-chips","next-gen-chips.html":"next-gen-chips","million":"a-million-new-computers","million.html":"a-million-new-computers","a-million-new-computers":"a-million-new-computers","a-million-new-computers.html":"a-million-new-computers","endnotes":"endnotes","endnotes.html":"endnotes","notes":"endnotes","notes.html":"endnotes"};
+    var path=location.pathname.replace(/^\/|\/$/g,'');
+    var here=LEGACY[path] || path;
+    if(PAGES.indexOf(here)<0) here='introduction';
+    var nav=sessionStorage.getItem(NAV); sessionStorage.removeItem(NAV);
+    var saved=null; try{ saved=JSON.parse(sessionStorage.getItem(KEY)||'null'); }catch(e){}
+    if(saved) saved.p=LEGACY[saved.p] || saved.p;
+    if(!nav && saved){
+      if(saved.p===here && saved.y && !location.hash && !window.__essayAnchorNavigation && performance.getEntriesByType('navigation')[0]?.type === 'reload'){
+        window.addEventListener('load', function(){ setTimeout(function(){ window.scrollTo({top: saved.y, behavior: 'instant'}); }, 0); });
+      }
+    }
+    function save(){ try{ sessionStorage.setItem(KEY, JSON.stringify({p:here, y:Math.round(window.scrollY)})); }catch(e){} }
+    window.addEventListener('scroll', save, {passive:true});
+    window.addEventListener('pagehide', save);
+    document.addEventListener('DOMContentLoaded', function(){
+      save();
+      document.addEventListener('click', function(e){
+        var t=e.target, a=null;
+        while(t && t!==document){ if(t.tagName==='A'){ a=t; break; } t=t.parentNode; }
+        if(a){ var h=a.getAttribute('href')||''; if(h && h.charAt(0)!=='#'){ try{ sessionStorage.setItem(NAV,'1'); }catch(e2){} } }
+      }, true);
+    });
+  }catch(e){}
+})();
+</script>
+<meta name="robots" content="noindex,nofollow,noarchive">
+</head>
+<body>
+<div class="book" lang="en">
+
+<section class="titlepage" id="top">
+  <h1>Endnotes</h1>
+  <p class="thesis titlepage-rhythm" aria-hidden="true">Why AI will diffuse through society as a GPU per person</p>
+</section>
+
+<!-- ============ ENDNOTES ============ -->
+<section class="endnotes" id="endnotes" data-title="Endnotes">
+  <ol>
+    <li id="note-interactive-model">The interactive model, with its assumptions stated and a slider for the degree of datacenter backlash: <a href="https://local-ai-opportunity.deepshard.chatgpt.site">local-ai-opportunity.deepshard.chatgpt.site</a>. <a href="/introduction#reference-interactive-model" aria-label="Back to passage: interactive model">&#8617;</a></li>
+    <li id="note-grid-connection-delays">&ldquo;Google warns transmission delays are now the biggest threat to data center expansion,&rdquo; <em>Network World</em>, reporting Reuters. <a href="https://www.networkworld.com/article/4117329/google-warns-transmission-delays-are-now-the-biggest-threat-to-data-center-expansion.html">networkworld.com</a>. <a href="/the-three-caps#reference-grid-connection-delays" aria-label="Back to passage: grid connection delays">&#8617;</a></li>
+    <li id="note-utility-investment">MarketScale, on utility spending and interconnection waits, citing Berkeley Lab data (<a href="https://www.marketscale.com/industries/energy/topic/utility-spending">marketscale.com</a>); <em>The Load Growth</em>, &ldquo;It takes 7 years to plug in a power plant to the grid&rdquo; (<a href="https://theloadgrowth.substack.com/p/it-takes-7-years-to-plug-in-a-power">theloadgrowth.substack.com</a>). <a href="/the-three-caps#reference-utility-investment" aria-label="Back to passage: utility investment">&#8617;</a></li>
+    <li id="note-blocked-projects">Data Center Watch, <em>$64 billion of data center projects have been blocked or delayed amid local opposition</em>. <a href="https://datacenterwatch.org/report">datacenterwatch.org</a>. <a href="/the-three-caps#reference-blocked-projects" aria-label="Back to passage: blocked projects">&#8617;</a></li>
+    <li id="note-local-opposition">The Decoder, on local resistance across eleven states; NBC News, on state and local opposition gaining steam, with figures for Q1 2026. <a href="https://the-decoder.com/local-resistance-blocks-98-billion-in-ai-data-center-projects-across-eleven-us-states/">the-decoder.com</a>; <a href="https://www.nbcnews.com/politics/economics/state-local-opposition-new-data-centers-gaining-steam-rcna243838">nbcnews.com</a>. Bloomberg Law, September 21, 2026, on Data Center Watch&rsquo;s second-quarter count: 45 projects worth $68B blocked or delayed from April to June (datacenterwatch.org/q2-2026). <a href="/the-three-caps#reference-local-opposition" aria-label="Back to passage: local opposition">&#8617;</a></li>
+    <li id="note-voter-opposition">University of Pennsylvania Annenberg survey, reported in coverage of the 2026 midterms. <a href="https://www.batterytechonline.com/stationary-batteries/this-tech-issue-is-reshaping-the-2026-midterm-elections">batterytechonline.com</a>. <a href="/the-three-caps#reference-voter-opposition" aria-label="Back to passage: voter opposition">&#8617;</a></li>
+    <li id="note-texas-permit-pause">&ldquo;Data center approvals in Texas halted until audits completed, Gov. Greg Abbott says,&rdquo; KSAT, August 3, 2026. <a href="https://www.ksat.com/news/texas/2026/08/03/data-center-approvals-in-texas-halted-until-audits-completed-gov-greg-abbott-says/">ksat.com</a>. Governor Abbott&rsquo;s September 21, 2026 directive to TCEQ halting data center environmental permits (gov.texas.gov); Texas Tribune, November 4, 2026, on the audit running to December. <a href="/the-three-caps#reference-texas-permit-pause" aria-label="Back to passage: texas permit pause">&#8617;</a></li>
+    <li id="note-texas-grid-requests">Tom&rsquo;s Hardware, on the 474 GW of connection requests subject to the pause. <a href="https://www.tomshardware.com/tech-industry/data-centers/texas-slams-on-the-breaks-for-1-800-data-centers-power-grid-requirements-are-five-times-higher-than-peak-record-demand-474-gigawatts-of-power-requests-are-now-subject-to-new-moratorium">tomshardware.com</a>. <a href="/the-three-caps#reference-texas-grid-requests" aria-label="Back to passage: texas grid requests">&#8617;</a></li>
+    <li id="note-new-york-moratorium">Siena Research Institute polling on New York&rsquo;s one-year ban, September 2026. <a href="/the-three-caps#reference-new-york-moratorium" aria-label="Back to passage: new york moratorium">&#8617;</a></li>
+    <li id="note-datacenter-politics">Texas Politics Project polling; midterm coverage of datacenter politics. <a href="https://www.batterytechonline.com/stationary-batteries/this-tech-issue-is-reshaping-the-2026-midterm-elections">batterytechonline.com</a>. Wood Mackenzie, October 28, 2026 release on its US data centre pipeline Q3 report: more than 400 moratoriums since January 2026 across 42 states, 18% of tracked sites and more than 100 GW of planned capacity, with the Texas pause covering more than 60 GW. Goldman Sachs, October 5, 2026 note, citing the NBC News poll (64% less likely, 11% more likely). Scientific American, November 4, 2026, on the 41 ballot measures in 10 states, via Ballotpedia; Texas Tribune, November 4, 2026, on Hinojosa&rsquo;s moratorium pledge and Data Center Watch&rsquo;s count of 74 gubernatorial candidates; TIME, November 4, 2026, on the NBC exit poll. Governor results: Duane Morris Government Strategies, &ldquo;2026 Midterm Elections: Where Things Stand,&rdquo; unofficial as of November 5, 2026 (statecapitallobbyist.com); NBC News results pages for Texas, Georgia, and Iowa. <a href="/the-three-caps#reference-datacenter-politics" aria-label="Back to passage: datacenter politics">&#8617;</a></li>
+    <li id="note-power-demand">Goldman Sachs Research, <em>US data center power demand projected to double by 2027</em>. <a href="https://www.goldmansachs.com/insights/articles/us-data-center-power-demand-projected-to-double-by-2027">goldmansachs.com</a>. <a href="/the-three-caps#reference-power-demand" aria-label="Back to passage: power demand">&#8617;</a></li>
+    <li id="note-construction-delays">Jefferies, via Data Center Dynamics: half of US capacity planned for 2026 has started construction. <a href="https://news.lavx.hu/article/half-of-us-data-center-capacity-planned-for-2026-has-started-construction">via datacenterdynamics.com</a>. <a href="/the-three-caps#reference-construction-delays" aria-label="Back to passage: construction delays">&#8617;</a></li>
+    <li id="note-interest-rates">Crypto Briefing, on the Federal Reserve&rsquo;s hiking cycle and the sector&rsquo;s debt load. <a href="https://cryptobriefing.com/fed-hiking-cycle-ai-financing-concerns/">cryptobriefing.com</a>. <a href="/the-three-caps#reference-interest-rates" aria-label="Back to passage: interest rates">&#8617;</a></li>
+    <li id="note-neocloud-financing">Fierce Network, <em>Wall Street&rsquo;s anxiety catches up to neocloud CoreWeave</em>, reporting Reuters bond and CDS figures and the Gartner estimate. <a href="https://www.fierce-network.com/cloud/wall-streets-anxiety-catches-neocloud-coreweave">fierce-network.com</a>. CNBC, November 5, 2026, on the five-year CDS spread past 1,100 basis points, the election-day moves in CoreWeave, Microsoft, and Amazon, and JPMorgan&rsquo;s James Sullivan on the value of existing capacity. <a href="/the-three-caps#reference-neocloud-financing" aria-label="Back to passage: neocloud financing">&#8617;</a></li>
+    <li id="note-ai-debt">Invezz, on the FOMC minutes and the blind spot in AI financing; Dallas Fed research on AI debt and rates. <a href="https://invezz.com/news/2026/02/18/fed-minutes-expose-a-blind-spot-at-the-heart-of-the-ai-boom/">invezz.com</a>. <a href="/the-three-caps#reference-ai-debt" aria-label="Back to passage: ai debt">&#8617;</a></li>
+    <li id="note-model-assumptions">Under the model of note 1: one billion eventual agent users, one hundred tokens per second, three agent-hours per person per day, twelve dollars per million output tokens, and a degree of backlash that holds datacenter growth to forty percent of the unconstrained build rate. <a href="/the-three-caps#reference-model-assumptions" aria-label="Back to passage: model assumptions">&#8617;</a></li>
+    <li id="note-capacity-forecasts">Goldman Sachs Research, on Aterio project-level data: realized US additions of 6.4 GW in 2024 and 8.5 GW in 2025, against scheduled additions of 13.6 GW in 2026 and 36.3 GW in 2027; 2.2 GW came online in Q1 2026. Goldman assumes roughly 60% of capacity scheduled within a year arrives on time, falling to about 50% over two years (<a href="https://www.marcus.com/us/en/resources/heard-at-gs/what-is-the-forecast-for-us-data-center-power-demand-">marcus.com</a>). The 2027 range: extending 2024&ndash;2026 realized growth gives roughly 12 GW; applying Goldman&rsquo;s 50% two-year haircut to the 36.3 GW schedule gives roughly 18 GW. Goldman Sachs, Laura Cyr, October 5, 2026 note (via Yahoo Finance): year-end capacity of 64 GW in 2026 and 90 GW in 2027, with power demand growing 12 GW in 2026 and 17 GW in 2027, December to December. <a href="/the-three-paths#reference-capacity-forecasts" aria-label="Back to passage: capacity forecasts">&#8617;</a></li>
+    <li id="note-unpowered-gpus">Satya Nadella: &ldquo;I don&rsquo;t have warm shells to plug into&rdquo; (Tom&rsquo;s Hardware, November 2, 2025). Musk&rsquo;s warehouse remark: CNBC, June 2024, on 12,000 H100s redirected from Tesla to X (<a href="https://www.cnbc.com/2024/06/04/elon-musk-told-nvidia-to-ship-ai-chips-reserved-for-tesla-to-x-xai.html">cnbc.com</a>). Vaibhav Taneja, Tesla Q2 2024 earnings call: &ldquo;You can&rsquo;t just order GPUs and turn them on, you need a data center&rdquo; (<a href="https://www.fool.com/earnings/call-transcripts/2024/07/24/tesla-tsla-q2-2024-earnings-call-transcript/">fool.com</a>). <a href="/the-three-paths#reference-unpowered-gpus" aria-label="Back to passage: unpowered gpus">&#8617;</a></li>
+    <li id="note-project-suncatcher">Google Research, &ldquo;Exploring a space-based, scalable AI infrastructure system design&rdquo; (Project Suncatcher): two prototype satellites with Planet by early 2027, and the launch-cost threshold of roughly $200 per kilogram. <a href="https://blog.google/technology/research/google-project-suncatcher/">blog.google</a>. <a href="/the-three-paths#reference-project-suncatcher" aria-label="Back to passage: project suncatcher">&#8617;</a></li>
+    <li id="note-orbital-gpus">Tom&rsquo;s Hardware, on the first Nvidia H100 reaching orbit with Starcloud (<a href="https://www.tomshardware.com/tech-industry/first-nvidia-h100-gpus-will-reach-orbit-next-month-crusoe-and-starcloud-pioneer-space-based-solar-powered-ai-compute-cloud-data-centers">tomshardware.com</a>); Data Center Dynamics, on Crusoe&rsquo;s plan to offer limited GPU capacity from space in 2027 (<a href="https://www.datacenterdynamics.com/en/news/crusoe-to-deploy-in-starcloud-satellite-data-center-in-late-2026-offer-limited-gpu-capacity-in-space-from-2027">datacenterdynamics.com</a>). Starcloud&rsquo;s $250M raise at a $2.3B valuation was announced in August 2026. <a href="/the-three-paths#reference-orbital-gpus" aria-label="Back to passage: orbital gpus">&#8617;</a></li>
+    <li id="note-space-economics">Space Ambition, &ldquo;Space Data Centers: Promise, Physics, and the Parts That Still Are Not Penciled,&rdquo; on radiator area, mass fractions, and launch economics (<a href="https://spaceambition.substack.com/p/space-data-centers-promise-physics">spaceambition.substack.com</a>); PCMag, &ldquo;Elon Musk Has Grand Plans for Data Centers in Space. Experts Are Skeptical.&rdquo; <a href="/the-three-paths#reference-space-economics" aria-label="Back to passage: space economics">&#8617;</a></li>
+    <li id="note-ken-olsen">Ken Olsen, founder of Digital Equipment Corporation, at the World Future Society, 1977. Olsen later said he meant home automation; the industry heard it the way history records it. <a href="/precedents#reference-ken-olsen" aria-label="Back to passage: ken olsen">&#8617;</a></li>
+    <li id="note-customer-interface">Tom Goodwin, &ldquo;The Battle Is for the Customer Interface,&rdquo; TechCrunch, March 2015. <a href="https://techcrunch.com/2015/03/03/in-the-age-of-disintermediation-the-battle-is-all-for-the-customer-interface/">techcrunch.com</a>. <a href="/precedents#reference-customer-interface" aria-label="Back to passage: customer interface">&#8617;</a></li>
+    <li id="note-dgx-spark">Neowin, on the DGX Spark shipping at $3,999. <a href="https://www.neowin.net/news/nvidia-begins-shipping-dgx-spark-its-3000-ai-supercomputer-for-your-desk/">neowin.net</a>. <a href="/precedents#reference-dgx-spark" aria-label="Back to passage: dgx spark">&#8617;</a></li>
+  </ol>
+</section>
+
+<div class="endmark endmark-nav">
+  <div class="readline readline-prev"><a href="/a-million-new-computers">← A Million New Computers</a></div>
+  <div class="readline readline-next"><a href="/introduction">Introduction →</a></div>
+</div>
+</div>
+
+<!-- ============ LEFT RAIL ============ -->
+<nav id="rail" aria-label="Contents">
+  <ol>
+    <li><span class="dot"></span><a href="/introduction" aria-label="Introduction"><span class="rail-title">Introduction</span></a></li>
+    <li><span class="dot"></span><a href="/the-three-caps" aria-label="The Three Caps"><span class="rail-title">The Three Caps</span></a></li>
+    <li><span class="dot"></span><a href="/the-three-paths" aria-label="The Three Paths"><span class="rail-title">The Three Paths</span></a></li>
+    <li><span class="dot"></span><a href="/precedents" aria-label="Precedents"><span class="rail-title">Precedents</span></a></li>
+    <li><span class="dot"></span><a href="/a-new-computer" aria-label="A New Computer"><span class="rail-title">A New Computer</span></a></li>
+    <li><span class="dot"></span><a href="/next-gen-chips" aria-label="Next-Gen Chips"><span class="rail-title">Next-Gen Chips</span></a></li>
+    <li><span class="dot"></span><a href="/a-million-new-computers" aria-label="A Million New Computers"><span class="rail-title">A Million New Computers</span></a></li>
+    <li data-target="endnotes"><span class="dot"></span><a href="/endnotes" aria-label="Endnotes"><span class="rail-title">Endnotes</span></a></li>
+  </ol>
+</nav>
+
+<div id="topbar"><div class="inner"><span class="where" id="whereami"></span><a class="toc-link" href="#top">Top</a></div></div>
+
+<script>
+(function(){
+  var topbar = document.getElementById('topbar');
+  var where = document.getElementById('whereami');
+  var readingRail = window.createReadingRail(document.getElementById('rail'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('[data-title]'));
+  var title = document.getElementById('top');
+  function onScroll(){
+    var y = window.scrollY || document.documentElement.scrollTop;
+    var past = y > title.offsetHeight - 220;
+    topbar.classList.toggle('show', past);
+    var current = '';
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop - 140 <= y) current = sections[i].getAttribute('data-title');
+    }
+    where.textContent = current;
+    readingRail.update();
+    scrollyUpdate();
+  }
+
+  // scrollytelling: draw the token curve as the intro steps pass
+  var scrolly = document.getElementById('scrolly');
+  var tokcurve = document.getElementById('tokcurve');
+  var chip = document.getElementById('stage-chip');
+  var steps = scrolly ? Array.prototype.slice.call(scrolly.querySelectorAll('.step')) : [];
+  var markers = scrolly ? Array.prototype.slice.call(scrolly.querySelectorAll('.marker')) : [];
+  var chipText = ['2023', '2025', '2026–27', '2027½+'];
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var curveLen = 0, markerFrac = [];
+  if (tokcurve) {
+    curveLen = tokcurve.getTotalLength();
+    markers.forEach(function(m){
+      var mx = parseFloat(m.getAttribute('data-x'));
+      var lo = 0, hi = curveLen;
+      for (var k = 0; k < 24; k++) {
+        var mid = (lo + hi) / 2;
+        if (tokcurve.getPointAtLength(mid).x < mx) { lo = mid; } else { hi = mid; }
+      }
+      markerFrac.push(lo / curveLen);
+    });
+    if (!reduceMotion) {
+      tokcurve.style.strokeDasharray = curveLen;
+      tokcurve.style.strokeDashoffset = curveLen;
+    } else {
+      markers.forEach(function(m){ m.classList.add('on'); });
+    }
+  }
+  function scrollyUpdate(){
+    if (!scrolly || !tokcurve || steps.length < 2) return;
+    var vh = window.innerHeight;
+    var m = vh * 0.5;
+    var centers = steps.map(function(st){
+      var sr = st.getBoundingClientRect();
+      return sr.top + sr.height / 2;
+    });
+    // s: continuous stage position; s = i exactly when step i is centered
+    var s;
+    if (m <= centers[0]) {
+      s = (m - centers[0]) / (centers[1] - centers[0]);
+    } else if (m >= centers[centers.length - 1]) {
+      var n = centers.length - 1;
+      s = n + (m - centers[n]) / (centers[n] - centers[n - 1]);
+    } else {
+      for (var i = 0; i < centers.length - 1; i++) {
+        if (m >= centers[i] && m <= centers[i + 1]) {
+          s = i + (m - centers[i]) / (centers[i + 1] - centers[i]);
+          break;
+        }
+      }
+    }
+    s = Math.max(-0.9, Math.min(3.75, s));
+    // piecewise map: stage position -> fraction of curve drawn
+    var sa = [-0.9, 0, 1, 2, 3, 3.75];
+    var fa = [0, markerFrac[0] || 0.05, markerFrac[1] || 0.4, markerFrac[2] || 0.72, markerFrac[3] || 0.88, 1];
+    var p = fa[fa.length - 1];
+    for (var k = 0; k < sa.length - 1; k++) {
+      if (s <= sa[k + 1]) {
+        p = fa[k] + (fa[k + 1] - fa[k]) * (s - sa[k]) / (sa[k + 1] - sa[k]);
+        break;
+      }
+    }
+    if (!reduceMotion) {
+      tokcurve.style.strokeDashoffset = curveLen * (1 - p);
+      for (var q = 0; q < markers.length; q++) {
+        markers[q].classList.toggle('on', s >= q - 0.1);
+      }
+    }
+    var activeIdx = Math.max(0, Math.min(steps.length - 1, Math.round(s)));
+    for (var j = 0; j < steps.length; j++) steps[j].classList.remove('active');
+    steps[activeIdx].classList.add('active');
+    if (chip) chip.textContent = chipText[activeIdx] || chipText[0];
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', function(){ readingRail.measure(); onScroll(); });
+  onScroll();
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  }
+})();
+</script>
+<script src="chart-interact.js"></script>
+<script src="mobile-nav.js"></script>
+<footer style="margin:2rem auto;text-align:center"><form method="post" action="/_auth/logout"><button type="submit" style="font:inherit;font-size:12px;color:#5c6164;background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px">Sign out</button></form></footer>
+</body>
+</html>
