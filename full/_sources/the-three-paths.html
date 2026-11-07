@@ -439,7 +439,7 @@ table.worked td:first-child{padding-right:1.4em;}
 }
 .cap-card{
   display:flex; flex-direction:column; align-items:center; gap:12px;
-  padding:12px; border:none; border-radius:8px; background:rgba(255,255,255,.5);
+  padding:12px; border:none; border-radius:8px; background:#FBFBFB;
   text-align:left; cursor:pointer; color:inherit; font:inherit;
   -webkit-tap-highlight-color:transparent;
   box-shadow:0 4px 12px rgba(0,0,0,.06);
@@ -448,16 +448,19 @@ table.worked td:first-child{padding-right:1.4em;}
 @media (hover:hover){
   .cap-card:hover{background:#fff; box-shadow:0 5px 16px rgba(0,0,0,.0825);}
 }
-.cap-card:active{background:rgba(255,255,255,.45); box-shadow:0 4px 11px rgba(0,0,0,.0525);}
+.cap-card:active{background:#F4F4F4; box-shadow:0 4px 11px rgba(0,0,0,.0525);}
+.cap-card.cap-card--morph-hidden{visibility:hidden;}
 .cap-card-art{width:100%; max-width:210px; aspect-ratio:1; display:block; flex-shrink:0;}
 .cap-card-art img{display:block; width:100%; height:100%; object-fit:contain;}
 .cap-card-text{width:100%; display:flex; flex-direction:column; gap:8px; min-height:2.9em;}
 .cap-card-title{
+  display:block; box-sizing:border-box; width:100%; text-align:left;
   font-family:var(--display); font-size:1.125rem; line-height:1.25; color:var(--ink);
   font-weight:400; font-variation-settings:"wght" 100; font-synthesis:none;
   margin:0; letter-spacing:.02em;
 }
 .cap-card-sub{
+  box-sizing:border-box; width:100%; text-align:left;
   font-size:.875rem; line-height:1.45; color:rgba(31,33,34,.5); margin:0;
   display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   min-height:calc(1.45em * 2);
@@ -478,12 +481,41 @@ table.worked td:first-child{padding-right:1.4em;}
   display:flex; align-items:center; justify-content:center;
   padding:max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
   box-sizing:border-box;
-  background:rgba(244,244,244,.9);
-  overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
-  opacity:0; visibility:hidden;
-  transition:opacity .28s ease, visibility 0s linear .28s;
+  background:transparent;
+  overflow:hidden;
+  opacity:1;
+  visibility:hidden;
+  pointer-events:none;
+  transition:visibility 0s linear .5s;
 }
-.cap-article-overlay.is-open{opacity:1; visibility:visible; transition:opacity .28s ease, visibility 0s;}
+.cap-article-overlay::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(244,244,244,.9);
+  opacity:0;
+  transition:opacity .5s ease;
+}
+.cap-article-overlay.is-open{
+  visibility:visible;
+  pointer-events:auto;
+  transition:visibility 0s;
+}
+.cap-article-overlay[hidden]{display:none!important;}
+.cap-article-overlay.is-open::before{opacity:1;}
+.cap-article-overlay.is-closing::before{
+  opacity:0;
+  transition:opacity .64s cubic-bezier(.42,0,.18,1);
+}
+.cap-article-overlay.is-morphing{
+  display:block;
+  padding:0;
+}
+.cap-article-overlay.is-measuring{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.cap-article-overlay.is-measuring .cap-article-panel{visibility:hidden;}
 .cap-article-panel{
   position:relative;
   box-sizing:border-box;
@@ -497,15 +529,184 @@ table.worked td:first-child{padding-right:1.4em;}
   box-shadow:0 16px 48px rgba(0,0,0,.11), 0 6px 16px rgba(0,0,0,.07);
   overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch;
   opacity:0;
-  transform:translateY(14px) scale(.97);
-  transition:opacity .34s cubic-bezier(.22,1,.36,1), transform .34s cubic-bezier(.22,1,.36,1), box-shadow .34s ease;
+  transition:opacity .28s ease;
 }
-.cap-article-overlay.is-open .cap-article-panel{
+.cap-article-overlay.is-open .cap-article-panel{opacity:1;}
+.cap-article-panel.cap-article-panel--morph{
+  position:fixed;
+  z-index:2;
+  margin:0;
   opacity:1;
-  transform:translateY(0) scale(1);
+  overflow:hidden;
+  max-height:none;
+  border-radius:8px;
+  transition:
+    top .64s cubic-bezier(.42,0,.18,1),
+    left .64s cubic-bezier(.42,0,.18,1),
+    width .64s cubic-bezier(.42,0,.18,1),
+    height .64s cubic-bezier(.42,0,.18,1),
+    background-color .64s cubic-bezier(.42,0,.18,1),
+    box-shadow .64s cubic-bezier(.42,0,.18,1);
 }
-.cap-article-inner.book{max-width:44em; margin:0 auto;}
+.cap-article-overlay.is-morphing:not(.is-revealed) .cap-article-panel--morph{
+  contain:layout paint;
+}
+.cap-article-panel.cap-article-panel--morph.cap-article-panel--card-look{
+  background:#FBFBFB;
+  box-shadow:0 4px 12px rgba(0,0,0,.06);
+}
+.cap-morph-extras{
+  position:absolute;
+  z-index:2;
+  left:12px;
+  right:12px;
+  top:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:12px;
+  pointer-events:none;
+  opacity:1;
+}
+.cap-morph-extras .cap-card-art{
+  width:100%; max-width:210px; aspect-ratio:1;
+  align-self:center;
+}
+.cap-morph-extras .cap-card-text{
+  width:100%; display:flex; flex-direction:column; gap:8px; min-height:2.9em;
+}
+.cap-morph-title-spacer{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.cap-morph-extras .cap-card-sub{
+  box-sizing:border-box; width:100%; text-align:left;
+  font-size:.875rem; line-height:1.45; color:rgba(31,33,34,.5); margin:0;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  min-height:calc(1.45em * 2);
+}
+.cap-article-overlay.is-prep-open .cap-morph-extras{
+  animation:cap-prose-out .36s ease forwards;
+}
+.cap-article-overlay.is-expanding .cap-morph-extras,
+.cap-article-overlay.is-revealed .cap-morph-extras{
+  opacity:0;
+  visibility:hidden;
+  animation:none!important;
+}
+.cap-article-overlay.is-closing .cap-morph-extras{
+  opacity:0;
+  visibility:visible;
+  animation:none;
+}
+.cap-article-overlay.is-closing.is-card-landed .cap-morph-extras{
+  visibility:visible;
+  animation:cap-prose-in .36s ease forwards;
+}
+.cap-morph-title-float{
+  position:fixed;
+  z-index:60;
+  left:0;
+  top:0;
+  display:block;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  white-space:nowrap;
+  text-align:left;
+  pointer-events:none;
+  color:var(--ink);
+  opacity:1;
+  transform:none;
+  will-change:left,top,font-size;
+}
+.cap-article-overlay.is-measure-layout .cap-article-inner{
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative;
+}
+.cap-article-overlay.is-measure-layout .cap-article-panel{visibility:visible!important;}
+.cap-article-overlay.is-measure-layout .cap-prose{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.cap-article-overlay.has-float-title .cap-article-inner .cap-article-sect > h4{
+  opacity:0;
+}
+.cap-article-overlay.is-morphing:not(.is-revealed):not(.is-closing) .cap-article-close,
+.cap-article-overlay.is-morphing:not(.is-revealed):not(.is-closing) .cap-article-inner{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.cap-article-overlay.is-morphing:not(.is-revealed) .cap-article-inner,
+.cap-article-overlay.is-closing .cap-article-inner{
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  width:auto;
+  max-width:44em;
+  margin-left:auto;
+  margin-right:auto;
+  content-visibility:hidden;
+  contain-intrinsic-size:1px 1px;
+}
+.cap-article-overlay.is-morphing:not(.is-revealed):not(.is-closing) .cap-article-inner{
+  opacity:0;
+  visibility:hidden;
+}
+.cap-article-overlay.is-revealed.is-content-hiding:not(.is-closing) .cap-article-inner{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+.cap-article-overlay.is-content-hiding.is-closing .cap-article-inner,
+.cap-article-overlay.is-closing .cap-article-inner{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.cap-article-overlay.is-revealed:not(.is-content-hiding) .cap-prose{
+  opacity:0;
+  animation:cap-prose-in .52s ease .06s forwards;
+}
+@keyframes cap-prose-in{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+.cap-article-overlay.is-content-hiding:not(.is-closing) .cap-prose{
+  animation:cap-prose-out .36s ease forwards;
+}
+.cap-article-overlay.is-content-hiding.is-closing .cap-prose{
+  opacity:0;
+  animation:none!important;
+}
+@keyframes cap-prose-out{
+  from{opacity:1;}
+  to{opacity:0;}
+}
+.cap-article-overlay.is-closing .cap-article-close{
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .16s ease;
+}
+.cap-article-inner.book{
+  max-width:44em; margin:0 auto;
+  opacity:0;
+  transition:opacity .28s ease;
+}
+.cap-article-overlay.is-revealed .cap-article-panel.cap-article-panel--morph{overflow-x:hidden; overflow-y:auto;}
+.cap-article-overlay.is-revealed .cap-article-inner{
+  opacity:1;
+  visibility:visible;
+  content-visibility:visible;
+  transition:none;
+}
+.cap-article-overlay.is-revealed .cap-article-close{opacity:1; transition:opacity .22s ease .06s;}
 .cap-article-inner .cap-article-sect > h4{
+  display:block; box-sizing:border-box; width:100%; text-align:left;
   font-family:var(--display); font-size:clamp(1.25rem, 2.8vw, 1.65rem);
   font-weight:100; font-variation-settings:"wght" 100; font-synthesis:none;
   letter-spacing:.02em; line-height:1.25;
@@ -532,8 +733,7 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
 .cap-article-overlay::-webkit-scrollbar,
 .cap-article-panel::-webkit-scrollbar{display:none; width:0; height:0;}
 @media (prefers-reduced-motion: reduce){
-  .cap-article-overlay,.cap-article-panel{transition:none;}
-  .cap-article-panel{transform:none;}
+  .cap-article-overlay,.cap-article-overlay::before,.cap-article-panel,.cap-article-inner,.cap-article-close,.cap-morph-extras,.cap-morph-title-float,.cap-prose{transition:none; animation:none!important;}
 }
 
 /* ---- section tabs ---- */
@@ -874,10 +1074,252 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
 
   var panel = document.getElementById('path-article-panel');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var closeMs = function(){ return reduceMotion.matches ? 0 : 340; };
+  var MORPH_MS = 640;
+  var EXTRAS_IN_MS = 400;
+  var PREP_MS = 400;
+  var PROSE_IN_MS = 600;
+  var PROSE_OUT_MS = 400;
+  var FADE_MS = 480;
+  var closeMs = function(){ return reduceMotion.matches ? 0 : FADE_MS; };
+  var morphGen = 0;
+  var titleAnim = null;
+  var lastTitleState = null;
+
+  function waitPanelMorph(done){
+    var gen = ++morphGen;
+    if (!panel || reduceMotion.matches) {
+      done();
+      return;
+    }
+    var finished = false;
+    function finish(){
+      if (finished) return;
+      finished = true;
+      panel.removeEventListener('transitionend', onEnd);
+      clearTimeout(tid);
+      if (gen !== morphGen) return;
+      done();
+    }
+    function onEnd(e){
+      if (e.target !== panel) return;
+      if (e.propertyName === 'width' || e.propertyName === 'height') finish();
+    }
+    panel.addEventListener('transitionend', onEnd);
+    var tid = window.setTimeout(finish, MORPH_MS + 90);
+  }
+
+  function morphCardBtn(el){
+    return el && el.classList && el.classList.contains('cap-card') ? el : null;
+  }
+  function setCardHidden(btn, hidden){
+    if (!btn || !btn.isConnected) return;
+    btn.classList.toggle('cap-card--morph-hidden', !!hidden);
+  }
+  function clearMorphLayers(){
+    if (titleAnim) {
+      try { titleAnim.cancel(); } catch (e) {}
+      titleAnim = null;
+    }
+    var t = overlay.querySelector('.cap-morph-title-float');
+    var e = panel && panel.querySelector('.cap-morph-extras');
+    if (t) t.remove();
+    if (e) e.remove();
+    overlay.classList.remove('has-float-title');
+    lastTitleState = null;
+  }
+  function mountExtras(btn){
+    if (!btn || !panel) return;
+    var old = panel.querySelector('.cap-morph-extras');
+    if (old) old.remove();
+    var art = btn.querySelector('.cap-card-art');
+    var sub = btn.querySelector('.cap-card-sub');
+    var titleEl = btn.querySelector('.cap-card-title');
+    var extras = document.createElement('div');
+    extras.className = 'cap-morph-extras';
+    extras.setAttribute('aria-hidden', 'true');
+    if (art) extras.appendChild(art.cloneNode(true));
+    var textWrap = document.createElement('span');
+    textWrap.className = 'cap-card-text';
+    if (titleEl) {
+      var spacer = titleEl.cloneNode(true);
+      spacer.classList.add('cap-morph-title-spacer');
+      spacer.setAttribute('aria-hidden', 'true');
+      textWrap.appendChild(spacer);
+    }
+    if (sub) textWrap.appendChild(sub.cloneNode(true));
+    extras.appendChild(textWrap);
+    panel.insertBefore(extras, panel.firstChild);
+  }
+  function ensureFloatTitle(text, deferHideH4){
+    var el = overlay.querySelector('.cap-morph-title-float');
+    if (!el) {
+      el = document.createElement('span');
+      el.className = 'cap-morph-title-float';
+      el.setAttribute('aria-hidden', 'true');
+      overlay.appendChild(el);
+    }
+    el.textContent = text;
+    if (!deferHideH4) overlay.classList.add('has-float-title');
+    return el;
+  }
+  function placeFloatFromSource(floatEl, srcEl){
+    if (!floatEl || !srcEl) return null;
+    copyTitleTypography(floatEl, srcEl);
+    floatEl.textContent = (srcEl.textContent || '').trim();
+    floatEl.style.whiteSpace = 'nowrap';
+    void floatEl.offsetWidth;
+    var st = titleStateFromEl(srcEl);
+    applyTitleState(floatEl, st);
+    return st;
+  }
+  function titleBox(el){
+    if (!el) return null;
+    var r = el.getBoundingClientRect();
+    var rects = el.getClientRects ? el.getClientRects() : null;
+    if (rects && rects.length) {
+      var line = rects[0];
+      if (line.width > 0 && line.height > 0) r = line;
+    }
+    return r;
+  }
+  function titleStateFromRect(rect, fs){
+    return { x: rect.left, y: rect.top, w: rect.width, fs: fs };
+  }
+  function titleStateFromEl(el){
+    if (!el) return null;
+    var r = titleBox(el);
+    if (!r) return null;
+    return titleStateFromRect(r, parseFloat(getComputedStyle(el).fontSize));
+  }
+  function modalTitleTarget(){
+    var h4 = inner.querySelector('.cap-article-sect > h4');
+    return h4 ? titleStateFromEl(h4) : null;
+  }
+  function settleFloatTitle(destEl){
+    var floatEl = overlay.querySelector('.cap-morph-title-float');
+    if (!floatEl || !destEl) return;
+    copyTitleTypography(floatEl, destEl);
+    floatEl.style.whiteSpace = 'nowrap';
+    void floatEl.offsetWidth;
+    applyTitleState(floatEl, titleStateFromEl(destEl));
+  }
+  function cardTitleState(btn){
+    var el = btn && btn.querySelector('.cap-card-title');
+    return titleStateFromEl(el);
+  }
+  function readFloatTitleState(){
+    return lastTitleState;
+  }
+  function copyTitleTypography(dst, src){
+    if (!dst || !src) return;
+    var cs = getComputedStyle(src);
+    dst.style.fontFamily = cs.fontFamily;
+    dst.style.fontSize = cs.fontSize;
+    dst.style.fontWeight = cs.fontWeight;
+    dst.style.fontVariationSettings = cs.fontVariationSettings;
+    dst.style.letterSpacing = cs.letterSpacing;
+    dst.style.lineHeight = cs.lineHeight;
+    dst.style.textAlign = cs.textAlign;
+  }
+  function pinFloat(el, x, y){
+    el.style.transform = 'none';
+    el.style.left = '0px';
+    el.style.top = '0px';
+    var origin = el.getBoundingClientRect();
+    el.style.left = (x - origin.left) + 'px';
+    el.style.top = (y - origin.top) + 'px';
+  }
+  function applyTitleState(el, st){
+    if (!el || !st) return;
+    el.style.width = 'auto';
+    el.style.maxWidth = 'none';
+    el.style.fontSize = st.fs + 'px';
+    pinFloat(el, st.x, st.y);
+    lastTitleState = { x: st.x, y: st.y, w: st.w, fs: st.fs };
+  }
+  function animateTitle(from, to, done){
+    var el = overlay.querySelector('.cap-morph-title-float');
+    if (!el || reduceMotion.matches) {
+      if (done) done();
+      return;
+    }
+    from = from || lastTitleState;
+    if (!from || !to) {
+      if (done) done();
+      return;
+    }
+    applyTitleState(el, from);
+    var left0 = parseFloat(el.style.left);
+    var top0 = parseFloat(el.style.top);
+    var left1 = left0 + (to.x - from.x);
+    var top1 = top0 + (to.y - from.y);
+    if (titleAnim) {
+      try { titleAnim.cancel(); } catch (e) {}
+    }
+    titleAnim = el.animate([
+      { left: left0 + 'px', top: top0 + 'px', fontSize: from.fs + 'px' },
+      { left: left1 + 'px', top: top1 + 'px', fontSize: to.fs + 'px' }
+    ], { duration: MORPH_MS, easing: 'cubic-bezier(0.42, 0, 0.18, 1)', fill: 'forwards' });
+    titleAnim.onfinish = function(){
+      var anim = titleAnim;
+      titleAnim = null;
+      if (anim) { try { anim.cancel(); } catch (e) {} }
+      applyTitleState(el, to);
+      if (done) done();
+    };
+    titleAnim.oncancel = function(){ titleAnim = null; };
+  }
+  function clearPanelMorph(){
+    if (!panel) return;
+    overlay.classList.remove('is-morphing', 'is-measuring', 'is-expanding', 'is-closing', 'is-prep-open', 'is-content-hiding', 'is-card-landed');
+    panel.classList.remove('cap-article-panel--morph', 'cap-article-panel--card-look');
+    panel.style.transition = '';
+    panel.style.removeProperty('--cap-morph-card-w');
+    panel.style.removeProperty('--cap-morph-final-w');
+    ['top','left','width','height','maxHeight','margin'].forEach(function(key){
+      panel.style[key] = '';
+    });
+    clearMorphLayers();
+  }
+  function fixedOrigin(){
+    var base = overlay.getBoundingClientRect();
+    return { x: base.left, y: base.top };
+  }
+  function setPanelGeom(rect){
+    var origin = fixedOrigin();
+    panel.style.top = (rect.top - origin.y) + 'px';
+    panel.style.left = (rect.left - origin.x) + 'px';
+    panel.style.width = Math.max(1, rect.width) + 'px';
+    panel.style.height = Math.max(1, rect.height) + 'px';
+    panel.style.maxHeight = 'none';
+    panel.style.margin = '0';
+  }
+  function measureRestTargets(){
+    overlay.classList.add('is-measuring', 'is-measure-layout');
+    panel.classList.remove('cap-article-panel--morph', 'cap-article-panel--card-look');
+    ['top','left','width','height','maxHeight','margin'].forEach(function(key){ panel.style[key] = ''; });
+    var panelRect = panel.getBoundingClientRect();
+    var maxPanelH = Math.min(
+      panel.scrollHeight,
+      Math.min(window.innerHeight * 0.86, (window.innerHeight - 40))
+    );
+    if (maxPanelH > panelRect.height) {
+      panelRect = {
+        top: panelRect.top,
+        left: panelRect.left,
+        width: panelRect.width,
+        height: maxPanelH
+      };
+    }
+    var h4 = inner.querySelector('.cap-article-sect > h4');
+    var titleRect = h4 ? h4.getBoundingClientRect() : panelRect;
+    var titleFs = h4 ? parseFloat(getComputedStyle(h4).fontSize) : 26;
+    overlay.classList.remove('is-measuring', 'is-measure-layout');
+    return { panel: panelRect, title: titleRect, titleFs: titleFs };
+  }
 
   var state = {
-    sect: null, parent: null, next: null, scrollY: 0, closing: false,
+    trigger: null, sect: null, parent: null, next: null, scrollY: 0, closing: false,
     prevHtmlScrollBehavior: ''
   };
 
@@ -894,8 +1336,9 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     document.documentElement.style.scrollBehavior = state.prevHtmlScrollBehavior;
   }
 
-  function openPath(sect){
+  function openPath(sect, btn){
     if (!sect || state.sect) return;
+    state.trigger = morphCardBtn(btn) || null;
     state.sect = sect;
     state.parent = sect.parentNode;
     state.next = sect.nextSibling;
@@ -908,14 +1351,73 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     if (panel) panel.scrollTop = 0;
     overlay.removeAttribute('hidden');
     closeBtn.setAttribute('aria-expanded', 'true');
-    requestAnimationFrame(function(){
+    overlay.classList.remove('is-revealed');
+    clearPanelMorph();
+
+    var morphBtn = morphCardBtn(btn);
+    var useMorph = morphBtn && !reduceMotion.matches;
+
+    function afterOpen(){
+      if (window.ichartRefresh) window.ichartRefresh();
+      if (window.reflowMobileFigs) window.reflowMobileFigs();
+      try { closeBtn.focus(); } catch (e) {}
+    }
+
+    if (useMorph) {
+      var targets = measureRestTargets();
+      var cardRect = morphBtn.getBoundingClientRect();
+      var fromTitle = cardTitleState(morphBtn);
+      var toTitle = titleStateFromRect(targets.title, targets.titleFs);
+      var morphH4 = inner.querySelector('.cap-article-sect > h4');
+      var titleText = morphBtn.querySelector('.cap-card-title');
+      panel.style.setProperty('--cap-morph-card-w', cardRect.width + 'px');
+      mountExtras(morphBtn);
+      var floatElOpen = ensureFloatTitle(titleText ? titleText.textContent.trim() : '', true);
+      var placedTitle = titleText ? placeFloatFromSource(floatElOpen, titleText) : fromTitle;
+      void floatElOpen.offsetWidth;
       requestAnimationFrame(function(){
-        overlay.classList.add('is-open');
-        if (window.ichartRefresh) window.ichartRefresh();
-        if (window.reflowMobileFigs) window.reflowMobileFigs();
-        try { closeBtn.focus(); } catch (e) {}
+        overlay.classList.add('has-float-title');
+        setCardHidden(morphBtn, true);
       });
-    });
+      overlay.classList.remove('is-expanding', 'is-closing', 'is-content-hiding');
+      overlay.classList.add('is-open', 'is-morphing', 'is-prep-open');
+      panel.classList.add('cap-article-panel--morph', 'cap-article-panel--card-look');
+      panel.style.transition = 'none';
+      setPanelGeom(cardRect);
+      void panel.offsetWidth;
+      panel.style.transition = '';
+      window.setTimeout(function(){
+        var startTitle = placedTitle || fromTitle;
+        applyTitleState(floatElOpen, startTitle);
+        overlay.classList.remove('is-prep-open');
+        overlay.classList.add('is-expanding');
+        panel.classList.remove('cap-article-panel--card-look');
+        setPanelGeom(targets.panel);
+        requestAnimationFrame(function(){
+          requestAnimationFrame(function(){
+            animateTitle(startTitle, toTitle, function(){
+              if (morphH4) settleFloatTitle(morphH4);
+            });
+            waitPanelMorph(function(){
+              overlay.classList.add('is-revealed');
+              if (morphH4) settleFloatTitle(morphH4);
+              requestAnimationFrame(function(){
+                clearMorphLayers();
+              });
+              window.setTimeout(afterOpen, PROSE_IN_MS);
+            });
+          });
+        });
+      }, PREP_MS);
+    } else {
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          overlay.classList.add('is-open');
+          overlay.classList.add('is-revealed');
+          afterOpen();
+        });
+      });
+    }
   }
 
   function finishClose(){
@@ -929,25 +1431,87 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     closeBtn.setAttribute('aria-expanded', 'false');
     overlay.scrollTop = 0;
     if (panel) panel.scrollTop = 0;
-    unlockScroll();
+    var trigger = state.trigger;
+    setCardHidden(morphCardBtn(trigger), false);
     state.sect = null;
     state.parent = null;
     state.next = null;
+    state.trigger = null;
     state.closing = false;
+    clearPanelMorph();
+    unlockScroll();
+    if (trigger && trigger.isConnected) {
+      requestAnimationFrame(function(){
+        try { trigger.focus({ preventScroll: true }); } catch (e) {}
+      });
+    }
   }
 
   function closePath(){
     if (!state.sect || state.closing) return;
     state.closing = true;
-    overlay.classList.remove('is-open');
-    window.setTimeout(finishClose, closeMs());
+
+    var morphBtn = morphCardBtn(state.trigger);
+    var useMorph = morphBtn && morphBtn.isConnected && !reduceMotion.matches;
+
+    function endClose(){
+      overlay.classList.remove('is-open');
+      finishClose();
+    }
+
+    if (useMorph) {
+      overlay.classList.add('is-content-hiding');
+      window.setTimeout(function(){
+        var h4 = inner.querySelector('.cap-article-sect > h4');
+        var srcTitle = h4 || morphBtn.querySelector('.cap-card-title');
+        var floatEl = ensureFloatTitle(srcTitle ? srcTitle.textContent.trim() : '', true);
+        var fromTitle = placeFloatFromSource(floatEl, srcTitle) || cardTitleState(morphBtn);
+        overlay.classList.add('has-float-title');
+        if (!panel.classList.contains('cap-article-panel--morph')) {
+          var dock = panel.getBoundingClientRect();
+          overlay.classList.add('is-morphing');
+          panel.classList.add('cap-article-panel--morph');
+          panel.style.transition = 'none';
+          setPanelGeom(dock);
+          void panel.offsetWidth;
+          panel.style.transition = '';
+        }
+        mountExtras(morphBtn);
+        panel.style.setProperty('--cap-morph-card-w', morphBtn.getBoundingClientRect().width + 'px');
+        if (panel) panel.scrollTop = 0;
+        overlay.classList.remove('is-expanding', 'is-prep-open');
+        var cardRect = morphBtn.getBoundingClientRect();
+        requestAnimationFrame(function(){
+          requestAnimationFrame(function(){
+            overlay.classList.add('is-closing');
+            overlay.classList.remove('is-revealed');
+            panel.classList.add('cap-article-panel--card-look');
+            setPanelGeom(cardRect);
+            var startTitle = readFloatTitleState() || fromTitle;
+            var toTitle = cardTitleState(morphBtn);
+            var cardTitleEl = morphBtn.querySelector('.cap-card-title');
+            animateTitle(startTitle, toTitle, function(){
+              if (cardTitleEl) settleFloatTitle(cardTitleEl);
+            });
+            waitPanelMorph(function(){
+              if (cardTitleEl) settleFloatTitle(cardTitleEl);
+              overlay.classList.add('is-card-landed');
+              window.setTimeout(endClose, EXTRAS_IN_MS);
+            });
+          });
+        });
+      }, PROSE_OUT_MS);
+    } else {
+      overlay.classList.remove('is-open');
+      window.setTimeout(endClose, closeMs());
+    }
   }
 
   nav.querySelectorAll('.cap-card').forEach(function(btn){
     btn.addEventListener('click', function(){
       var id = btn.getAttribute('data-cap');
       var s = id && document.getElementById(id);
-      if (s) openPath(s);
+      if (s) openPath(s, btn);
     });
   });
   closeBtn.addEventListener('click', closePath);

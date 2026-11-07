@@ -406,6 +406,7 @@ table.worked.results td:first-child{padding-right:.8em;}
   .cap-card:hover{background:#fff; box-shadow:0 5px 16px rgba(0,0,0,.0825);}
 }
 .cap-card:active{background:rgba(255,255,255,.45); box-shadow:0 4px 11px rgba(0,0,0,.0525);}
+.cap-card.cap-card--morph-hidden{visibility:hidden;}
 .cap-card-art{width:100%; max-width:210px; aspect-ratio:1; display:block; flex-shrink:0;}
 .cap-card-art img{display:block; width:100%; height:100%; object-fit:contain;}
 .cap-card-text{width:100%; display:flex; flex-direction:column; gap:8px; min-height:2.9em;}
@@ -435,12 +436,41 @@ table.worked.results td:first-child{padding-right:.8em;}
   display:flex; align-items:center; justify-content:center;
   padding:max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
   box-sizing:border-box;
-  background:rgba(244,244,244,.9);
-  overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
-  opacity:0; visibility:hidden;
-  transition:opacity .28s ease, visibility 0s linear .28s;
+  background:transparent;
+  overflow:hidden;
+  opacity:1;
+  visibility:hidden;
+  pointer-events:none;
+  transition:visibility 0s linear .5s;
 }
-.cap-article-overlay.is-open{opacity:1; visibility:visible; transition:opacity .28s ease, visibility 0s;}
+.cap-article-overlay::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(244,244,244,.9);
+  opacity:0;
+  transition:opacity .5s ease;
+}
+.cap-article-overlay.is-open{
+  visibility:visible;
+  pointer-events:auto;
+  transition:visibility 0s;
+}
+.cap-article-overlay[hidden]{display:none!important;}
+.cap-article-overlay.is-open::before{opacity:1;}
+.cap-article-overlay.is-closing::before{
+  opacity:0;
+  transition:opacity .62s cubic-bezier(.16,1,.3,1);
+}
+.cap-article-overlay.is-morphing{
+  display:block;
+  padding:0;
+}
+.cap-article-overlay.is-measuring{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.cap-article-overlay.is-measuring .cap-article-panel{visibility:hidden;}
 .cap-article-panel{
   position:relative;
   box-sizing:border-box;
@@ -454,15 +484,95 @@ table.worked.results td:first-child{padding-right:.8em;}
   box-shadow:0 16px 48px rgba(0,0,0,.11), 0 6px 16px rgba(0,0,0,.07);
   overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch;
   opacity:0;
-  transform:translateY(14px) scale(.97);
-  transition:opacity .34s cubic-bezier(.22,1,.36,1), transform .34s cubic-bezier(.22,1,.36,1), box-shadow .34s ease;
+  transition:opacity .28s ease;
 }
-.cap-article-overlay.is-open .cap-article-panel{
+.cap-article-overlay.is-open .cap-article-panel{opacity:1;}
+.cap-article-panel.cap-article-panel--morph{
+  position:fixed;
+  z-index:2;
+  margin:0;
   opacity:1;
-  transform:translateY(0) scale(1);
+  overflow:hidden;
+  max-height:none;
+  border-radius:8px;
+  transition:
+    top .66s cubic-bezier(.16,1,.3,1),
+    left .66s cubic-bezier(.16,1,.3,1),
+    width .66s cubic-bezier(.16,1,.3,1),
+    height .66s cubic-bezier(.16,1,.3,1),
+    background-color .42s ease,
+    box-shadow .5s ease;
 }
-.cap-article-inner.book{max-width:44em; margin:0 auto;}
-.cap-article-inner .cap-article-sect > h4{
+.cap-article-overlay.is-morphing:not(.is-revealed) .cap-article-panel--morph{
+  contain:layout paint;
+}
+.cap-article-panel.cap-article-panel--morph.cap-article-panel--card-look{
+  background:rgba(255,255,255,.5);
+  box-shadow:0 4px 12px rgba(0,0,0,.06);
+}
+.cap-morph-extras{
+  position:absolute;
+  z-index:2;
+  left:12px;
+  right:12px;
+  top:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  pointer-events:none;
+  opacity:1;
+  transition:opacity .16s ease, transform .16s ease;
+}
+.cap-morph-extras .cap-card-art{width:100%; max-width:210px; aspect-ratio:1;}
+.cap-morph-extras .cap-card-sub{
+  font-size:.875rem; line-height:1.45; color:rgba(31,33,34,.5); margin:0;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  min-height:calc(1.45em * 2); text-align:center;
+}
+.cap-article-overlay.is-prep-open .cap-morph-extras{
+  animation:cap-morph-extras-out .18s ease forwards;
+}
+@keyframes cap-morph-extras-out{
+  to{opacity:0; transform:translateY(-4px);}
+}
+.cap-article-overlay.is-expanding .cap-morph-extras,
+.cap-article-overlay.is-revealed .cap-morph-extras,
+.cap-article-overlay.is-closing .cap-morph-extras{
+  opacity:0;
+  visibility:hidden;
+}
+.cap-morph-title-float{
+  position:fixed;
+  z-index:60;
+  left:0;
+  top:0;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  pointer-events:none;
+  font-family:var(--display);
+  line-height:1.25;
+  color:var(--ink);
+  font-weight:100;
+  font-variation-settings:"wght" 100;
+  font-synthesis:none;
+  letter-spacing:.02em;
+  text-align:left;
+  will-change: transform, width;
+}
+.cap-article-overlay.is-measure-layout .cap-article-inner{
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative;
+}
+.cap-article-overlay.is-measure-layout .cap-article-panel{visibility:visible!important;}
+.cap-article-overlay.is-measure-layout .cap-prose{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.cap-article-overlay.has-float-title .cap-article-inner .cap-article-sect > h4{
   font-family:var(--display); font-size:clamp(1.25rem, 2.8vw, 1.65rem);
   font-weight:100; font-variation-settings:"wght" 100; font-synthesis:none;
   letter-spacing:.02em; line-height:1.25;
@@ -489,8 +599,7 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
 .cap-article-overlay::-webkit-scrollbar,
 .cap-article-panel::-webkit-scrollbar{display:none; width:0; height:0;}
 @media (prefers-reduced-motion: reduce){
-  .cap-article-overlay,.cap-article-panel{transition:none;}
-  .cap-article-panel{transform:none;}
+  .cap-article-overlay,.cap-article-overlay::before,.cap-article-panel,.cap-article-inner,.cap-article-close,.cap-morph-face,.cap-morph-extras,.cap-morph-title,.cap-prose{transition:none; animation:none!important;}
 }
 
 </style>
@@ -921,7 +1030,183 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
 
   var panel = document.getElementById('cap-article-panel');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var closeMs = function(){ return reduceMotion.matches ? 0 : 340; };
+  var MORPH_MS = 660;
+  var PREP_MS = 200;
+  var PROSE_REVEAL_MS = 1200;
+  var titleAnim = null;
+  var FADE_MS = 480;
+  var closeMs = function(){ return reduceMotion.matches ? 0 : FADE_MS; };
+  var morphGen = 0;
+
+  function waitPanelMorph(done){
+    var gen = ++morphGen;
+    if (!panel || reduceMotion.matches) {
+      done();
+      return;
+    }
+    var finished = false;
+    function finish(){
+      if (finished) return;
+      finished = true;
+      panel.removeEventListener('transitionend', onEnd);
+      clearTimeout(tid);
+      if (gen !== morphGen) return;
+      done();
+    }
+    function onEnd(e){
+      if (e.target !== panel) return;
+      if (e.propertyName === 'width' || e.propertyName === 'height') finish();
+    }
+    panel.addEventListener('transitionend', onEnd);
+    var tid = window.setTimeout(finish, MORPH_MS + 90);
+  }
+
+  function morphCardBtn(el){
+    return el && el.classList && el.classList.contains('cap-card') ? el : null;
+  }
+  function setCardHidden(btn, hidden){
+    if (!btn || !btn.isConnected) return;
+    btn.classList.toggle('cap-card--morph-hidden', !!hidden);
+  }
+  function clearMorphLayers(){
+    if (titleAnim) {
+      try { titleAnim.cancel(); } catch (e) {}
+      titleAnim = null;
+    }
+    var t = overlay.querySelector('.cap-morph-title-float');
+    var e = panel && panel.querySelector('.cap-morph-extras');
+    if (t) t.remove();
+    if (e) e.remove();
+    overlay.classList.remove('has-float-title');
+  }
+  function mountExtras(btn){
+    if (!btn || !panel) return;
+    var old = panel.querySelector('.cap-morph-extras');
+    if (old) old.remove();
+    var art = btn.querySelector('.cap-card-art');
+    var sub = btn.querySelector('.cap-card-sub');
+    var extras = document.createElement('div');
+    extras.className = 'cap-morph-extras';
+    extras.setAttribute('aria-hidden', 'true');
+    if (art) extras.appendChild(art.cloneNode(true));
+    if (sub) extras.appendChild(sub.cloneNode(true));
+    panel.insertBefore(extras, panel.firstChild);
+  }
+  function ensureFloatTitle(text){
+    var el = overlay.querySelector('.cap-morph-title-float');
+    if (!el) {
+      el = document.createElement('p');
+      el.className = 'cap-morph-title-float';
+      el.setAttribute('aria-hidden', 'true');
+      overlay.appendChild(el);
+    }
+    el.textContent = text;
+    overlay.classList.add('has-float-title');
+    return el;
+  }
+  function titleStateFromRect(rect, fs){
+    return { x: rect.left, y: rect.top, w: rect.width, fs: fs };
+  }
+  function titleStateFromEl(el){
+    if (!el) return null;
+    var r = el.getBoundingClientRect();
+    return titleStateFromRect(r, parseFloat(getComputedStyle(el).fontSize));
+  }
+  function cardTitleState(btn){
+    var el = btn && btn.querySelector('.cap-card-title');
+    return titleStateFromEl(el);
+  }
+  function readFloatTitleState(){
+    return titleStateFromEl(overlay.querySelector('.cap-morph-title-float'));
+  }
+  function copyTitleTypography(dst, src){
+    if (!dst || !src) return;
+    var cs = getComputedStyle(src);
+    dst.style.fontFamily = cs.fontFamily;
+    dst.style.fontSize = cs.fontSize;
+    dst.style.fontWeight = cs.fontWeight;
+    dst.style.fontVariationSettings = cs.fontVariationSettings;
+    dst.style.letterSpacing = cs.letterSpacing;
+    dst.style.lineHeight = cs.lineHeight;
+    dst.style.textAlign = cs.textAlign;
+  }
+  function applyTitleState(el, st){
+    if (!el || !st) return;
+    el.style.transform = 'translate3d(' + st.x + 'px,' + st.y + 'px,0)';
+    el.style.width = Math.max(1, st.w) + 'px';
+    el.style.fontSize = st.fs + 'px';
+  }
+  function animateTitle(from, to, done){
+    var el = overlay.querySelector('.cap-morph-title-float');
+    if (!el || reduceMotion.matches) {
+      if (done) done();
+      return;
+    }
+    var live = readFloatTitleState();
+    from = live || from;
+    if (titleAnim) {
+      try { titleAnim.cancel(); } catch (e) {}
+    }
+    titleAnim = el.animate([
+      { transform: 'translate3d(' + from.x + 'px,' + from.y + 'px,0)', width: from.w + 'px', fontSize: from.fs + 'px' },
+      { transform: 'translate3d(' + to.x + 'px,' + to.y + 'px,0)', width: to.w + 'px', fontSize: to.fs + 'px' }
+    ], { duration: MORPH_MS, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' });
+    titleAnim.onfinish = function(){
+      titleAnim = null;
+      var end = readFloatTitleState() || to;
+      applyTitleState(el, end);
+      if (done) done();
+    };
+    titleAnim.oncancel = function(){ titleAnim = null; };
+  }
+  function clearPanelMorph(){
+    if (!panel) return;
+    overlay.classList.remove('is-morphing', 'is-measuring', 'is-expanding', 'is-closing', 'is-prep-open', 'is-content-hiding');
+    panel.classList.remove('cap-article-panel--morph', 'cap-article-panel--card-look');
+    panel.style.transition = '';
+    panel.style.removeProperty('--cap-morph-card-w');
+    panel.style.removeProperty('--cap-morph-final-w');
+    ['top','left','width','height','maxHeight','margin'].forEach(function(key){
+      panel.style[key] = '';
+    });
+    clearMorphLayers();
+  }
+  function fixedOrigin(){
+    var base = overlay.getBoundingClientRect();
+    return { x: base.left, y: base.top };
+  }
+  function setPanelGeom(rect){
+    var origin = fixedOrigin();
+    panel.style.top = (rect.top - origin.y) + 'px';
+    panel.style.left = (rect.left - origin.x) + 'px';
+    panel.style.width = Math.max(1, rect.width) + 'px';
+    panel.style.height = Math.max(1, rect.height) + 'px';
+    panel.style.maxHeight = 'none';
+    panel.style.margin = '0';
+  }
+  function measureRestTargets(){
+    overlay.classList.add('is-measuring', 'is-measure-layout');
+    panel.classList.remove('cap-article-panel--morph', 'cap-article-panel--card-look');
+    ['top','left','width','height','maxHeight','margin'].forEach(function(key){ panel.style[key] = ''; });
+    var panelRect = panel.getBoundingClientRect();
+    var maxPanelH = Math.min(
+      panel.scrollHeight,
+      Math.min(window.innerHeight * 0.86, (window.innerHeight - 40))
+    );
+    if (maxPanelH > panelRect.height) {
+      panelRect = {
+        top: panelRect.top,
+        left: panelRect.left,
+        width: panelRect.width,
+        height: maxPanelH
+      };
+    }
+    var h4 = inner.querySelector('.cap-article-sect > h4');
+    var titleRect = h4 ? h4.getBoundingClientRect() : panelRect;
+    var titleFs = h4 ? parseFloat(getComputedStyle(h4).fontSize) : 26;
+    overlay.classList.remove('is-measuring', 'is-measure-layout');
+    return { panel: panelRect, title: titleRect, titleFs: titleFs };
+  }
 
   var state = {
     trigger: null, sect: null, parent: null, next: null, scrollY: 0, closing: false,
@@ -941,9 +1226,9 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     document.documentElement.style.scrollBehavior = state.prevHtmlScrollBehavior;
   }
 
-  function openCap(sect){
+  function openCap(sect, btn){
     if (!sect || state.sect) return;
-    state.trigger = document.activeElement;
+    state.trigger = morphCardBtn(btn) || document.activeElement;
     state.sect = sect;
     state.parent = sect.parentNode;
     state.next = sect.nextSibling;
@@ -956,14 +1241,65 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     if (panel) panel.scrollTop = 0;
     overlay.removeAttribute('hidden');
     closeBtn.setAttribute('aria-expanded', 'true');
-    requestAnimationFrame(function(){
+    overlay.classList.remove('is-revealed');
+    clearPanelMorph();
+
+    var morphBtn = morphCardBtn(btn);
+    var useMorph = morphBtn && !reduceMotion.matches;
+
+    function afterOpen(){
+      if (window.ichartRefresh) window.ichartRefresh();
+      if (window.reflowMobileFigs) window.reflowMobileFigs();
+      try { closeBtn.focus(); } catch (e) {}
+    }
+
+    if (useMorph) {
+      var targets = measureRestTargets();
+      var cardRect = morphBtn.getBoundingClientRect();
+      var fromTitle = cardTitleState(morphBtn);
+      var toTitle = titleStateFromRect(targets.title, targets.titleFs);
+      var titleText = morphBtn.querySelector('.cap-card-title');
+      panel.style.setProperty('--cap-morph-card-w', cardRect.width + 'px');
+      mountExtras(morphBtn);
+      var floatElOpen = ensureFloatTitle(titleText ? titleText.textContent.trim() : '');
+      if (titleText) copyTitleTypography(floatElOpen, titleText);
+      applyTitleState(floatElOpen, fromTitle);
+      setCardHidden(morphBtn, true);
+      overlay.classList.remove('is-expanding', 'is-closing', 'is-content-hiding');
+      overlay.classList.add('is-open', 'is-morphing', 'is-prep-open');
+      panel.classList.add('cap-article-panel--morph', 'cap-article-panel--card-look');
+      panel.style.transition = 'none';
+      setPanelGeom(cardRect);
+      void panel.offsetWidth;
+      panel.style.transition = '';
+      window.setTimeout(function(){
+        overlay.classList.remove('is-prep-open');
+        overlay.classList.add('is-expanding');
+        panel.classList.remove('cap-article-panel--card-look');
+        setPanelGeom(targets.panel);
+        requestAnimationFrame(function(){
+          requestAnimationFrame(function(){
+            var startTitle = readFloatTitleState() || fromTitle;
+            animateTitle(startTitle, toTitle);
+            waitPanelMorph(function(){
+              overlay.classList.add('is-revealed');
+              requestAnimationFrame(function(){
+                clearMorphLayers();
+              });
+              window.setTimeout(afterOpen, PROSE_REVEAL_MS);
+            });
+          });
+        });
+      }, PREP_MS);
+    } else {
       requestAnimationFrame(function(){
-        overlay.classList.add('is-open');
-        if (window.ichartRefresh) window.ichartRefresh();
-        if (window.reflowMobileFigs) window.reflowMobileFigs();
-        try { closeBtn.focus(); } catch (e) {}
+        requestAnimationFrame(function(){
+          overlay.classList.add('is-open');
+          overlay.classList.add('is-revealed');
+          afterOpen();
+        });
       });
-    });
+    }
   }
 
   function finishClose(){
@@ -978,11 +1314,13 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     overlay.scrollTop = 0;
     if (panel) panel.scrollTop = 0;
     var trigger = state.trigger;
+    setCardHidden(morphCardBtn(trigger), false);
     state.sect = null;
     state.parent = null;
     state.next = null;
     state.trigger = null;
     state.closing = false;
+    clearPanelMorph();
     unlockScroll();
     if (trigger && trigger.isConnected) {
       requestAnimationFrame(function(){
@@ -994,15 +1332,65 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
   function closeCap(){
     if (!state.sect || state.closing) return;
     state.closing = true;
-    overlay.classList.remove('is-open');
-    window.setTimeout(finishClose, closeMs());
+
+    var morphBtn = morphCardBtn(state.trigger);
+    var useMorph = morphBtn && morphBtn.isConnected && !reduceMotion.matches;
+
+    function endClose(){
+      overlay.classList.remove('is-open');
+      finishClose();
+    }
+
+    if (useMorph) {
+      var h4 = inner.querySelector('.cap-article-sect > h4');
+      var fromTitle = titleStateFromEl(h4) || cardTitleState(morphBtn);
+      var floatEl = ensureFloatTitle(h4 ? h4.textContent.trim() : '');
+      copyTitleTypography(floatEl, h4 || morphBtn.querySelector('.cap-card-title'));
+      applyTitleState(floatEl, fromTitle);
+      void floatEl.offsetWidth;
+      overlay.classList.add('is-content-hiding');
+      overlay.classList.remove('is-revealed');
+      if (!panel.classList.contains('cap-article-panel--morph')) {
+        var dock = panel.getBoundingClientRect();
+        overlay.classList.add('is-morphing');
+        panel.classList.add('cap-article-panel--morph');
+        panel.style.transition = 'none';
+        setPanelGeom(dock);
+        void panel.offsetWidth;
+        panel.style.transition = '';
+      }
+      panel.style.setProperty('--cap-morph-card-w', morphBtn.getBoundingClientRect().width + 'px');
+      if (panel) panel.scrollTop = 0;
+      overlay.classList.remove('is-expanding', 'is-prep-open');
+      var cardTitleEl = morphBtn.querySelector('.cap-card-title');
+      var cardRect = morphBtn.getBoundingClientRect();
+      window.setTimeout(function(){
+        overlay.classList.add('is-closing');
+        panel.classList.add('cap-article-panel--card-look');
+        setPanelGeom(cardRect);
+        requestAnimationFrame(function(){
+          requestAnimationFrame(function(){
+            var startTitle = readFloatTitleState() || fromTitle;
+            var toTitle = cardTitleState(morphBtn);
+            animateTitle(startTitle, toTitle, function(){
+              copyTitleTypography(floatEl, cardTitleEl);
+              applyTitleState(floatEl, toTitle);
+            });
+            waitPanelMorph(endClose);
+          });
+        });
+      }, 120);
+    } else {
+      overlay.classList.remove('is-open');
+      window.setTimeout(endClose, closeMs());
+    }
   }
 
   nav.querySelectorAll('.cap-card').forEach(function(btn){
     btn.addEventListener('click', function(){
       var id = btn.getAttribute('data-cap');
       var s = id && document.getElementById(id);
-      if (s) openCap(s);
+      if (s) openCap(s, btn);
     });
   });
   closeBtn.addEventListener('click', closeCap);
