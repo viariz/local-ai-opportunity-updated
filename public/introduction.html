@@ -855,16 +855,35 @@ table.worked.results td:first-child{padding-right:.8em;}
 .cap-article-sect[hidden]{display:none!important;}
 
 .cap-article-overlay{
-  position:fixed; inset:0; z-index:50; background:var(--paper);
+  position:fixed; inset:0; z-index:50;
+  display:flex; align-items:center; justify-content:center;
+  padding:max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  box-sizing:border-box;
+  background:rgba(244,244,244,.9);
   overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
-  scrollbar-gutter:stable;
   opacity:0; visibility:hidden;
-  transition:opacity .22s ease, visibility 0s linear .22s;
+  transition:opacity .28s ease, visibility 0s linear .28s;
 }
-.cap-article-overlay.is-open{opacity:1; visibility:visible; transition:opacity .22s ease, visibility 0s;}
+.cap-article-overlay.is-open{opacity:1; visibility:visible; transition:opacity .28s ease, visibility 0s;}
 .cap-article-panel{
-  box-sizing:border-box; min-height:100%;
-  padding:max(52px, calc(env(safe-area-inset-top, 0px) + 40px)) max(20px, env(safe-area-inset-right, 0px)) max(28px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+  position:relative;
+  box-sizing:border-box;
+  width:min(96vw, 82rem);
+  max-height:min(86vh, calc(100vh - 40px));
+  max-height:min(86dvh, calc(100dvh - 40px));
+  margin:auto;
+  padding:clamp(22px, 3.2vw, 36px) clamp(28px, 6vw, 72px) clamp(24px, 3vw, 32px);
+  border-radius:8px;
+  background:#fff;
+  box-shadow:0 16px 48px rgba(0,0,0,.11), 0 6px 16px rgba(0,0,0,.07);
+  overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  opacity:0;
+  transform:translateY(14px) scale(.97);
+  transition:opacity .34s cubic-bezier(.22,1,.36,1), transform .34s cubic-bezier(.22,1,.36,1), box-shadow .34s ease;
+}
+.cap-article-overlay.is-open .cap-article-panel{
+  opacity:1;
+  transform:translateY(0) scale(1);
 }
 .cap-article-inner.book{max-width:44em; margin:0 auto;}
 .cap-article-inner .cap-article-sect > h4{
@@ -875,8 +894,8 @@ table.worked.results td:first-child{padding-right:.8em;}
 }
 .cap-article-inner .cap-article-sect{padding-bottom:2.75em;}
 .cap-article-close{
-  position:fixed; top:max(10px, env(safe-area-inset-top, 0px)); right:max(18px, env(safe-area-inset-right, 0px));
-  z-index:51; width:auto; height:auto; min-width:44px; min-height:44px; padding:0; display:grid; place-items:center;
+  position:absolute; top:6px; right:4px;
+  z-index:2; width:auto; height:auto; min-width:44px; min-height:44px; padding:0; display:grid; place-items:center;
   border:none; border-radius:0; background:transparent;
   color:var(--ink); font-family:var(--sans); font-size:22px; font-weight:300; font-variation-settings:normal; font-synthesis:none;
   line-height:1; cursor:pointer;
@@ -885,8 +904,18 @@ table.worked.results td:first-child{padding-right:.8em;}
 }
 .cap-article-close:hover{background:transparent; border-color:transparent; color:var(--ink); opacity:.68;}
 .cap-article-close:focus-visible{outline:2px solid rgba(31,33,34,.4); outline-offset:3px;}
-html.cap-article-open{overflow:hidden;}
-body.cap-article-open{overflow:hidden;}
+html.cap-article-open{overflow:hidden; scrollbar-gutter:stable both-edges;}
+html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
+.cap-article-overlay,.cap-article-panel{
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.cap-article-overlay::-webkit-scrollbar,
+.cap-article-panel::-webkit-scrollbar{display:none; width:0; height:0;}
+@media (prefers-reduced-motion: reduce){
+  .cap-article-overlay,.cap-article-panel{transition:none;}
+  .cap-article-panel{transform:none;}
+}
 
 /* ---- delta: the-three-paths.html ---- */
 rgba(255,255,255,.5); border:1px solid rgba(31,33,34,.08); border-radius:999px;
@@ -1244,16 +1273,35 @@ table.worked td:first-child{padding-right:1.4em;}
 .cap-article-sect[hidden]{display:none!important;}
 
 .cap-article-overlay{
-  position:fixed; inset:0; z-index:50; background:var(--paper);
+  position:fixed; inset:0; z-index:50;
+  display:flex; align-items:center; justify-content:center;
+  padding:max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  box-sizing:border-box;
+  background:rgba(244,244,244,.9);
   overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
-  scrollbar-gutter:stable;
   opacity:0; visibility:hidden;
-  transition:opacity .22s ease, visibility 0s linear .22s;
+  transition:opacity .28s ease, visibility 0s linear .28s;
 }
-.cap-article-overlay.is-open{opacity:1; visibility:visible; transition:opacity .22s ease, visibility 0s;}
+.cap-article-overlay.is-open{opacity:1; visibility:visible; transition:opacity .28s ease, visibility 0s;}
 .cap-article-panel{
-  box-sizing:border-box; min-height:100%;
-  padding:max(52px, calc(env(safe-area-inset-top, 0px) + 40px)) max(20px, env(safe-area-inset-right, 0px)) max(28px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+  position:relative;
+  box-sizing:border-box;
+  width:min(96vw, 82rem);
+  max-height:min(86vh, calc(100vh - 40px));
+  max-height:min(86dvh, calc(100dvh - 40px));
+  margin:auto;
+  padding:clamp(22px, 3.2vw, 36px) clamp(28px, 6vw, 72px) clamp(24px, 3vw, 32px);
+  border-radius:8px;
+  background:#fff;
+  box-shadow:0 16px 48px rgba(0,0,0,.11), 0 6px 16px rgba(0,0,0,.07);
+  overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  opacity:0;
+  transform:translateY(14px) scale(.97);
+  transition:opacity .34s cubic-bezier(.22,1,.36,1), transform .34s cubic-bezier(.22,1,.36,1), box-shadow .34s ease;
+}
+.cap-article-overlay.is-open .cap-article-panel{
+  opacity:1;
+  transform:translateY(0) scale(1);
 }
 .cap-article-inner.book{max-width:44em; margin:0 auto;}
 .cap-article-inner .cap-article-sect > h4{
@@ -1264,8 +1312,8 @@ table.worked td:first-child{padding-right:1.4em;}
 }
 .cap-article-inner .cap-article-sect{padding-bottom:2.75em;}
 .cap-article-close{
-  position:fixed; top:max(10px, env(safe-area-inset-top, 0px)); right:max(18px, env(safe-area-inset-right, 0px));
-  z-index:51; width:auto; height:auto; min-width:44px; min-height:44px; padding:0; display:grid; place-items:center;
+  position:absolute; top:6px; right:4px;
+  z-index:2; width:auto; height:auto; min-width:44px; min-height:44px; padding:0; display:grid; place-items:center;
   border:none; border-radius:0; background:transparent;
   color:var(--ink); font-family:var(--sans); font-size:22px; font-weight:300; font-variation-settings:normal; font-synthesis:none;
   line-height:1; cursor:pointer;
@@ -1274,8 +1322,18 @@ table.worked td:first-child{padding-right:1.4em;}
 }
 .cap-article-close:hover{background:transparent; border-color:transparent; color:var(--ink); opacity:.68;}
 .cap-article-close:focus-visible{outline:2px solid rgba(31,33,34,.4); outline-offset:3px;}
-html.cap-article-open{overflow:hidden;}
-body.cap-article-open{overflow:hidden;}
+html.cap-article-open{overflow:hidden; scrollbar-gutter:stable both-edges;}
+html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
+.cap-article-overlay,.cap-article-panel{
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.cap-article-overlay::-webkit-scrollbar,
+.cap-article-panel::-webkit-scrollbar{display:none; width:0; height:0;}
+@media (prefers-reduced-motion: reduce){
+  .cap-article-overlay,.cap-article-panel{transition:none;}
+  .cap-article-panel{transform:none;}
+}
 
 /* ---- section tabs ---- */
 .captabs{display:flex; justify-content:center; gap:2em; margin:2.8em 0 0; border-bottom:1px solid var(--rule); flex-wrap:wrap;}
@@ -3676,8 +3734,8 @@ figure.arc-tl img.arc-tl-photo{
 <section class="part" id="the-three-caps" data-title="The Three Caps">
 
 <div id="cap-article-overlay" class="cap-article-overlay" hidden>
-  <button type="button" class="cap-article-close" aria-label="Close article" aria-expanded="false">&#x2715;</button>
   <div class="cap-article-panel" id="cap-article-panel" role="dialog" aria-modal="true" tabindex="-1">
+    <button type="button" class="cap-article-close" aria-label="Close article" aria-expanded="false">&#x2715;</button>
     <div class="book cap-article-inner" id="cap-article-inner"></div>
   </div>
 </div>
@@ -3931,8 +3989,8 @@ figure.arc-tl img.arc-tl-photo{
 <section class="part" id="the-lesser-two" data-title="The lesser two">
 
 <div id="path-article-overlay" class="cap-article-overlay" hidden>
-  <button type="button" class="cap-article-close path-article-close" aria-label="Close article" aria-expanded="false">&#x2715;</button>
   <div class="cap-article-panel" id="path-article-panel" role="dialog" aria-modal="true" tabindex="-1">
+    <button type="button" class="cap-article-close path-article-close" aria-label="Close article" aria-expanded="false">&#x2715;</button>
     <div class="book cap-article-inner" id="path-article-inner"></div>
   </div>
 </div>
@@ -4487,26 +4545,26 @@ figure.arc-tl img.arc-tl-photo{
   var closeBtn = overlay && overlay.querySelector('.cap-article-close');
   if (!nav || !overlay || !inner || !closeBtn) return;
 
-  var state = { trigger: null, sect: null, parent: null, next: null, scrollY: 0, prevHtmlScrollBehavior: '', prevBodyTop: '', prevBodyWidth: '' };
+  var panel = document.getElementById('cap-article-panel');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var closeMs = function(){ return reduceMotion.matches ? 0 : 340; };
+
+  var state = {
+    trigger: null, sect: null, parent: null, next: null, scrollY: 0, closing: false,
+    prevHtmlScrollBehavior: ''
+  };
 
   function lockScroll(y){
     state.scrollY = y;
     state.prevHtmlScrollBehavior = document.documentElement.style.scrollBehavior || '';
-    state.prevBodyTop = document.body.style.top;
-    state.prevBodyWidth = document.body.style.width;
     document.documentElement.style.scrollBehavior = 'auto';
-    document.body.style.top = -y + 'px';
-    document.body.style.width = '100%';
-    document.body.classList.add('cap-article-open');
     document.documentElement.classList.add('cap-article-open');
   }
   function unlockScroll(){
     document.documentElement.classList.remove('cap-article-open');
-    document.body.classList.remove('cap-article-open');
-    document.body.style.top = state.prevBodyTop;
-    document.body.style.width = state.prevBodyWidth;
+    document.documentElement.style.scrollBehavior = 'auto';
+    window.scrollTo({ top: state.scrollY, left: 0, behavior: 'instant' });
     document.documentElement.style.scrollBehavior = state.prevHtmlScrollBehavior;
-    window.scrollTo(0, state.scrollY);
   }
 
   function openCap(sect){
@@ -4521,33 +4579,49 @@ figure.arc-tl img.arc-tl-photo{
     lockScroll(window.scrollY);
     inner.appendChild(sect);
     overlay.scrollTop = 0;
-    overlay.classList.add('is-open');
+    if (panel) panel.scrollTop = 0;
     overlay.removeAttribute('hidden');
     closeBtn.setAttribute('aria-expanded', 'true');
     requestAnimationFrame(function(){
-      if (window.ichartRefresh) window.ichartRefresh();
-      if (window.reflowMobileFigs) window.reflowMobileFigs();
-      try { closeBtn.focus(); } catch (e) {}
+      requestAnimationFrame(function(){
+        overlay.classList.add('is-open');
+        if (window.ichartRefresh) window.ichartRefresh();
+        if (window.reflowMobileFigs) window.reflowMobileFigs();
+        try { closeBtn.focus(); } catch (e) {}
+      });
     });
   }
 
-  function closeCap(){
-    if (!state.sect) return;
+  function finishClose(){
     var sect = state.sect;
+    if (!sect) return;
     sect.setAttribute('hidden', '');
     var prose = sect.querySelector('.cap-prose');
     if (prose) prose.setAttribute('hidden', '');
     if (state.parent) state.parent.insertBefore(sect, state.next);
-    overlay.classList.remove('is-open');
     overlay.setAttribute('hidden', '');
     closeBtn.setAttribute('aria-expanded', 'false');
     overlay.scrollTop = 0;
-    unlockScroll();
+    if (panel) panel.scrollTop = 0;
+    var trigger = state.trigger;
     state.sect = null;
     state.parent = null;
     state.next = null;
-    if (state.trigger && state.trigger.isConnected) state.trigger.focus({preventScroll:true});
     state.trigger = null;
+    state.closing = false;
+    unlockScroll();
+    if (trigger && trigger.isConnected) {
+      requestAnimationFrame(function(){
+        try { trigger.focus({ preventScroll: true }); } catch (e) {}
+      });
+    }
+  }
+
+  function closeCap(){
+    if (!state.sect || state.closing) return;
+    state.closing = true;
+    overlay.classList.remove('is-open');
+    window.setTimeout(finishClose, closeMs());
   }
 
   nav.querySelectorAll('.cap-card').forEach(function(btn){
@@ -4592,26 +4666,26 @@ figure.arc-tl img.arc-tl-photo{
   var closeBtn = overlay && overlay.querySelector('.path-article-close');
   if (!nav || !overlay || !inner || !closeBtn) return;
 
-  var state = { sect: null, parent: null, next: null, scrollY: 0, prevHtmlScrollBehavior: '', prevBodyTop: '', prevBodyWidth: '' };
+  var panel = document.getElementById('path-article-panel');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var closeMs = function(){ return reduceMotion.matches ? 0 : 340; };
+
+  var state = {
+    sect: null, parent: null, next: null, scrollY: 0, closing: false,
+    prevHtmlScrollBehavior: ''
+  };
 
   function lockScroll(y){
     state.scrollY = y;
     state.prevHtmlScrollBehavior = document.documentElement.style.scrollBehavior || '';
-    state.prevBodyTop = document.body.style.top;
-    state.prevBodyWidth = document.body.style.width;
     document.documentElement.style.scrollBehavior = 'auto';
-    document.body.style.top = -y + 'px';
-    document.body.style.width = '100%';
-    document.body.classList.add('cap-article-open');
     document.documentElement.classList.add('cap-article-open');
   }
   function unlockScroll(){
     document.documentElement.classList.remove('cap-article-open');
-    document.body.classList.remove('cap-article-open');
-    document.body.style.top = state.prevBodyTop;
-    document.body.style.width = state.prevBodyWidth;
+    document.documentElement.style.scrollBehavior = 'auto';
+    window.scrollTo({ top: state.scrollY, left: 0, behavior: 'instant' });
     document.documentElement.style.scrollBehavior = state.prevHtmlScrollBehavior;
-    window.scrollTo(0, state.scrollY);
   }
 
   function openPath(sect){
@@ -4625,31 +4699,42 @@ figure.arc-tl img.arc-tl-photo{
     lockScroll(window.scrollY);
     inner.appendChild(sect);
     overlay.scrollTop = 0;
-    overlay.classList.add('is-open');
+    if (panel) panel.scrollTop = 0;
     overlay.removeAttribute('hidden');
     closeBtn.setAttribute('aria-expanded', 'true');
     requestAnimationFrame(function(){
-      if (window.ichartRefresh) window.ichartRefresh();
-      if (window.reflowMobileFigs) window.reflowMobileFigs();
-      try { closeBtn.focus(); } catch (e) {}
+      requestAnimationFrame(function(){
+        overlay.classList.add('is-open');
+        if (window.ichartRefresh) window.ichartRefresh();
+        if (window.reflowMobileFigs) window.reflowMobileFigs();
+        try { closeBtn.focus(); } catch (e) {}
+      });
     });
   }
 
-  function closePath(){
-    if (!state.sect) return;
+  function finishClose(){
     var sect = state.sect;
+    if (!sect) return;
     sect.setAttribute('hidden', '');
     var prose = sect.querySelector('.cap-prose');
     if (prose) prose.setAttribute('hidden', '');
     if (state.parent) state.parent.insertBefore(sect, state.next);
-    overlay.classList.remove('is-open');
     overlay.setAttribute('hidden', '');
     closeBtn.setAttribute('aria-expanded', 'false');
     overlay.scrollTop = 0;
+    if (panel) panel.scrollTop = 0;
     unlockScroll();
     state.sect = null;
     state.parent = null;
     state.next = null;
+    state.closing = false;
+  }
+
+  function closePath(){
+    if (!state.sect || state.closing) return;
+    state.closing = true;
+    overlay.classList.remove('is-open');
+    window.setTimeout(finishClose, closeMs());
   }
 
   nav.querySelectorAll('.cap-card').forEach(function(btn){
