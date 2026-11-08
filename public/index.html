@@ -310,9 +310,14 @@ html:not(.letter-modal-open) .letter-slot:hover .letter-paper{
   position:absolute; inset:0; z-index:4;
   display:block; width:100%; height:100%; margin:0; padding:0; border:0;
   background:transparent; cursor:pointer; font:inherit; color:inherit;
+  -webkit-tap-highlight-color:transparent;
 }
 .letter-cover:focus{outline:none;}
 .letter-cover:focus-visible{outline:1px solid var(--ink); outline-offset:5px;}
+.letter-sheet:focus,
+.letter-sheet:focus-visible{
+  outline:none;
+}
 .letter-face{
   position:relative; z-index:1;
   box-sizing:border-box;
@@ -326,13 +331,53 @@ html:not(.letter-modal-open) .letter-slot:hover .letter-paper{
   margin:0;
   font-family:var(--sans);
   font-size:13px; line-height:1.4; font-weight:400;
-  letter-spacing:normal; color:#1a1a1a; text-align:center;
+  letter-spacing:normal;
+  color:color-mix(in srgb, var(--ink-soft) 62%, var(--paper));
+  text-align:center;
 }
 .letter-script{
   margin:.35rem 0 0;
-  font-family:"Nothing You Could Do", "Segoe Script", cursive;
-  font-weight:400; font-size:32px; line-height:1.15;
-  letter-spacing:0; color:#111; text-align:center;
+  font-family:var(--display);
+  font-weight:100;
+  font-variation-settings:"wght" 100;
+  font-synthesis:none;
+  font-size:calc(clamp(1.15rem,2.4vw,1.35rem) + 4px);
+  line-height:1.22;
+  letter-spacing:.04em;
+  color:var(--ink);
+  text-align:center;
+}
+.letter-close-sticky{display:none; pointer-events:none;}
+.letter-modal-close{
+  position:relative;
+  top:0;
+  touch-action:manipulation;
+  width:44px; height:44px; min-width:44px; min-height:44px; padding:0;
+  display:grid; place-items:center;
+  border:none; border-radius:0; background:transparent;
+  color:rgba(31,33,34,.7);
+  font-family:var(--sans); font-size:22px; font-weight:300;
+  font-variation-settings:normal; font-synthesis:none;
+  line-height:1; cursor:pointer;
+  -webkit-appearance:none; appearance:none;
+  transition:color .15s ease, opacity .15s ease;
+}
+.letter-modal-close:hover{background:transparent; color:rgba(31,33,34,.7); opacity:.5;}
+.letter-modal-close:focus-visible{outline:2px solid rgba(31,33,34,.4); outline-offset:3px;}
+@media(max-width:999px){
+  .letter-sheet.is-lifted .letter-close-sticky{
+    display:flex;
+    position:sticky;
+    top:8px;
+    z-index:6;
+    width:44px;
+    height:44px;
+    margin:0 4px -44px auto;
+    padding:0;
+    align-items:center;
+    justify-content:center;
+    pointer-events:auto;
+  }
 }
 @property --letter-reveal{
   syntax:"<percentage>";
@@ -3962,6 +4007,9 @@ section.titlepage.chapter-title h1.title-reveal{min-height:1.25em;}
       <div class="letter-slot">
         <article class="letter-paper letter-sheet">
           <div class="letter-inner">
+            <div class="letter-close-sticky">
+              <button type="button" class="letter-modal-close" aria-label="Close note" aria-expanded="false">&#x2715;</button>
+            </div>
             <div class="letter-content">
               <header class="letter-face">
                   <div class="letter-face-copy">
@@ -4002,12 +4050,14 @@ section.titlepage.chapter-title h1.title-reveal{min-height:1.25em;}
   var modal = document.getElementById('agentic-letter-dialog');
   var stage = modal ? modal.querySelector('.letter-stage') : null;
   var sheet = document.querySelector('#agentic-paradox-note .letter-sheet');
+  var closeBtn = sheet ? sheet.querySelector('.letter-modal-close') : null;
   if (!trigger || !slot || !modal || !stage || !sheet) return;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var closing = false;
   var timer = 0;
   var hold = null;
   var anchorRect = null;
+  var coarsePointer = window.matchMedia('(hover: none), (pointer: coarse)');
   sheet.setAttribute('aria-hidden', 'true');
 
   function expandedViewportBox(){
@@ -4074,6 +4124,7 @@ section.titlepage.chapter-title h1.title-reveal{min-height:1.25em;}
     sheet.classList.add('is-lifted');
     sheet.scrollTop = 0;
     trigger.setAttribute('aria-expanded', 'true');
+    if (closeBtn) closeBtn.setAttribute('aria-expanded', 'true');
     var settleIn = reduce.matches ? 0 : 1160;
     if (reduce.matches){
       modal.classList.add('is-dim', 'is-expanded', 'is-settled');
@@ -4092,7 +4143,7 @@ section.titlepage.chapter-title h1.title-reveal{min-height:1.25em;}
     timer = window.setTimeout(function(){
       if (modal.open && !closing){
         modal.classList.add('is-settled');
-        sheet.focus({preventScroll:true});
+        if (!coarsePointer.matches) sheet.focus({preventScroll:true});
         atEnd();
       }
     }, settleIn);
@@ -4114,6 +4165,13 @@ section.titlepage.chapter-title h1.title-reveal{min-height:1.25em;}
     }, reduce.matches ? 0 : 1180);
   }
   trigger.addEventListener('click', openNote);
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      closeNote();
+    });
+  }
   modal.addEventListener('cancel', function(event){ event.preventDefault(); closeNote(); });
   modal.addEventListener('click', function(event){ if (event.target === modal) closeNote(); });
   sheet.addEventListener('scroll', atEnd, {passive:true});
@@ -4126,8 +4184,10 @@ section.titlepage.chapter-title h1.title-reveal{min-height:1.25em;}
     document.documentElement.classList.remove('letter-modal-open');
     anchorRect = null;
     trigger.setAttribute('aria-expanded', 'false');
+    if (closeBtn) closeBtn.setAttribute('aria-expanded', 'false');
     sheet.setAttribute('aria-hidden', 'true');
-    trigger.focus({preventScroll:true});
+    if (coarsePointer.matches) trigger.blur();
+    else trigger.focus({preventScroll:true});
   });
 })();
 </script>
