@@ -505,7 +505,7 @@ table.worked td:first-child{padding-right:1.4em;}
 .cap-article-overlay.is-open::before{opacity:1;}
 .cap-article-overlay.is-closing::before{
   opacity:0;
-  transition:opacity .64s cubic-bezier(.42,0,.18,1);
+  transition:opacity .48s cubic-bezier(.42,0,.18,1);
 }
 .cap-article-overlay.is-morphing{
   display:block;
@@ -541,12 +541,12 @@ table.worked td:first-child{padding-right:1.4em;}
   max-height:none;
   border-radius:8px;
   transition:
-    top .64s cubic-bezier(.42,0,.18,1),
-    left .64s cubic-bezier(.42,0,.18,1),
-    width .64s cubic-bezier(.42,0,.18,1),
-    height .64s cubic-bezier(.42,0,.18,1),
-    background-color .64s cubic-bezier(.42,0,.18,1),
-    box-shadow .64s cubic-bezier(.42,0,.18,1);
+    top .48s cubic-bezier(.42,0,.18,1),
+    left .48s cubic-bezier(.42,0,.18,1),
+    width .48s cubic-bezier(.42,0,.18,1),
+    height .48s cubic-bezier(.42,0,.18,1),
+    background-color .48s cubic-bezier(.42,0,.18,1),
+    box-shadow .48s cubic-bezier(.42,0,.18,1);
 }
 .cap-article-overlay.is-morphing:not(.is-revealed) .cap-article-panel--morph{
   contain:layout paint;
@@ -586,7 +586,7 @@ table.worked td:first-child{padding-right:1.4em;}
   min-height:calc(1.45em * 2);
 }
 .cap-article-overlay.is-prep-open .cap-morph-extras{
-  animation:cap-prose-out .36s ease forwards;
+  animation:cap-prose-out .26s ease forwards;
 }
 .cap-article-overlay.is-expanding .cap-morph-extras,
 .cap-article-overlay.is-revealed .cap-morph-extras{
@@ -601,7 +601,7 @@ table.worked td:first-child{padding-right:1.4em;}
 }
 .cap-article-overlay.is-closing.is-card-landed .cap-morph-extras{
   visibility:visible;
-  animation:cap-prose-in .36s ease forwards;
+  animation:cap-prose-in .26s ease forwards;
 }
 .cap-morph-title-float{
   position:fixed;
@@ -670,14 +670,14 @@ table.worked td:first-child{padding-right:1.4em;}
 }
 .cap-article-overlay.is-revealed:not(.is-content-hiding) .cap-prose{
   opacity:0;
-  animation:cap-prose-in .52s ease .06s forwards;
+  animation:cap-prose-in .38s ease .04s forwards;
 }
 @keyframes cap-prose-in{
   from{opacity:0;}
   to{opacity:1;}
 }
 .cap-article-overlay.is-content-hiding:not(.is-closing) .cap-prose{
-  animation:cap-prose-out .36s ease forwards;
+  animation:cap-prose-out .26s ease forwards;
 }
 .cap-article-overlay.is-content-hiding.is-closing .cap-prose{
   opacity:0;
@@ -1074,11 +1074,11 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
 
   var panel = document.getElementById('path-article-panel');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var MORPH_MS = 640;
-  var EXTRAS_IN_MS = 400;
-  var PREP_MS = 400;
-  var PROSE_IN_MS = 600;
-  var PROSE_OUT_MS = 400;
+  var MORPH_MS = 480;
+  var EXTRAS_IN_MS = 300;
+  var PREP_MS = 300;
+  var PROSE_IN_MS = 450;
+  var PROSE_OUT_MS = 300;
   var FADE_MS = 480;
   var closeMs = function(){ return reduceMotion.matches ? 0 : FADE_MS; };
   var morphGen = 0;
