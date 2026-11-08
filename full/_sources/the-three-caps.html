@@ -10,7 +10,7 @@
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#f4f4f4">
+<meta name="theme-color" content="#ffffff">
 <meta name="application-name" content="The Local AI Opportunity">
 <meta name="author" content="@iamgingertrash">
 <meta name="apple-mobile-web-app-title" content="Local AI">
@@ -58,7 +58,7 @@
 }
 /* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
 :root{
-  --paper:#F4F4F4;
+  --paper:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
   --ink:#1F2122;
   --ink-soft:#5c6164;
@@ -69,7 +69,7 @@
   color-scheme:light;
 }
 
-html{background:var(--paper); scrollbar-gutter:stable both-edges;}
+html{background:var(--paper); scrollbar-gutter:stable;}
 
 /* Leave breathing room when following contents or section links. */
 html{scroll-padding-top:clamp(40px,5vh,64px);}
@@ -170,7 +170,7 @@ body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-in
   .readline a{transition:color .2s ease, border-color .2s ease;}
   .readline a:hover{color:var(--ink); border-bottom-color:var(--ink);}
   .cap-card{transition:background-color .18s ease, box-shadow .18s ease;}
-  .cap-card:hover{background:#fff; box-shadow:0 5px 16px rgba(0,0,0,.0825);}
+  .cap-card:hover{background:var(--paper); box-shadow:0 10px 30px rgba(0,0,0,.1), 0 4px 12px rgba(0,0,0,.055);}
   .prose a{transition:text-decoration-color .2s ease, color .2s ease;}
   .prose a:hover{text-decoration-color:var(--ink); color:var(--ink);}
 }
@@ -396,16 +396,16 @@ table.worked.results td:first-child{padding-right:.8em;}
 }
 .cap-card{
   display:flex; flex-direction:column; align-items:center; gap:12px;
-  padding:12px; border:none; border-radius:8px; background:#FBFBFB;
+  padding:12px; border:none; border-radius:8px; background:var(--paper);
   text-align:left; cursor:pointer; color:inherit; font:inherit;
   -webkit-tap-highlight-color:transparent;
-  box-shadow:0 4px 12px rgba(0,0,0,.06);
+  box-shadow:0 6px 22px rgba(0,0,0,.075), 0 2px 8px rgba(0,0,0,.04);
   transition:background-color .18s ease, box-shadow .18s ease;
 }
 @media (hover:hover){
-  .cap-card:hover{background:#fff; box-shadow:0 5px 16px rgba(0,0,0,.0825);}
+  .cap-card:hover{background:var(--paper); box-shadow:0 10px 30px rgba(0,0,0,.1), 0 4px 12px rgba(0,0,0,.055);}
 }
-.cap-card:active{background:#F4F4F4; box-shadow:0 4px 11px rgba(0,0,0,.0525);}
+.cap-card:active{background:color-mix(in srgb, var(--ink) 4%, var(--paper)); box-shadow:0 4px 11px rgba(0,0,0,.0525);}
 .cap-card.cap-card--morph-hidden{visibility:hidden;}
 .cap-card-art{width:100%; max-width:210px; aspect-ratio:1; display:block; flex-shrink:0;}
 .cap-card-art img{display:block; width:100%; height:100%; object-fit:contain;}
@@ -449,7 +449,7 @@ table.worked.results td:first-child{padding-right:.8em;}
   content:"";
   position:absolute;
   inset:0;
-  background:rgba(244,244,244,.9);
+  background:rgba(255,255,255,.9);
   opacity:0;
   transition:opacity .5s ease;
 }
@@ -518,8 +518,8 @@ table.worked.results td:first-child{padding-right:.8em;}
   contain:layout paint;
 }
 .cap-article-panel.cap-article-panel--morph.cap-article-panel--card-look{
-  background:#FBFBFB;
-  box-shadow:0 4px 12px rgba(0,0,0,.06);
+  background:var(--paper);
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
 }
 .cap-morph-extras{
   position:absolute;
@@ -769,7 +769,7 @@ table.worked.results td:first-child{padding-right:.8em;}
 .cap-article-overlay.is-switch-in.is-switch-in-back .cap-article-inner{transform:translateX(-7%); opacity:0;}
 .cap-article-overlay.is-revealed:not(.is-switching):not(.is-switch-in) .cap-article-inner{transform:none; opacity:1;}
 .cap-article-close:focus-visible{outline:2px solid rgba(31,33,34,.4); outline-offset:3px;}
-html.cap-article-open{overflow:hidden; scrollbar-gutter:stable both-edges;}
+html.cap-article-open{overflow:hidden;}
 html.cap-article-open body{overscroll-behavior:none;}
 html.cap-article-open-compact body{overscroll-behavior:none;}
 .cap-article-panel{touch-action:manipulation; overscroll-behavior:contain;}

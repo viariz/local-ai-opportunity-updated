@@ -8,16 +8,30 @@
 
     var SECTION_STEP = 13; /* 1px line + 12px gap */
     var W_BASE = 12, W_HOVER0 = 32, W_HOVER1 = 24, W_HOVER2 = 16;
-    var INK = '31,33,34';
+    var INK_LIGHT = '31,33,34';
+    var INK_DARK = '255,255,255';
+    function titlepageNavDark(){
+      var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+      var centerY = vh * 0.5;
+      var dark = false;
+      document.querySelectorAll('section.titlepage').forEach(function(pg){
+        var rect = pg.getBoundingClientRect();
+        if(rect.top <= centerY && rect.bottom >= centerY) dark = true;
+      });
+      return dark;
+    }
+    function railInk(){
+      return titlepageNavDark() ? INK_DARK : INK_LIGHT;
+    }
 
     var chapterRegions = [];
     var marks = [];
     var hoverY = null;
     var frame = 0;
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    /* Lower = slower, smoother stretch toward hover widths (ease-out style per frame) */
     var WIDTH_SMOOTH = reduced ? 1 : 0.14;
     var WIDTH_EPS = 0.03;
-    var currentIdx = 0;
 
     function resolveChapterRegions(){
       chapterRegions = [];
@@ -41,9 +55,20 @@
       return idx;
     }
 
+    function updateNavTone(){
+      var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+      var centerY = vh * 0.5;
+      var onDark = false;
+      document.querySelectorAll('section.titlepage').forEach(function(pg){
+        var rect = pg.getBoundingClientRect();
+        if(rect.bottom <= 0 || rect.top >= vh) return;
+        if(rect.top <= centerY && rect.bottom >= centerY) onDark = true;
+      });
+      document.documentElement.classList.toggle('nav-on-dark', onDark); /* rail + topbar only; never page bg */
+    }
+
     function setChapterIndicator(){
       var idx = currentChapterIndex();
-      currentIdx = idx < 0 ? 0 : idx;
       items.forEach(function(li){ li.classList.remove('here', 'soon', 'passed'); });
       chapterRegions.forEach(function(row, i){
         var a = row.li.querySelector('a');
@@ -124,6 +149,7 @@
       var nearest = hoverY === null ? -1 : nearestChapterIndexFromLocalY(hoverY);
       var cidx = currentChapterIndex();
       var here = cidx < 0 ? 0 : Math.min(n - 1, cidx);
+      /* Full ink: hovered line while pointer is over rail; else current section */
       var fullIdx = nearest >= 0 ? nearest : here;
 
       var moving = false;
@@ -145,9 +171,10 @@
 
       pathInactive.setAttribute('d', dMuted.join(' '));
       pathActive.setAttribute('d', dFull.join(' '));
-      pathInactive.setAttribute('stroke', 'rgba(' + INK + ',0.3)');
+      var ink = railInk();
+      pathInactive.setAttribute('stroke', 'rgba(' + ink + ',0.3)');
       pathInactive.setAttribute('stroke-width', '1');
-      pathActive.setAttribute('stroke', 'rgba(' + INK + ',1)');
+      pathActive.setAttribute('stroke', 'rgba(' + ink + ',1)');
       pathActive.setAttribute('stroke-width', '1');
 
       if(moving && !frame){
@@ -169,6 +196,7 @@
     }
 
     function update(){
+      updateNavTone();
       setChapterIndicator();
       paint();
     }

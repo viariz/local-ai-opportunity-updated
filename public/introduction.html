@@ -3766,9 +3766,71 @@ figure.arc-tl img.arc-tl-photo{
   text-align:center!important;
   margin-top:12px!important;
   max-width:34em;
-  color:var(--ink-soft)!important;
+  color:var(--titlepage-ink-soft)!important;
 }
+section.titlepage{
+  position:relative!important;
+  color:var(--titlepage-ink)!important;
+  width:100vw!important;
+  max-width:100vw!important;
+  margin-left:calc(50% - 50vw)!important;
+  margin-right:calc(50% - 50vw)!important;
+  box-sizing:border-box!important;
+  padding-left:max(40px, env(safe-area-inset-left, 0px))!important;
+  padding-right:max(40px, env(safe-area-inset-right, 0px))!important;
+  background:var(--titlepage-bg)!important;
+  overflow:hidden!important;
+}
+section.titlepage::before{
+  content:""!important;
+  position:absolute!important;
+  z-index:-1!important;
+  top:0!important;
+  bottom:0!important;
+  left:50%!important;
+  width:100vw!important;
+  margin-left:-50vw!important;
+  background:var(--titlepage-bg)!important;
+}
+.book{
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding-left:max(40px, env(safe-area-inset-left, 0px))!important;
+  padding-right:max(40px, env(safe-area-inset-right, 0px))!important;
+}
+body{padding-left:0!important;padding-right:0!important;}
+section.titlepage h1{color:var(--titlepage-ink)!important;}
+section.titlepage + .part{
+  margin-top:clamp(5rem, 12vh, 9rem)!important;
+  padding-top:clamp(2rem, 5vh, 3.5rem)!important;
+}
+section.titlepage.chapter-title{margin-top:clamp(7rem, 22vh, 14rem)!important;}
+html.letter-modal-open,
+html.cap-article-open{overflow:hidden!important;scrollbar-gutter:stable!important;}
+.cap-card{
+  background:var(--paper)!important;
+  border:none!important;
+  box-shadow:0 6px 22px rgba(0,0,0,.075), 0 2px 8px rgba(0,0,0,.04)!important;
+}
+@media (hover:hover){
+  .cap-card:hover{
+    background:var(--paper)!important;
+    border:none!important;
+    box-shadow:0 10px 30px rgba(0,0,0,.1), 0 4px 12px rgba(0,0,0,.055)!important;
+  }
+}
+.cap-article-panel.cap-article-panel--card-look{background:var(--paper)!important;}
+figure.investor-letter .letter-paper,
+figure.investor-letter .letter-inner{background-color:#fff!important;}
 @media (max-width:700px){
+  section.titlepage{
+    padding-left:max(18px, env(safe-area-inset-left, 0px))!important;
+    padding-right:max(18px, env(safe-area-inset-right, 0px))!important;
+  }
+  .book{
+    padding-left:max(18px, env(safe-area-inset-left, 0px))!important;
+    padding-right:max(18px, env(safe-area-inset-right, 0px))!important;
+  }
   section.titlepage h1.title-reveal,
   section.titlepage h1.title-reveal .ts-ghost,
   section.titlepage h1.title-reveal .ts-live{
