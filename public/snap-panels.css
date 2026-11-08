@@ -2,7 +2,9 @@
    are semantic containers only; overlapping snap areas cause edge jumps. */
 :root{--chapter-heading-size:clamp(1.55rem,3.6vw,2.05rem);}
 .book > section.part{margin-top:0!important;padding-top:0!important;}
-.book .part .sect:has(> .snap-panel){margin:0!important;padding:0!important;}
+/* Legacy subsection borders occupy a pixel of the white parent between
+   full-bleed pages. Semantic wrappers must not paint a divider or add space. */
+.book .part .sect:has(> .snap-panel){margin:0!important;padding:0!important;border:0!important;}
 .book > .part > .prose:has(> .snap-panel){margin:0!important;padding:0!important;border:0!important;}
 .book #next-gen-chips.part > .prose.chip-intro:first-child{margin:0!important;padding:0!important;border:0!important;}
 .book .snap-panel{
