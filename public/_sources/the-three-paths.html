@@ -10,7 +10,7 @@
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#f4f4f4">
+<meta name="theme-color" content="#ffffff">
 <meta name="application-name" content="The Local AI Opportunity">
 <meta name="author" content="@iamgingertrash">
 <meta name="apple-mobile-web-app-title" content="Local AI">
@@ -58,7 +58,7 @@
 }
 /* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
 :root{
-  --paper:#F4F4F4;
+  --paper:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
   --ink:#1F2122;
   --ink-soft:#5c6164;
@@ -69,7 +69,7 @@
   color-scheme:light;
 }
 
-html{background:var(--paper); scrollbar-gutter:stable both-edges;}
+html{background:var(--paper); scrollbar-gutter:stable;}
 
 /* Leave breathing room when following contents or section links. */
 html{scroll-padding-top:clamp(40px,5vh,64px);}
@@ -439,26 +439,28 @@ table.worked td:first-child{padding-right:1.4em;}
 }
 .cap-card{
   display:flex; flex-direction:column; align-items:center; gap:12px;
-  padding:12px; border:none; border-radius:8px; background:rgba(255,255,255,.5);
+  padding:12px; border:none; border-radius:8px; background:var(--paper);
   text-align:left; cursor:pointer; color:inherit; font:inherit;
   -webkit-tap-highlight-color:transparent;
-  box-shadow:0 4px 12px rgba(0,0,0,.06);
+  box-shadow:0 6px 22px rgba(0,0,0,.075), 0 2px 8px rgba(0,0,0,.04);
   transition:background-color .18s ease, box-shadow .18s ease;
 }
 @media (hover:hover){
-  .cap-card:hover{background:#fff; box-shadow:0 5px 16px rgba(0,0,0,.0825);}
+  .cap-card:hover{background:var(--paper); box-shadow:0 10px 30px rgba(0,0,0,.1), 0 4px 12px rgba(0,0,0,.055);}
 }
-.cap-card:active{background:rgba(255,255,255,.45); box-shadow:0 4px 11px rgba(0,0,0,.0525);}
+.cap-card:active{background:color-mix(in srgb, var(--ink) 4%, var(--paper)); box-shadow:0 4px 11px rgba(0,0,0,.0525);}
 .cap-card.cap-card--morph-hidden{visibility:hidden;}
 .cap-card-art{width:100%; max-width:210px; aspect-ratio:1; display:block; flex-shrink:0;}
 .cap-card-art img{display:block; width:100%; height:100%; object-fit:contain;}
 .cap-card-text{width:100%; display:flex; flex-direction:column; gap:8px; min-height:2.9em;}
 .cap-card-title{
+  display:block; box-sizing:border-box; width:100%; text-align:left;
   font-family:var(--display); font-size:1.125rem; line-height:1.25; color:var(--ink);
   font-weight:400; font-variation-settings:"wght" 100; font-synthesis:none;
   margin:0; letter-spacing:.02em;
 }
 .cap-card-sub{
+  box-sizing:border-box; width:100%; text-align:left;
   font-size:.875rem; line-height:1.45; color:rgba(31,33,34,.5); margin:0;
   display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   min-height:calc(1.45em * 2);
@@ -490,24 +492,33 @@ table.worked td:first-child{padding-right:1.4em;}
   content:"";
   position:absolute;
   inset:0;
-  background:rgba(244,244,244,.9);
+  background:rgba(255,255,255,.9);
   opacity:0;
   transition:opacity .5s ease;
 }
-.cap-article-overlay.is-open{
+.cap-article-overlay.is-active{
   visibility:visible;
   pointer-events:auto;
   transition:visibility 0s;
 }
 .cap-article-overlay[hidden]{display:none!important;}
-.cap-article-overlay.is-open::before{opacity:1;}
+.cap-article-overlay.is-open::before{
+  opacity:1;
+  transition:opacity .48s cubic-bezier(.42,0,.18,1);
+}
 .cap-article-overlay.is-closing::before{
   opacity:0;
-  transition:opacity .62s cubic-bezier(.16,1,.3,1);
+  transition:opacity .48s cubic-bezier(.42,0,.18,1);
 }
 .cap-article-overlay.is-morphing{
   display:block;
   padding:0;
+}
+@media (max-width:999px){
+  .cap-article-panel.cap-article-panel--morph{
+    box-sizing:border-box;
+    max-width:calc(100vw - 20px);
+  }
 }
 .cap-article-overlay.is-measuring{
   visibility:hidden!important;
@@ -532,25 +543,25 @@ table.worked td:first-child{padding-right:1.4em;}
 .cap-article-overlay.is-open .cap-article-panel{opacity:1;}
 .cap-article-panel.cap-article-panel--morph{
   position:fixed;
-  z-index:2;
+  z-index:6;
   margin:0;
   opacity:1;
   overflow:hidden;
   max-height:none;
   border-radius:8px;
   transition:
-    top .66s cubic-bezier(.16,1,.3,1),
-    left .66s cubic-bezier(.16,1,.3,1),
-    width .66s cubic-bezier(.16,1,.3,1),
-    height .66s cubic-bezier(.16,1,.3,1),
-    background-color .42s ease,
-    box-shadow .5s ease;
+    top .48s cubic-bezier(.42,0,.18,1),
+    left .48s cubic-bezier(.42,0,.18,1),
+    width .48s cubic-bezier(.42,0,.18,1),
+    height .48s cubic-bezier(.42,0,.18,1),
+    background-color .48s cubic-bezier(.42,0,.18,1),
+    box-shadow .48s cubic-bezier(.42,0,.18,1);
 }
 .cap-article-overlay.is-morphing:not(.is-revealed) .cap-article-panel--morph{
   contain:layout paint;
 }
 .cap-article-panel.cap-article-panel--morph.cap-article-panel--card-look{
-  background:rgba(255,255,255,.5);
+  background:var(--paper);
   box-shadow:0 4px 12px rgba(0,0,0,.06);
 }
 .cap-morph-extras{
@@ -561,48 +572,62 @@ table.worked td:first-child{padding-right:1.4em;}
   top:12px;
   display:flex;
   flex-direction:column;
-  align-items:center;
-  gap:8px;
+  align-items:stretch;
+  gap:12px;
   pointer-events:none;
   opacity:1;
-  transition:opacity .16s ease, transform .16s ease;
 }
-.cap-morph-extras .cap-card-art{width:100%; max-width:210px; aspect-ratio:1;}
+.cap-morph-extras .cap-card-art{
+  width:100%; max-width:210px; aspect-ratio:1;
+  align-self:center;
+}
+.cap-morph-extras .cap-card-text{
+  width:100%; display:flex; flex-direction:column; gap:8px; min-height:2.9em;
+}
+.cap-morph-title-spacer{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
 .cap-morph-extras .cap-card-sub{
+  box-sizing:border-box; width:100%; text-align:left;
   font-size:.875rem; line-height:1.45; color:rgba(31,33,34,.5); margin:0;
   display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-  min-height:calc(1.45em * 2); text-align:center;
+  min-height:calc(1.45em * 2);
 }
 .cap-article-overlay.is-prep-open .cap-morph-extras{
-  animation:cap-morph-extras-out .18s ease forwards;
-}
-@keyframes cap-morph-extras-out{
-  to{opacity:0; transform:translateY(-4px);}
+  animation:cap-prose-out .26s ease forwards;
 }
 .cap-article-overlay.is-expanding .cap-morph-extras,
-.cap-article-overlay.is-revealed .cap-morph-extras,
-.cap-article-overlay.is-closing .cap-morph-extras{
+.cap-article-overlay.is-revealed .cap-morph-extras{
   opacity:0;
   visibility:hidden;
+  animation:none!important;
+}
+.cap-article-overlay.is-closing .cap-morph-extras{
+  opacity:0;
+  visibility:visible;
+  animation:none;
+}
+.cap-article-overlay.is-closing.is-card-landed .cap-morph-extras{
+  visibility:visible;
+  animation:cap-prose-in .26s ease forwards;
 }
 .cap-morph-title-float{
   position:fixed;
   z-index:60;
   left:0;
   top:0;
+  display:block;
+  box-sizing:border-box;
   margin:0;
   padding:0;
-  box-sizing:border-box;
-  pointer-events:none;
-  font-family:var(--display);
-  line-height:1.25;
-  color:var(--ink);
-  font-weight:100;
-  font-variation-settings:"wght" 100;
-  font-synthesis:none;
-  letter-spacing:.02em;
+  white-space:nowrap;
   text-align:left;
-  will-change: transform, width;
+  pointer-events:none;
+  color:var(--ink);
+  opacity:1;
+  transform:none;
+  will-change:left,top,font-size;
 }
 .cap-article-overlay.is-measure-layout .cap-article-inner{
   visibility:visible!important;
@@ -616,25 +641,226 @@ table.worked td:first-child{padding-right:1.4em;}
   pointer-events:none!important;
 }
 .cap-article-overlay.has-float-title .cap-article-inner .cap-article-sect > h4{
+  opacity:0;
+}
+.cap-article-overlay.is-morphing:not(.is-revealed):not(.is-closing) .cap-article-close,
+.cap-article-overlay.is-morphing:not(.is-revealed):not(.is-closing) .cap-article-inner{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.cap-article-overlay.is-morphing:not(.is-revealed) .cap-article-inner{
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  width:auto;
+  max-width:44em;
+  margin-left:auto;
+  margin-right:auto;
+  content-visibility:hidden;
+  contain-intrinsic-size:1px 1px;
+}
+.cap-article-overlay.is-morphing:not(.is-revealed):not(.is-closing) .cap-article-inner{
+  opacity:0;
+  visibility:hidden;
+}
+.cap-article-overlay.is-revealed.is-content-hiding:not(.is-closing) .cap-article-inner{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+.cap-article-overlay.is-content-hiding.is-closing .cap-article-inner,
+.cap-article-overlay.is-closing .cap-article-inner{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.cap-article-overlay.is-revealed:not(.is-content-hiding) .cap-prose{
+  opacity:0;
+  animation:cap-prose-in .38s ease .04s forwards;
+}
+@keyframes cap-prose-in{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+.cap-article-overlay.is-content-hiding:not(.is-closing) .cap-prose{
+  animation:cap-prose-out .26s ease forwards;
+}
+.cap-article-overlay.is-content-hiding.is-closing .cap-prose{
+  opacity:0;
+  animation:none!important;
+}
+@keyframes cap-prose-out{
+  from{opacity:1;}
+  to{opacity:0;}
+}
+.cap-article-overlay.is-closing .cap-article-close{
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .16s ease;
+}
+.cap-article-inner.book{
+  max-width:44em; margin:0 auto;
+  opacity:0;
+  transition:opacity .28s ease;
+}
+.cap-article-overlay.is-revealed .cap-article-panel.cap-article-panel--morph{overflow-x:hidden; overflow-y:auto;}
+.cap-article-overlay.is-revealed .cap-article-inner{
+  opacity:1;
+  visibility:visible;
+  content-visibility:visible;
+  transition:none;
+}
+.cap-article-overlay.is-revealed.is-closing .cap-article-inner{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:none;
+}
+.cap-article-overlay.is-revealed .cap-article-close{opacity:1; transition:opacity .22s ease .06s;}
+.cap-article-overlay.is-revealed.is-closing .cap-article-close{
+  opacity:0;
+  pointer-events:none;
+  transition:none;
+}
+.cap-article-inner .cap-article-sect > h4{
+  display:block; box-sizing:border-box; width:100%; text-align:left;
   font-family:var(--display); font-size:clamp(1.25rem, 2.8vw, 1.65rem);
-  font-weight:100; font-variation-settings:"wght" 100; font-synthesis:none;
+  font-weight:400; font-variation-settings:"wght" 100; font-synthesis:none;
   letter-spacing:.02em; line-height:1.25;
-  padding-top:0; border-top:none; margin:0 0 1em;
+  padding-top:0; padding-right:2.75rem; border-top:none; margin:0 0 1em;
 }
 .cap-article-inner .cap-article-sect{padding-bottom:2.75em;}
+.cap-article-close-sticky{
+  position:sticky;
+  top:8px;
+  z-index:6;
+  width:44px;
+  height:44px;
+  margin:0 4px -44px auto;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:auto;
+}
+.cap-article-overlay.is-revealed .cap-article-close-sticky{pointer-events:auto;}
+.cap-article-close-sticky .cap-article-close{pointer-events:auto; width:44px; height:44px;}
 .cap-article-close{
-  position:absolute; top:6px; right:4px;
-  z-index:2; width:auto; height:auto; min-width:44px; min-height:44px; padding:0; display:grid; place-items:center;
+  position:relative;
+  top:0;
+  float:none;
+  z-index:2;
+  touch-action:manipulation;
+  width:auto; height:auto; min-width:44px; min-height:44px; padding:0; display:grid; place-items:center;
   border:none; border-radius:0; background:transparent;
-  color:var(--ink); font-family:var(--sans); font-size:22px; font-weight:300; font-variation-settings:normal; font-synthesis:none;
+  color:rgba(31,33,34,.7);
+  font-family:var(--sans); font-size:22px; font-weight:300; font-variation-settings:normal; font-synthesis:none;
   line-height:1; cursor:pointer;
   -webkit-appearance:none; appearance:none;
   transition:color .15s ease, opacity .15s ease;
 }
-.cap-article-close:hover{background:transparent; border-color:transparent; color:var(--ink); opacity:.68;}
+.cap-article-close:hover{background:transparent; border-color:transparent; color:rgba(31,33,34,.7); opacity:.5;}
+.cap-article-edge-zone{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:min(22vw, 148px);
+  z-index:4;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+}
+.cap-article-edge-zone[hidden]{display:none!important;}
+.cap-article-overlay.is-revealed .cap-article-edge-zone{pointer-events:auto;}
+.cap-article-edge-zone--prev{left:0;}
+.cap-article-edge-zone--next{right:0; justify-content:center;}
+.cap-article-edge-btn{
+  min-width:44px; min-height:44px; padding:0;
+  border:none; border-radius:0; background:transparent;
+  color:rgba(31,33,34,.7);
+  font-family:var(--sans); font-weight:300; font-variation-settings:normal; font-synthesis:none;
+  display:grid; place-items:center;
+  line-height:1; cursor:pointer;
+  opacity:0;
+  transform:translateX(0);
+  transition:opacity .24s ease, transform .3s cubic-bezier(.42,0,.18,1), color .15s ease;
+  pointer-events:auto;
+  -webkit-appearance:none; appearance:none;
+  box-shadow:none;
+}
+.cap-article-edge-btn svg{display:block; width:32px; height:32px;}
+.cap-article-edge-zone--prev .cap-article-edge-btn{transform:translateX(-8px);}
+.cap-article-edge-zone--next .cap-article-edge-btn{transform:translateX(8px);}
+.cap-article-edge-zone--prev:hover .cap-article-edge-btn,
+.cap-article-edge-zone--prev:focus-within .cap-article-edge-btn,
+.cap-article-edge-zone--next:hover .cap-article-edge-btn,
+.cap-article-edge-zone--next:focus-within .cap-article-edge-btn{
+  opacity:1;
+  transform:translateX(0);
+}
+.cap-article-edge-btn:hover{background:transparent; border-color:transparent; color:rgba(31,33,34,.7); opacity:.5;}
+.cap-article-edge-btn:focus-visible{outline:2px solid rgba(31,33,34,.4); outline-offset:3px;}
+.cap-article-overlay.is-switching .cap-article-inner{
+  transition:transform .42s cubic-bezier(.42,0,.18,1), opacity .34s ease;
+}
+.cap-article-overlay.is-switching.is-switch-out-forward .cap-article-inner{transform:translateX(-7%); opacity:0;}
+.cap-article-overlay.is-switching.is-switch-out-back .cap-article-inner{transform:translateX(7%); opacity:0;}
+.cap-article-overlay.is-switch-in.is-switch-in-forward .cap-article-inner{transform:translateX(7%); opacity:0;}
+.cap-article-overlay.is-switch-in.is-switch-in-back .cap-article-inner{transform:translateX(-7%); opacity:0;}
+.cap-article-overlay.is-revealed:not(.is-switching):not(.is-switch-in) .cap-article-inner{transform:none; opacity:1;}
 .cap-article-close:focus-visible{outline:2px solid rgba(31,33,34,.4); outline-offset:3px;}
-html.cap-article-open{overflow:hidden; scrollbar-gutter:stable both-edges;}
-html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
+html.cap-article-open{overflow:hidden;}
+html.cap-article-open body{overscroll-behavior:none;}
+html.cap-article-open-compact body{overscroll-behavior:none;}
+.cap-article-panel{touch-action:manipulation; overscroll-behavior:contain;}
+@media (max-width:700px){
+  .cap-article-overlay{
+    padding:
+      max(10px, env(safe-area-inset-top, 0px))
+      max(10px, env(safe-area-inset-right, 0px))
+      max(10px, env(safe-area-inset-bottom, 0px))
+      max(10px, env(safe-area-inset-left, 0px));
+  }
+  .cap-article-panel{
+    width:min(44em, calc(100% - 36px));
+    max-width:44em;
+    max-height:min(94dvh, calc(100dvh - 16px));
+    padding:16px 16px 22px;
+  }
+  .cap-article-edge-zone{display:none!important; pointer-events:none!important; visibility:hidden!important;}
+  .cap-article-inner .cap-article-sect > h4{font-size:1.125rem;}
+}
+@media (max-width:999px){
+  .cap-article-edge-zone{display:none!important; pointer-events:none!important; visibility:hidden!important;}
+}
+@media (min-width:701px) and (max-width:999px){
+  .cap-article-overlay.is-measure-layout,
+  .cap-article-overlay.is-morphing.is-revealed{
+    justify-content:flex-start;
+    padding-left:max(40px, env(safe-area-inset-left, 0px));
+    padding-right:max(40px, env(safe-area-inset-right, 0px));
+  }
+  .cap-article-overlay.is-measure-layout .cap-article-panel{
+    width:min(44em, 100%);
+    max-width:44em;
+    margin-inline:0;
+    align-self:flex-start;
+  }
+  .cap-article-panel.cap-article-panel--morph{
+    transition:
+      top .48s cubic-bezier(.42,0,.18,1),
+      width .48s cubic-bezier(.42,0,.18,1),
+      height .48s cubic-bezier(.42,0,.18,1),
+      background-color .48s cubic-bezier(.42,0,.18,1),
+      box-shadow .48s cubic-bezier(.42,0,.18,1);
+  }
+}
+@media (max-width:700px){
+  .cap-article-panel{width:min(44em, calc(100% - 36px)); max-width:44em;}
+}
 .cap-article-overlay,.cap-article-panel{
   scrollbar-width:none;
   -ms-overflow-style:none;
@@ -642,7 +868,8 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
 .cap-article-overlay::-webkit-scrollbar,
 .cap-article-panel::-webkit-scrollbar{display:none; width:0; height:0;}
 @media (prefers-reduced-motion: reduce){
-  .cap-article-overlay,.cap-article-overlay::before,.cap-article-panel,.cap-article-inner,.cap-article-close,.cap-morph-face,.cap-morph-extras,.cap-morph-title,.cap-prose{transition:none; animation:none!important;}
+  .cap-article-overlay,.cap-article-overlay::before,.cap-article-panel,.cap-article-inner,.cap-article-close,.cap-morph-extras,.cap-morph-title-float,.cap-prose,.cap-article-edge-btn{transition:none; animation:none!important;}
+  .cap-article-overlay.is-switching .cap-article-inner{transform:none!important; opacity:1!important;}
 }
 
 /* ---- section tabs ---- */
@@ -698,8 +925,16 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
 <!-- ============ PART IV ============ -->
 <section class="part" id="the-lesser-two" data-title="The lesser two">
 <div id="path-article-overlay" class="cap-article-overlay" hidden>
+  <div class="cap-article-edge-zone cap-article-edge-zone--prev" id="path-article-edge-prev" hidden>
+    <button type="button" class="cap-article-edge-btn" aria-label="Previous card"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.25 7 9.75 12l4.5 5" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="cap-article-edge-zone cap-article-edge-zone--next" id="path-article-edge-next" hidden>
+    <button type="button" class="cap-article-edge-btn" aria-label="Next card"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.75 7 14.25 12l-4.5 5" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
   <div class="cap-article-panel" id="path-article-panel" role="dialog" aria-modal="true" tabindex="-1">
-    <button type="button" class="cap-article-close path-article-close" aria-label="Close article" aria-expanded="false">&#x2715;</button>
+    <div class="cap-article-close-sticky">
+      <button type="button" class="cap-article-close path-article-close" aria-label="Close article" aria-expanded="false">&#x2715;</button>
+    </div>
     <div class="book cap-article-inner" id="path-article-inner"></div>
   </div>
 </div>
@@ -984,20 +1219,25 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
   var overlay = document.getElementById('path-article-overlay');
   var inner = document.getElementById('path-article-inner');
   var closeBtn = overlay && overlay.querySelector('.path-article-close');
-  if (!nav || !overlay || !inner || !closeBtn) return;
+  var edgePrev = document.getElementById('path-article-edge-prev');
+  var edgeNext = document.getElementById('path-article-edge-next');
+  var edgePrevBtn = edgePrev && edgePrev.querySelector('.cap-article-edge-btn');
+  var edgeNextBtn = edgeNext && edgeNext.querySelector('.cap-article-edge-btn');
+  if (!nav || !overlay || !inner || !closeBtn || !edgePrev || !edgeNext) return;
 
   var panel = document.getElementById('path-article-panel');
+  var SWITCH_MS = 420;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var MORPH_MS = 660;
-  var PREP_MS = 200;
-  var PROSE_REVEAL_MS = 1200;
+  var MORPH_MS = 480;
+  var EXTRAS_IN_MS = 300;
+  var PREP_MS = 300;
+  var PROSE_IN_MS = 450;
+  var PROSE_OUT_MS = 300;
   var FADE_MS = 480;
   var closeMs = function(){ return reduceMotion.matches ? 0 : FADE_MS; };
   var morphGen = 0;
   var titleAnim = null;
-  var FADE_MS = 480;
-  var closeMs = function(){ return reduceMotion.matches ? 0 : FADE_MS; };
-  var morphGen = 0;
+  var lastTitleState = null;
 
   function waitPanelMorph(done){
     var gen = ++morphGen;
@@ -1029,6 +1269,9 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     if (!btn || !btn.isConnected) return;
     btn.classList.toggle('cap-card--morph-hidden', !!hidden);
   }
+  function unhideAllCards(){
+    nav.querySelectorAll('.cap-card').forEach(function(btn){ setCardHidden(btn, false); });
+  }
   function clearMorphLayers(){
     if (titleAnim) {
       try { titleAnim.cancel(); } catch (e) {}
@@ -1039,6 +1282,7 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     if (t) t.remove();
     if (e) e.remove();
     overlay.classList.remove('has-float-title');
+    lastTitleState = null;
   }
   function mountExtras(btn){
     if (!btn || !panel) return;
@@ -1046,39 +1290,82 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     if (old) old.remove();
     var art = btn.querySelector('.cap-card-art');
     var sub = btn.querySelector('.cap-card-sub');
+    var titleEl = btn.querySelector('.cap-card-title');
     var extras = document.createElement('div');
     extras.className = 'cap-morph-extras';
     extras.setAttribute('aria-hidden', 'true');
     if (art) extras.appendChild(art.cloneNode(true));
-    if (sub) extras.appendChild(sub.cloneNode(true));
+    var textWrap = document.createElement('span');
+    textWrap.className = 'cap-card-text';
+    if (titleEl) {
+      var spacer = titleEl.cloneNode(true);
+      spacer.classList.add('cap-morph-title-spacer');
+      spacer.setAttribute('aria-hidden', 'true');
+      textWrap.appendChild(spacer);
+    }
+    if (sub) textWrap.appendChild(sub.cloneNode(true));
+    extras.appendChild(textWrap);
     panel.insertBefore(extras, panel.firstChild);
   }
-  function ensureFloatTitle(text){
+  function ensureFloatTitle(text, deferHideH4){
     var el = overlay.querySelector('.cap-morph-title-float');
     if (!el) {
-      el = document.createElement('p');
+      el = document.createElement('span');
       el.className = 'cap-morph-title-float';
       el.setAttribute('aria-hidden', 'true');
       overlay.appendChild(el);
     }
     el.textContent = text;
-    overlay.classList.add('has-float-title');
+    if (!deferHideH4) overlay.classList.add('has-float-title');
     return el;
+  }
+  function placeFloatFromSource(floatEl, srcEl){
+    if (!floatEl || !srcEl) return null;
+    copyTitleTypography(floatEl, srcEl);
+    floatEl.textContent = (srcEl.textContent || '').trim();
+    floatEl.style.whiteSpace = 'nowrap';
+    void floatEl.offsetWidth;
+    var st = titleStateFromEl(srcEl);
+    applyTitleState(floatEl, st);
+    return st;
+  }
+  function titleBox(el){
+    if (!el) return null;
+    var r = el.getBoundingClientRect();
+    var rects = el.getClientRects ? el.getClientRects() : null;
+    if (rects && rects.length) {
+      var line = rects[0];
+      if (line.width > 0 && line.height > 0) r = line;
+    }
+    return r;
   }
   function titleStateFromRect(rect, fs){
     return { x: rect.left, y: rect.top, w: rect.width, fs: fs };
   }
   function titleStateFromEl(el){
     if (!el) return null;
-    var r = el.getBoundingClientRect();
+    var r = titleBox(el);
+    if (!r) return null;
     return titleStateFromRect(r, parseFloat(getComputedStyle(el).fontSize));
+  }
+  function modalTitleTarget(){
+    var h4 = inner.querySelector('.cap-article-sect > h4');
+    return h4 ? titleStateFromEl(h4) : null;
+  }
+  function settleFloatTitle(destEl){
+    var floatEl = overlay.querySelector('.cap-morph-title-float');
+    if (!floatEl || !destEl) return;
+    copyTitleTypography(floatEl, destEl);
+    floatEl.style.whiteSpace = 'nowrap';
+    void floatEl.offsetWidth;
+    applyTitleState(floatEl, titleStateFromEl(destEl));
   }
   function cardTitleState(btn){
     var el = btn && btn.querySelector('.cap-card-title');
     return titleStateFromEl(el);
   }
   function readFloatTitleState(){
-    return titleStateFromEl(overlay.querySelector('.cap-morph-title-float'));
+    return lastTitleState;
   }
   function copyTitleTypography(dst, src){
     if (!dst || !src) return;
@@ -1091,11 +1378,21 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     dst.style.lineHeight = cs.lineHeight;
     dst.style.textAlign = cs.textAlign;
   }
+  function pinFloat(el, x, y){
+    el.style.transform = 'none';
+    el.style.left = '0px';
+    el.style.top = '0px';
+    var origin = el.getBoundingClientRect();
+    el.style.left = (x - origin.left) + 'px';
+    el.style.top = (y - origin.top) + 'px';
+  }
   function applyTitleState(el, st){
     if (!el || !st) return;
-    el.style.transform = 'translate3d(' + st.x + 'px,' + st.y + 'px,0)';
-    el.style.width = Math.max(1, st.w) + 'px';
+    el.style.width = 'auto';
+    el.style.maxWidth = 'none';
     el.style.fontSize = st.fs + 'px';
+    pinFloat(el, st.x, st.y);
+    lastTitleState = { x: st.x, y: st.y, w: st.w, fs: st.fs };
   }
   function animateTitle(from, to, done){
     var el = overlay.querySelector('.cap-morph-title-float');
@@ -1103,26 +1400,35 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
       if (done) done();
       return;
     }
-    var live = readFloatTitleState();
-    from = live || from;
+    from = from || lastTitleState;
+    if (!from || !to) {
+      if (done) done();
+      return;
+    }
+    applyTitleState(el, from);
+    var left0 = parseFloat(el.style.left);
+    var top0 = parseFloat(el.style.top);
+    var left1 = left0 + (to.x - from.x);
+    var top1 = top0 + (to.y - from.y);
     if (titleAnim) {
       try { titleAnim.cancel(); } catch (e) {}
     }
     titleAnim = el.animate([
-      { transform: 'translate3d(' + from.x + 'px,' + from.y + 'px,0)', width: from.w + 'px', fontSize: from.fs + 'px' },
-      { transform: 'translate3d(' + to.x + 'px,' + to.y + 'px,0)', width: to.w + 'px', fontSize: to.fs + 'px' }
-    ], { duration: MORPH_MS, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' });
+      { left: left0 + 'px', top: top0 + 'px', fontSize: from.fs + 'px' },
+      { left: left1 + 'px', top: top1 + 'px', fontSize: to.fs + 'px' }
+    ], { duration: MORPH_MS, easing: 'cubic-bezier(0.42, 0, 0.18, 1)', fill: 'forwards' });
     titleAnim.onfinish = function(){
+      var anim = titleAnim;
       titleAnim = null;
-      var end = readFloatTitleState() || to;
-      applyTitleState(el, end);
+      if (anim) { try { anim.cancel(); } catch (e) {} }
+      applyTitleState(el, to);
       if (done) done();
     };
     titleAnim.oncancel = function(){ titleAnim = null; };
   }
   function clearPanelMorph(){
     if (!panel) return;
-    overlay.classList.remove('is-morphing', 'is-measuring', 'is-expanding', 'is-closing', 'is-prep-open', 'is-content-hiding');
+    overlay.classList.remove('is-morphing', 'is-measuring', 'is-expanding', 'is-closing', 'is-prep-open', 'is-content-hiding', 'is-card-landed');
     panel.classList.remove('cap-article-panel--morph', 'cap-article-panel--card-look');
     panel.style.transition = '';
     panel.style.removeProperty('--cap-morph-card-w');
@@ -1136,23 +1442,61 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     var base = overlay.getBoundingClientRect();
     return { x: base.left, y: base.top };
   }
-  function setPanelGeom(rect){
-    var origin = fixedOrigin();
-    panel.style.top = (rect.top - origin.y) + 'px';
-    panel.style.left = (rect.left - origin.x) + 'px';
+  function clampPanelRect(rect, preserveLeft){
+    if (!rect || !isCompactLayout()) return rect;
+    var vv = window.visualViewport;
+    var vw = vv ? vv.width : window.innerWidth;
+    var vx = vv ? vv.offsetLeft : 0;
+    var pad = window.matchMedia('(max-width:700px)').matches ? 10 : 16;
+    var maxW = Math.max(1, vw - pad * 2);
+    var w = Math.min(rect.width, maxW);
+    if (preserveLeft) {
+      return { top: rect.top, left: rect.left, width: w, height: rect.height };
+    }
+    var left = Math.min(Math.max(rect.left, vx + pad), vx + vw - pad - w);
+    return { top: rect.top, left: left, width: w, height: rect.height };
+  }
+  function contentBandRect(){
+    return nav.getBoundingClientRect();
+  }
+  function setPanelGeom(rect, preserveLeft){
+    rect = clampPanelRect(rect, !!preserveLeft);
+    if (isCompactLayout()) {
+      panel.style.top = rect.top + 'px';
+      panel.style.left = rect.left + 'px';
+    } else {
+      var origin = fixedOrigin();
+      panel.style.top = (rect.top - origin.y) + 'px';
+      panel.style.left = (rect.left - origin.x) + 'px';
+    }
     panel.style.width = Math.max(1, rect.width) + 'px';
     panel.style.height = Math.max(1, rect.height) + 'px';
     panel.style.maxHeight = 'none';
     panel.style.margin = '0';
   }
-  function measureRestTargets(){
-    overlay.classList.add('is-measuring', 'is-measure-layout');
+  function isTabletLayout(){
+    return window.matchMedia('(min-width:701px) and (max-width:999px)').matches;
+  }
+  function measureRestTargets(cardBtn){
+    if (isCompactLayout()) overlay.classList.add('is-measure-layout');
+    else overlay.classList.add('is-measuring', 'is-measure-layout');
     panel.classList.remove('cap-article-panel--morph', 'cap-article-panel--card-look');
     ['top','left','width','height','maxHeight','margin'].forEach(function(key){ panel.style[key] = ''; });
+    var band = isCompactLayout() ? contentBandRect() : null;
+    if (band && band.width > 0) {
+      panel.style.width = band.width + 'px';
+      panel.style.maxWidth = band.width + 'px';
+    }
     var panelRect = panel.getBoundingClientRect();
+    if (band && band.width > 0) {
+      panel.style.width = '';
+      panel.style.maxWidth = '';
+    }
+    var viewH = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    var compact = window.matchMedia('(max-width:700px)').matches;
     var maxPanelH = Math.min(
       panel.scrollHeight,
-      Math.min(window.innerHeight * 0.86, (window.innerHeight - 40))
+      Math.min(viewH * (compact ? 0.94 : 0.86), viewH - (compact ? 16 : 40))
     );
     if (maxPanelH > panelRect.height) {
       panelRect = {
@@ -1162,33 +1506,172 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
         height: maxPanelH
       };
     }
+    if (band && band.width > 0) {
+      var left = band.left;
+      var width = band.width;
+      if (isTabletLayout() && cardBtn) {
+        var card = cardBtn.getBoundingClientRect();
+        left = card.left;
+        width = Math.max(card.width, band.right - card.left);
+      }
+      panelRect = {
+        top: panelRect.top,
+        left: left,
+        width: width,
+        height: panelRect.height
+      };
+    }
+    panelRect = clampPanelRect(panelRect, isCompactLayout());
     var h4 = inner.querySelector('.cap-article-sect > h4');
     var titleRect = h4 ? h4.getBoundingClientRect() : panelRect;
     var titleFs = h4 ? parseFloat(getComputedStyle(h4).fontSize) : 26;
-    overlay.classList.remove('is-measuring', 'is-measure-layout');
+    if (isCompactLayout()) overlay.classList.remove('is-measure-layout');
+    else overlay.classList.remove('is-measuring', 'is-measure-layout');
     return { panel: panelRect, title: titleRect, titleFs: titleFs };
   }
 
+  function clearArticleHash(){
+    var h = '';
+    try { h = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+    if (IDS.indexOf(h) < 0) return;
+    try {
+      history.replaceState(null, '', location.pathname + location.search + '#the-three-paths');
+    } catch (e) {}
+  }
+
+  function isCompactLayout(){
+    return window.matchMedia('(max-width:999px)').matches;
+  }
+  function isPhoneLayout(){
+    return window.matchMedia('(max-width:700px)').matches;
+  }
   var state = {
-    trigger: null, sect: null, parent: null, next: null, scrollY: 0, closing: false,
-    prevHtmlScrollBehavior: ''
+    trigger: null, sect: null, parent: null, next: null, scrollY: 0, closing: false, switching: false,
+    prevHtmlScrollBehavior: '', compactScrollBlocker: null
   };
 
+  function sectIndex(id){
+    return IDS.indexOf(id);
+  }
+  function edgeNavAllowed(){
+    return !window.matchMedia('(max-width:999px)').matches;
+  }
+  function updateEdgeNav(){
+    if (!edgeNavAllowed() || !overlay.classList.contains('is-revealed') || !state.sect || state.closing || state.switching) {
+      edgePrev.hidden = true;
+      edgeNext.hidden = true;
+      return;
+    }
+    var i = sectIndex(state.sect.id);
+    edgePrev.hidden = i <= 0;
+    edgeNext.hidden = i < 0 || i >= IDS.length - 1;
+  }
+  function hideEdgeNav(){
+    edgePrev.hidden = true;
+    edgeNext.hidden = true;
+  }
+  function parkSect(sect){
+    if (!sect) return;
+    sect.setAttribute('hidden', '');
+    var prose = sect.querySelector('.cap-prose');
+    if (prose) prose.setAttribute('hidden', '');
+    if (state.parent) state.parent.insertBefore(sect, state.next);
+  }
+  function mountSect(sect){
+    sect.removeAttribute('hidden');
+    var prose = sect.querySelector('.cap-prose');
+    if (prose) prose.removeAttribute('hidden');
+    inner.appendChild(sect);
+  }
+  function switchPath(nextSect, nextBtn, dir){
+    if (!state.sect || state.closing || state.switching || !overlay.classList.contains('is-revealed')) return;
+    if (!nextSect || nextSect === state.sect) return;
+    state.switching = true;
+    hideEdgeNav();
+    var outCls = dir > 0 ? 'is-switch-out-forward' : 'is-switch-out-back';
+    var inCls = dir > 0 ? 'is-switch-in-forward' : 'is-switch-in-back';
+    var wait = reduceMotion.matches ? 0 : SWITCH_MS;
+    overlay.classList.add('is-switching', outCls);
+    window.setTimeout(function(){
+      if (panel) panel.scrollTop = 0;
+      overlay.scrollTop = 0;
+      var old = state.sect;
+      setCardHidden(morphCardBtn(state.trigger), false);
+      parkSect(old);
+      state.sect = nextSect;
+      state.parent = nextSect.parentNode;
+      state.next = nextSect.nextSibling;
+      state.trigger = nextBtn || state.trigger;
+      mountSect(nextSect);
+      overlay.classList.remove('is-switching', outCls);
+      overlay.classList.add('is-switch-in', inCls);
+      void inner.offsetWidth;
+      overlay.classList.remove('is-switch-in', inCls);
+      if (window.ichartRefresh) window.ichartRefresh();
+      if (window.reflowMobileFigs) window.reflowMobileFigs();
+      try {
+        var h = nextSect.id;
+        if (h && location.hash.slice(1) !== h) history.replaceState(null, '', '#' + h);
+      } catch (e) {}
+      state.switching = false;
+      updateEdgeNav();
+    }, wait);
+  }
+  function navigatePath(dir){
+    if (!state.sect) return;
+    var i = sectIndex(state.sect.id);
+    var j = i + dir;
+    if (j < 0 || j >= IDS.length) return;
+    var id = IDS[j];
+    var s = document.getElementById(id);
+    var b = nav.querySelector('[data-cap="' + id + '"]');
+    if (s) switchPath(s, b, dir);
+  }
+
+  function blockBackgroundScroll(e){
+    var t = e.target;
+    if (panel && (t === panel || panel.contains(t))) return;
+    e.preventDefault();
+  }
   function lockScroll(y){
     state.scrollY = y;
     state.prevHtmlScrollBehavior = document.documentElement.style.scrollBehavior || '';
     document.documentElement.style.scrollBehavior = 'auto';
+    if (isCompactLayout()) {
+      if (!state.compactScrollBlocker) {
+        state.compactScrollBlocker = blockBackgroundScroll;
+        document.addEventListener('touchmove', state.compactScrollBlocker, { passive: false });
+        document.addEventListener('wheel', state.compactScrollBlocker, { passive: false });
+      }
+      document.documentElement.classList.add('cap-article-open-compact');
+      return;
+    }
     document.documentElement.classList.add('cap-article-open');
   }
   function unlockScroll(){
+    if (state.compactScrollBlocker) {
+      document.removeEventListener('touchmove', state.compactScrollBlocker);
+      document.removeEventListener('wheel', state.compactScrollBlocker);
+      state.compactScrollBlocker = null;
+    }
     document.documentElement.style.scrollBehavior = 'auto';
     window.scrollTo({ top: state.scrollY, left: 0, behavior: 'instant' });
-    document.documentElement.classList.remove('cap-article-open');
+    document.documentElement.classList.remove('cap-article-open', 'cap-article-open-compact');
     document.documentElement.style.scrollBehavior = state.prevHtmlScrollBehavior;
   }
 
   function openPath(sect, btn){
-    if (!sect || state.sect) return;
+    if (!sect || state.closing) return;
+    if (state.sect) {
+      if (state.sect === sect) return;
+      if (overlay.classList.contains('is-revealed')) {
+        var dir = sectIndex(sect.id) > sectIndex(state.sect.id) ? 1 : -1;
+        switchPath(sect, morphCardBtn(btn), dir);
+        return;
+      }
+      return;
+    }
+    hideEdgeNav();
     state.trigger = morphCardBtn(btn) || null;
     state.sect = sect;
     state.parent = sect.parentNode;
@@ -1197,68 +1680,103 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     sect.removeAttribute('hidden');
     var prose = sect.querySelector('.cap-prose');
     if (prose) prose.removeAttribute('hidden');
+    var morphBtn = morphCardBtn(btn);
     inner.appendChild(sect);
     overlay.scrollTop = 0;
     if (panel) panel.scrollTop = 0;
     overlay.removeAttribute('hidden');
+    overlay.classList.add('is-active');
     closeBtn.setAttribute('aria-expanded', 'true');
     overlay.classList.remove('is-revealed');
     clearPanelMorph();
 
-    var morphBtn = morphCardBtn(btn);
     var useMorph = morphBtn && !reduceMotion.matches;
+
+    function runAfterBackdrop(show){
+      if (reduceMotion.matches) {
+        overlay.classList.add('is-open');
+        show();
+        return;
+      }
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          overlay.classList.add('is-open');
+          show();
+        });
+      });
+    }
 
     function afterOpen(){
       if (window.ichartRefresh) window.ichartRefresh();
       if (window.reflowMobileFigs) window.reflowMobileFigs();
+      updateEdgeNav();
       try { closeBtn.focus(); } catch (e) {}
     }
 
     if (useMorph) {
-      var targets = measureRestTargets();
-      var cardRect = morphBtn.getBoundingClientRect();
-      var fromTitle = cardTitleState(morphBtn);
-      var toTitle = titleStateFromRect(targets.title, targets.titleFs);
-      var titleText = morphBtn.querySelector('.cap-card-title');
-      panel.style.setProperty('--cap-morph-card-w', cardRect.width + 'px');
-      mountExtras(morphBtn);
-      var floatElOpen = ensureFloatTitle(titleText ? titleText.textContent.trim() : '');
-      if (titleText) copyTitleTypography(floatElOpen, titleText);
-      applyTitleState(floatElOpen, fromTitle);
-      setCardHidden(morphBtn, true);
-      overlay.classList.remove('is-expanding', 'is-closing', 'is-content-hiding');
-      overlay.classList.add('is-open', 'is-morphing', 'is-prep-open');
-      panel.classList.add('cap-article-panel--morph', 'cap-article-panel--card-look');
-      panel.style.transition = 'none';
-      setPanelGeom(cardRect);
-      void panel.offsetWidth;
-      panel.style.transition = '';
-      window.setTimeout(function(){
-        overlay.classList.remove('is-prep-open');
-        overlay.classList.add('is-expanding');
-        panel.classList.remove('cap-article-panel--card-look');
-        setPanelGeom(targets.panel);
+      runAfterBackdrop(function(){
+        var cardRect = morphBtn.getBoundingClientRect();
+        var targets = measureRestTargets(morphBtn);
+        if (isTabletLayout()) {
+          var bandNow = contentBandRect();
+          targets.panel.left = cardRect.left;
+          targets.panel.width = Math.max(cardRect.width, bandNow.right - cardRect.left);
+        }
+        overlay.classList.remove('is-expanding', 'is-closing', 'is-content-hiding');
+        overlay.classList.add('is-morphing', 'is-prep-open');
+        panel.classList.add('cap-article-panel--morph', 'cap-article-panel--card-look');
+        var fromTitle = cardTitleState(morphBtn);
+        var toTitle = titleStateFromRect(targets.title, targets.titleFs);
+        var morphH4 = inner.querySelector('.cap-article-sect > h4');
+        var titleText = morphBtn.querySelector('.cap-card-title');
+        panel.style.setProperty('--cap-morph-card-w', cardRect.width + 'px');
+        mountExtras(morphBtn);
+        var floatElOpen = ensureFloatTitle(titleText ? titleText.textContent.trim() : '', true);
+        var placedTitle = titleText ? placeFloatFromSource(floatElOpen, titleText) : fromTitle;
+        void floatElOpen.offsetWidth;
         requestAnimationFrame(function(){
+          overlay.classList.add('has-float-title');
+          setCardHidden(morphBtn, true);
+        });
+        panel.style.transition = 'none';
+        setPanelGeom(cardRect);
+        void panel.offsetWidth;
+        panel.style.transition = '';
+        window.setTimeout(function(){
+          var startTitle = placedTitle || fromTitle;
+          applyTitleState(floatElOpen, startTitle);
+          overlay.classList.remove('is-prep-open');
+          overlay.classList.add('is-expanding');
+          panel.classList.remove('cap-article-panel--card-look');
+          setPanelGeom(targets.panel, isCompactLayout());
           requestAnimationFrame(function(){
-            var startTitle = readFloatTitleState() || fromTitle;
-            animateTitle(startTitle, toTitle);
-            waitPanelMorph(function(){
-              overlay.classList.add('is-revealed');
-              requestAnimationFrame(function(){
-                clearMorphLayers();
+            requestAnimationFrame(function(){
+              animateTitle(startTitle, toTitle, function(){
+                if (morphH4) settleFloatTitle(morphH4);
               });
-              window.setTimeout(afterOpen, PROSE_REVEAL_MS);
+              waitPanelMorph(function(){
+                overlay.classList.add('is-revealed');
+                if (morphH4) settleFloatTitle(morphH4);
+                requestAnimationFrame(function(){
+                  clearMorphLayers();
+                });
+                window.setTimeout(afterOpen, PROSE_IN_MS);
+              });
             });
           });
-        });
-      }, PREP_MS);
+        }, PREP_MS);
+      });
     } else {
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          overlay.classList.add('is-open');
+      runAfterBackdrop(function(){
+        if (isCompactLayout()) {
           overlay.classList.add('is-revealed');
           afterOpen();
-        });
+        } else {
+          requestAnimationFrame(function(){
+            overlay.classList.add('is-revealed');
+            afterOpen();
+          });
+        }
       });
     }
   }
@@ -1275,13 +1793,16 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     overlay.scrollTop = 0;
     if (panel) panel.scrollTop = 0;
     var trigger = state.trigger;
-    setCardHidden(morphCardBtn(trigger), false);
+    unhideAllCards();
     state.sect = null;
     state.parent = null;
     state.next = null;
     state.trigger = null;
     state.closing = false;
+    state.switching = false;
     clearPanelMorph();
+    hideEdgeNav();
+    clearArticleHash();
     unlockScroll();
     if (trigger && trigger.isConnected) {
       requestAnimationFrame(function(){
@@ -1293,59 +1814,81 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
   function closePath(){
     if (!state.sect || state.closing) return;
     state.closing = true;
-    overlay.classList.remove('is-revealed');
-    overlay.classList.add('is-content-hiding');
+    hideEdgeNav();
 
     var morphBtn = morphCardBtn(state.trigger);
     var useMorph = morphBtn && morphBtn.isConnected && !reduceMotion.matches;
 
     function endClose(){
+      if (!overlay.classList.contains('is-closing')) overlay.classList.add('is-closing');
       overlay.classList.remove('is-open');
-      finishClose();
+      window.setTimeout(function(){
+        overlay.classList.remove('is-active', 'is-closing');
+        clearPanelMorph();
+        finishClose();
+      }, closeMs());
     }
 
     if (useMorph) {
-      var h4 = inner.querySelector('.cap-article-sect > h4');
-      var fromTitle = titleStateFromEl(h4) || cardTitleState(morphBtn);
-      var floatEl = ensureFloatTitle(h4 ? h4.textContent.trim() : '');
-      copyTitleTypography(floatEl, h4 || morphBtn.querySelector('.cap-card-title'));
-      applyTitleState(floatEl, fromTitle);
-      void floatEl.offsetWidth;
       overlay.classList.add('is-content-hiding');
-      overlay.classList.remove('is-revealed');
-      if (!panel.classList.contains('cap-article-panel--morph')) {
-        var dock = panel.getBoundingClientRect();
-        overlay.classList.add('is-morphing');
-        panel.classList.add('cap-article-panel--morph');
-        panel.style.transition = 'none';
-        setPanelGeom(dock);
-        void panel.offsetWidth;
-        panel.style.transition = '';
-      }
-      panel.style.setProperty('--cap-morph-card-w', morphBtn.getBoundingClientRect().width + 'px');
-      if (panel) panel.scrollTop = 0;
-      overlay.classList.remove('is-expanding', 'is-prep-open');
-      var cardTitleEl = morphBtn.querySelector('.cap-card-title');
-      var cardRect = morphBtn.getBoundingClientRect();
       window.setTimeout(function(){
-        overlay.classList.add('is-closing');
-        panel.classList.add('cap-article-panel--card-look');
-        setPanelGeom(cardRect);
+        var h4 = inner.querySelector('.cap-article-sect > h4');
+        var srcTitle = h4 || morphBtn.querySelector('.cap-card-title');
+        var floatEl = ensureFloatTitle(srcTitle ? srcTitle.textContent.trim() : '', true);
+        var fromTitle = placeFloatFromSource(floatEl, srcTitle) || cardTitleState(morphBtn);
+        if (fromTitle && panel && h4) {
+          var h4Top = h4.getBoundingClientRect().top;
+          var minY = panel.getBoundingClientRect().top + (parseFloat(getComputedStyle(panel).paddingTop) || 0);
+          if (h4Top < minY - 1) {
+            fromTitle = { x: fromTitle.x, y: fromTitle.y + (panel.scrollTop || 0), w: fromTitle.w, fs: fromTitle.fs };
+            if (fromTitle.y < minY) fromTitle.y = minY;
+            applyTitleState(floatEl, fromTitle);
+          }
+        }
+        overlay.classList.add('has-float-title', 'is-closing');
+        if (panel) panel.scrollTop = 0;
+        overlay.scrollTop = 0;
+        if (!panel.classList.contains('cap-article-panel--morph')) {
+          var dock = panel.getBoundingClientRect();
+          overlay.classList.add('is-morphing');
+          panel.classList.add('cap-article-panel--morph');
+          panel.style.transition = 'none';
+          setPanelGeom(dock);
+          void panel.offsetWidth;
+          panel.style.transition = '';
+        }
+        mountExtras(morphBtn);
+        panel.style.setProperty('--cap-morph-card-w', morphBtn.getBoundingClientRect().width + 'px');
+        overlay.classList.remove('is-expanding', 'is-prep-open');
+        var cardRect = morphBtn.getBoundingClientRect();
         requestAnimationFrame(function(){
           requestAnimationFrame(function(){
+            overlay.classList.remove('is-revealed');
+            panel.classList.add('cap-article-panel--card-look');
+            setPanelGeom(cardRect);
             var startTitle = readFloatTitleState() || fromTitle;
             var toTitle = cardTitleState(morphBtn);
+            var cardTitleEl = morphBtn.querySelector('.cap-card-title');
             animateTitle(startTitle, toTitle, function(){
-              copyTitleTypography(floatEl, cardTitleEl);
-              applyTitleState(floatEl, toTitle);
+              if (cardTitleEl) settleFloatTitle(cardTitleEl);
             });
-            waitPanelMorph(endClose);
+            waitPanelMorph(function(){
+              if (cardTitleEl) settleFloatTitle(cardTitleEl);
+              overlay.classList.add('is-card-landed');
+              window.setTimeout(endClose, EXTRAS_IN_MS);
+            });
           });
         });
-      }, 120);
+      }, PROSE_OUT_MS);
     } else {
+      overlay.classList.remove('is-revealed');
+      overlay.classList.add('is-closing');
       overlay.classList.remove('is-open');
-      window.setTimeout(endClose, closeMs());
+      window.setTimeout(function(){
+        overlay.classList.remove('is-active', 'is-closing');
+        clearPanelMorph();
+        finishClose();
+      }, closeMs());
     }
   }
 
@@ -1356,10 +1899,44 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
       if (s) openPath(s, btn);
     });
   });
-  closeBtn.addEventListener('click', closePath);
+  function onCloseTap(e){
+    e.preventDefault();
+    e.stopPropagation();
+    closePath();
+  }
+  closeBtn.addEventListener('click', onCloseTap);
+  closeBtn.addEventListener('touchend', onCloseTap);
+  if (closeBtn.parentElement) {
+    closeBtn.parentElement.addEventListener('click', onCloseTap);
+    closeBtn.parentElement.addEventListener('touchend', onCloseTap);
+  }
+  if (edgePrevBtn) {
+    edgePrevBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      navigatePath(-1);
+    });
+  }
+  if (edgeNextBtn) {
+    edgeNextBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      navigatePath(1);
+    });
+  }
+  [edgePrev, edgeNext].forEach(function(zone){
+    if (!zone) return;
+    zone.addEventListener('click', function(e){ e.stopPropagation(); });
+  });
   overlay.addEventListener('click', function(e){ if (e.target === overlay) closePath(); });
+  overlay.addEventListener('touchmove', function(e){
+    if (panel && panel.contains(e.target)) return;
+    e.preventDefault();
+  }, {passive:false});
   document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && state.sect) { e.preventDefault(); closePath(); }
+    if (!state.sect || state.closing) return;
+    if (e.key === 'Escape') { e.preventDefault(); closePath(); return; }
+    if (!overlay.classList.contains('is-revealed') || state.switching) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); navigatePath(-1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); navigatePath(1); }
   });
 
   function pathFromHash(){

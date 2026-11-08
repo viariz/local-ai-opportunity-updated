@@ -1,6 +1,12 @@
 /* Every visible page has one native snap area. Chapter/section wrappers
    are semantic containers only; overlapping snap areas cause edge jumps. */
-:root{--chapter-heading-size:clamp(1.55rem,3.6vw,2.05rem);}
+/* Both editions share this palette, including when chapter CSS is merged. */
+:root{
+  --paper:#ffffff;
+  --titlepage-bg:#000000;--titlepage-ink:#ffffff;
+  --titlepage-ink-soft:rgba(255,255,255,.58);--titlepage-rule:rgba(255,255,255,.22);
+  --chapter-heading-size:clamp(1.55rem,3.6vw,2.05rem);
+}
 .book > section.part{margin-top:0!important;padding-top:0!important;}
 /* Legacy subsection borders occupy a pixel of the white parent between
    full-bleed pages. Semantic wrappers must not paint a divider or add space. */
@@ -68,6 +74,9 @@
 .book .snap-panel--quote .bigquote{max-width:28em;margin:0 auto!important;text-align:center;}
 .book .snap-panel--note .snap-panel-content{max-width:36rem;}
 .book .snap-panel--note figure.investor-letter{margin:0!important;}
+.book .snap-panel--soon .snap-panel-content{display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.book .snap-panel--soon .soon-title{margin:0;font-family:var(--display);font-weight:100;font-variation-settings:"wght" 100;font-synthesis:none;font-size:var(--chapter-heading-size);line-height:1.2;letter-spacing:.015em;color:var(--ink);}
+.book .snap-panel--soon .soon-email{margin:0;font-family:var(--sans);font-weight:400;font-variation-settings:normal;font-size:.9rem;line-height:1.5;color:var(--ink-soft);text-align:center;}
 #agentic-paradox-note .letter-script,
 dialog.letter-modal .letter-script{font-size:clamp(1rem,1.5vw,1.12rem);}
 .letter-source-hidden{visibility:hidden!important;}

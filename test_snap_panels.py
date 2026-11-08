@@ -5,6 +5,8 @@ from pathlib import Path
 import re
 import unittest
 
+from build_single_page import extract_book_inner, extract_first_style_body
+
 ROOT = Path(__file__).resolve().parent
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
 
@@ -216,6 +218,39 @@ class SnapPanelTests(unittest.TestCase):
             self.assertEqual(len(links), 1)
             self.assertEqual((ROOT / edition / "index.html").read_bytes(), (ROOT / edition / "introduction.html").read_bytes())
         self.assertEqual((ROOT / "full/snap-panels.css").read_bytes(), (ROOT / "public/snap-panels.css").read_bytes())
+
+    def test_public_shared_chapters_match_the_full_edition(self):
+        for slug in ("introduction", "the-three-caps", "the-three-paths", "precedents", "endnotes"):
+            self.assertEqual(
+                extract_book_inner(ROOT / "public/_sources" / (slug + ".html")),
+                extract_book_inner(ROOT / "full/_sources" / (slug + ".html")),
+                slug,
+            )
+
+    def test_public_soon_chapters_only_contain_the_placeholder_and_email(self):
+        doc = self.docs["public"]
+        for slug in ("a-new-computer", "next-gen-chips", "a-million-new-computers"):
+            chapter = doc.by_id(slug)
+            panel = next(n for n in chapter.descendants() if n.has_class("snap-panel--soon"))
+            self.assertEqual(" ".join(chapter.words().split()), "Soon hello@deepshard.org")
+            self.assertTrue(panel.has_class("snap-panel--white"))
+            self.assertEqual(next(n for n in panel.descendants() if n.has_class("soon-title")).words(), "Soon")
+            self.assertEqual(next(n for n in panel.descendants() if n.tag == "a").attrs["href"], "mailto:hello@deepshard.org")
+            self.assertFalse(any(n.tag in ("img", "svg", "video", "canvas", "iframe", "picture") for n in chapter.descendants()))
+
+    def test_public_shell_and_placeholder_styles_use_the_full_edition_theme(self):
+        for slug in ("introduction", "a-new-computer", "next-gen-chips", "a-million-new-computers"):
+            full_style = extract_first_style_body((ROOT / "full/_sources" / (slug + ".html")).read_text(encoding="utf-8"))
+            public_style = extract_first_style_body((ROOT / "public/_sources" / (slug + ".html")).read_text(encoding="utf-8"))
+            self.assertEqual(full_style, public_style, slug)
+        self.assertEqual(
+            extract_first_style_body((ROOT / "full/index.html").read_text(encoding="utf-8")),
+            extract_first_style_body((ROOT / "public/index.html").read_text(encoding="utf-8")),
+        )
+
+    def test_public_page_does_not_load_unreleased_chapter_renderers(self):
+        sources = {n.attrs.get("src", "").split("?")[0] for n in self.docs["public"].elements if n.tag == "script"}
+        self.assertFalse(sources.intersection({"dreaming-canvas.js", "chip-intro.js", "supply-chain-canvas.js", "capability-radars.js"}))
 
 
 if __name__ == "__main__":
