@@ -495,10 +495,14 @@ table.worked td:first-child{padding-right:1.4em;}
 #innovators-dilemma .dilemma-figure{margin:2.2rem 0 2rem;padding:0;border:0;background:transparent;box-shadow:none;}
 #innovators-dilemma .dilemma-plot{position:relative;height:clamp(260px,42vw,340px);color:var(--ink);}
 #innovators-dilemma .dilemma-plot svg{display:block;width:100%;height:100%;overflow:visible;}
-#innovators-dilemma .dilemma-axis{fill:none;stroke:var(--rule);stroke-width:1;vector-effect:non-scaling-stroke;}
-#innovators-dilemma .dilemma-curve{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-linecap:round;vector-effect:non-scaling-stroke;}
-#innovators-dilemma .dilemma-label,#innovators-dilemma .dilemma-axis-label{position:absolute;font-family:var(--sans);font-size:12px;font-style:normal;font-weight:400;line-height:1.35;letter-spacing:0;color:var(--ink);}
+#innovators-dilemma .dilemma-zone-fill{fill:url(#dilemma-hatch);opacity:.55;}
+#innovators-dilemma .dilemma-axis{fill:none;stroke:var(--ink-soft);stroke-width:1;vector-effect:non-scaling-stroke;}
+#innovators-dilemma .dilemma-curve{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;}
+#innovators-dilemma .dilemma-incumbent{stroke:var(--ink);stroke-width:1.05;}
+#innovators-dilemma .dilemma-newcomer{stroke:var(--s1);stroke-width:1.1;}
+#innovators-dilemma .dilemma-label,#innovators-dilemma .dilemma-axis-label{position:absolute;font-family:var(--sans);font-size:11px;font-style:normal;font-weight:400;line-height:1.35;letter-spacing:.02em;color:var(--ink);}
 #innovators-dilemma .dilemma-axis-label{color:var(--ink-soft);}
+#innovators-dilemma .dilemma-startup{color:var(--s1);}
 #innovators-dilemma .dilemma-performance{left:0;top:0;}
 #innovators-dilemma .dilemma-time{right:0;bottom:0;}
 #innovators-dilemma .dilemma-apple,#innovators-dilemma .dilemma-startup{transform:translate(-100%,-100%);text-align:right;white-space:nowrap;}
@@ -634,15 +638,12 @@ table.worked td:first-child{padding-right:1.4em;}
         <div class="dilemma-plot" role="img" aria-label="An illustrative diagram, not a forecast. An S-curve labeled Apple rises and levels off. A later S-curve labeled New computer startup begins below it and rises beyond it. The dilemma is highlighted in the overlap, before the new approach has proved itself.">
           <svg viewBox="38 0 666 340" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <defs>
-              <linearGradient id="dilemma-wash" x1="0" x2="1">
-                <stop offset="0" stop-color="currentColor" stop-opacity="0"/>
-                <stop offset=".25" stop-color="currentColor" stop-opacity=".045"/>
-                <stop offset=".75" stop-color="currentColor" stop-opacity=".045"/>
-                <stop offset="1" stop-color="currentColor" stop-opacity="0"/>
-              </linearGradient>
+              <pattern id="dilemma-hatch" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="7" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+              </pattern>
             </defs>
             <path class="dilemma-axis" d="M38 28V312H704"/>
-            <path fill="url(#dilemma-wash)" d="M320 164C346 154 381 150 414 148L414 231C387 237 353 237 320 236Z"/>
+            <path class="dilemma-zone-fill" d="M320 164C346 154 381 150 414 148L414 231C387 237 353 237 320 236Z"/>
             <path class="dilemma-curve dilemma-incumbent" d="M68 285C119 287 160 282 194 258C237 228 242 186 291 169C327 156 370 150 414 148"/>
             <path class="dilemma-curve dilemma-newcomer" d="M320 236C379 238 421 235 452 212C493 182 507 110 552 81C582 62 617 56 670 53"/>
           </svg>
