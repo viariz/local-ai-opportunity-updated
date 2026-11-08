@@ -597,8 +597,7 @@ table.worked.results td:first-child{padding-right:.8em;}
   visibility:hidden;
   pointer-events:none;
 }
-.cap-article-overlay.is-morphing:not(.is-revealed) .cap-article-inner,
-.cap-article-overlay.is-closing .cap-article-inner{
+.cap-article-overlay.is-morphing:not(.is-revealed) .cap-article-inner{
   position:absolute;
   left:0;
   right:0;
@@ -661,7 +660,18 @@ table.worked.results td:first-child{padding-right:.8em;}
   content-visibility:visible;
   transition:none;
 }
+.cap-article-overlay.is-revealed.is-closing .cap-article-inner{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:none;
+}
 .cap-article-overlay.is-revealed .cap-article-close{opacity:1; transition:opacity .22s ease .06s;}
+.cap-article-overlay.is-revealed.is-closing .cap-article-close{
+  opacity:0;
+  pointer-events:none;
+  transition:none;
+}
 .cap-article-inner .cap-article-sect > h4{
   display:block; box-sizing:border-box; width:100%; text-align:left;
   font-family:var(--display); font-size:clamp(1.25rem, 2.8vw, 1.65rem);
@@ -1491,8 +1501,9 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     var inCls = dir > 0 ? 'is-switch-in-forward' : 'is-switch-in-back';
     var wait = reduceMotion.matches ? 0 : SWITCH_MS;
     overlay.classList.add('is-switching', outCls);
-    if (panel) panel.scrollTop = 0;
     window.setTimeout(function(){
+      if (panel) panel.scrollTop = 0;
+      overlay.scrollTop = 0;
       var old = state.sect;
       setCardHidden(morphCardBtn(state.trigger), false);
       parkSect(old);
@@ -1666,6 +1677,7 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
   function closeCap(){
     if (!state.sect || state.closing) return;
     state.closing = true;
+    hideEdgeNav();
 
     var morphBtn = morphCardBtn(state.trigger);
     var useMorph = morphBtn && morphBtn.isConnected && !reduceMotion.matches;
@@ -1682,7 +1694,18 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
         var srcTitle = h4 || morphBtn.querySelector('.cap-card-title');
         var floatEl = ensureFloatTitle(srcTitle ? srcTitle.textContent.trim() : '', true);
         var fromTitle = placeFloatFromSource(floatEl, srcTitle) || cardTitleState(morphBtn);
-        overlay.classList.add('has-float-title');
+        if (fromTitle && panel && h4) {
+          var h4Top = h4.getBoundingClientRect().top;
+          var minY = panel.getBoundingClientRect().top + (parseFloat(getComputedStyle(panel).paddingTop) || 0);
+          if (h4Top < minY - 1) {
+            fromTitle = { x: fromTitle.x, y: fromTitle.y + (panel.scrollTop || 0), w: fromTitle.w, fs: fromTitle.fs };
+            if (fromTitle.y < minY) fromTitle.y = minY;
+            applyTitleState(floatEl, fromTitle);
+          }
+        }
+        overlay.classList.add('has-float-title', 'is-closing');
+        if (panel) panel.scrollTop = 0;
+        overlay.scrollTop = 0;
         if (!panel.classList.contains('cap-article-panel--morph')) {
           var dock = panel.getBoundingClientRect();
           overlay.classList.add('is-morphing');
@@ -1694,12 +1717,10 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
         }
         mountExtras(morphBtn);
         panel.style.setProperty('--cap-morph-card-w', morphBtn.getBoundingClientRect().width + 'px');
-        if (panel) panel.scrollTop = 0;
         overlay.classList.remove('is-expanding', 'is-prep-open');
         var cardRect = morphBtn.getBoundingClientRect();
         requestAnimationFrame(function(){
           requestAnimationFrame(function(){
-            overlay.classList.add('is-closing');
             overlay.classList.remove('is-revealed');
             panel.classList.add('cap-article-panel--card-look');
             setPanelGeom(cardRect);
