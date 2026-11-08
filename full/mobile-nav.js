@@ -154,8 +154,6 @@
 
   function unlockPageScroll() {
     var y = lockScrollY;
-    document.documentElement.classList.remove('mobile-nav-open');
-    document.body.classList.remove('mobile-nav-open');
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.left = '';
@@ -164,6 +162,8 @@
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
     scrollInstant(y);
+    document.documentElement.classList.remove('mobile-nav-open');
+    document.body.classList.remove('mobile-nav-open');
   }
 
   function setOpen(next) {

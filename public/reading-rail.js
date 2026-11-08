@@ -196,7 +196,7 @@
     }
 
     function update(){
-      if(document.documentElement.classList.contains('letter-modal-open')) return;
+      if(document.documentElement.matches('.letter-modal-open,.cap-article-open,.cap-article-open-compact,.mobile-nav-open')) return;
       updateNavTone();
       setChapterIndicator();
       paint();

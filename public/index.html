@@ -106,10 +106,10 @@ html{--reader-scroll-inset:clamp(40px,5vh,64px);scroll-padding-top:var(--reader-
       animation-range:entry 0% exit 100%;
     }
     @keyframes title-handoff{
-      0%{opacity:.45;transform:translateY(18px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}
+      0%{opacity:.6;transform:translateY(12px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}
       45%{opacity:1;transform:translateY(0);}
       55%{opacity:1;transform:translateY(0);animation-timing-function:cubic-bezier(.64,0,.78,0);}
-      100%{opacity:.45;transform:translateY(-18px);}
+      100%{opacity:.6;transform:translateY(-12px);}
     }
   }
 }
@@ -4122,9 +4122,9 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
 }
 
 </style>
-<link rel="stylesheet" href="snap-panels.css?v=4">
+<link rel="stylesheet" href="snap-panels.css?v=5">
 <script src="navigation.js"></script>
-<script src="reading-rail.js?v=2"></script>
+<script src="reading-rail.js?v=3"></script>
 <script src="title-scramble.js" defer></script>
 <script>
 (function(){
@@ -5145,7 +5145,7 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
   var sections = Array.prototype.slice.call(document.querySelectorAll('[data-title]'));
   var title = document.getElementById('top');
   function onScroll(){
-    if (document.documentElement.classList.contains('letter-modal-open')) return;
+    if (document.documentElement.matches('.letter-modal-open,.cap-article-open,.cap-article-open-compact,.mobile-nav-open')) return;
     var y = window.scrollY || document.documentElement.scrollTop;
     var past = y > title.offsetHeight - 220;
     topbar.classList.toggle('show', past);
@@ -5204,6 +5204,12 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
   function scrollyUpdate(){
     if (!scrolly || !tokcurve || steps.length < 2) return;
     var vh = window.innerHeight;
+    var scrollyRect = scrolly.getBoundingClientRect();
+    if (scrollyRect.bottom <= 0 || scrollyRect.top >= vh) {
+      if (mini) mini.classList.remove('show');
+      document.body.classList.remove('scrolly-mini-active');
+      return;
+    }
     // Match the visible drawing, including its movement as the sticky chart exits.
     if (window.matchMedia('(min-width:1000px)').matches) {
       var chartSvg = scrolly.querySelector('.scrolly-chart > svg');
@@ -5249,8 +5255,7 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
       if (!reduceMotion) markers[q].classList.toggle('on', showMarker);
       markers[q].classList.toggle('active', showMarker && q === activeIdx);
     }
-    for (var j = 0; j < steps.length; j++) steps[j].classList.remove('active');
-    steps[activeIdx].classList.add('active');
+    for (var j = 0; j < steps.length; j++) steps[j].classList.toggle('active', j === activeIdx);
     if (chip) chip.textContent = chipText[activeIdx] || chipText[0];
     if (miniCurve && !reduceMotion) {
       miniCurve.style.strokeDashoffset = miniLen * (1 - p);
@@ -5263,13 +5268,18 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
     if (miniChip) miniChip.textContent = chipText[activeIdx] || chipText[0];
     if (miniName) miniName.textContent = stageNames[activeIdx] || stageNames[0];
     if (mini) {
-      var rsc = scrolly.getBoundingClientRect();
+      var rsc = scrollyRect;
       var miniOn = rsc.top < vh * 0.75 && rsc.bottom > vh * 0.5;
       mini.classList.toggle('show', miniOn);
       document.body.classList.toggle('scrolly-mini-active', miniOn);
     }
   }
-  window.addEventListener('scroll', onScroll, {passive:true});
+  var scrollFrame = 0;
+  function scheduleScrollUpdate(){
+    if (scrollFrame) return;
+    scrollFrame = requestAnimationFrame(function(){ scrollFrame = 0; onScroll(); });
+  }
+  window.addEventListener('scroll', scheduleScrollUpdate, {passive:true});
   window.addEventListener('resize', function(){ readingRail.measure(); onScroll(); });
   onScroll();
 
@@ -5302,7 +5312,7 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
 })();
 
 </script>
-<script src="mobile-nav.js?v=6" defer></script>
+<script src="mobile-nav.js?v=7" defer></script>
 <script>
 (function(){
   var IDS = ['the-grid','the-neighbors','the-state'];
@@ -5506,9 +5516,9 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
     document.documentElement.classList.add('cap-article-open');
   }
   function unlockScroll(){
-    document.documentElement.classList.remove('cap-article-open');
     document.documentElement.style.scrollBehavior = 'auto';
     window.scrollTo({ top: state.scrollY, left: 0, behavior: 'instant' });
+    document.documentElement.classList.remove('cap-article-open');
     document.documentElement.style.scrollBehavior = state.prevHtmlScrollBehavior;
   }
 
@@ -5518,10 +5528,10 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
     state.sect = sect;
     state.parent = sect.parentNode;
     state.next = sect.nextSibling;
+    lockScroll(window.scrollY);
     sect.removeAttribute('hidden');
     var prose = sect.querySelector('.cap-prose');
     if (prose) prose.removeAttribute('hidden');
-    lockScroll(window.scrollY);
     inner.appendChild(sect);
     overlay.scrollTop = 0;
     if (panel) panel.scrollTop = 0;
@@ -5909,9 +5919,9 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
     document.documentElement.classList.add('cap-article-open');
   }
   function unlockScroll(){
-    document.documentElement.classList.remove('cap-article-open');
     document.documentElement.style.scrollBehavior = 'auto';
     window.scrollTo({ top: state.scrollY, left: 0, behavior: 'instant' });
+    document.documentElement.classList.remove('cap-article-open');
     document.documentElement.style.scrollBehavior = state.prevHtmlScrollBehavior;
   }
 
@@ -5921,10 +5931,10 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
     state.sect = sect;
     state.parent = sect.parentNode;
     state.next = sect.nextSibling;
+    lockScroll(window.scrollY);
     sect.removeAttribute('hidden');
     var prose = sect.querySelector('.cap-prose');
     if (prose) prose.removeAttribute('hidden');
-    lockScroll(window.scrollY);
     inner.appendChild(sect);
     overlay.scrollTop = 0;
     if (panel) panel.scrollTop = 0;

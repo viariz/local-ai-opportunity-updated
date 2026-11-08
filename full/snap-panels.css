@@ -70,6 +70,9 @@
 dialog.letter-modal .letter-script{font-size:clamp(1rem,1.5vw,1.12rem);}
 .letter-source-hidden{visibility:hidden!important;}
 html.letter-modal-open,
+html.cap-article-open,
+html.cap-article-open-compact,
+html.mobile-nav-open,
 html.letter-scroll-restoring{scroll-snap-type:none!important;scroll-behavior:auto!important;overflow-anchor:none;}
 dialog.letter-modal.is-dim::backdrop{background:color-mix(in srgb,var(--letter-backdrop-color,#fff) 90%,transparent);}
 .book .snap-panel--cards .cap-cards{width:100%;margin:0 auto;align-items:stretch;}

@@ -1181,9 +1181,9 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     document.documentElement.classList.add('cap-article-open');
   }
   function unlockScroll(){
-    document.documentElement.classList.remove('cap-article-open');
     document.documentElement.style.scrollBehavior = 'auto';
     window.scrollTo({ top: state.scrollY, left: 0, behavior: 'instant' });
+    document.documentElement.classList.remove('cap-article-open');
     document.documentElement.style.scrollBehavior = state.prevHtmlScrollBehavior;
   }
 
@@ -1193,10 +1193,10 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
     state.sect = sect;
     state.parent = sect.parentNode;
     state.next = sect.nextSibling;
+    lockScroll(window.scrollY);
     sect.removeAttribute('hidden');
     var prose = sect.querySelector('.cap-prose');
     if (prose) prose.removeAttribute('hidden');
-    lockScroll(window.scrollY);
     inner.appendChild(sect);
     overlay.scrollTop = 0;
     if (panel) panel.scrollTop = 0;

@@ -2,6 +2,7 @@
 from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
+import re
 import unittest
 
 ROOT = Path(__file__).resolve().parent
@@ -186,6 +187,16 @@ class SnapPanelTests(unittest.TestCase):
                     continue
                 owners = [n for n in chain if n.has_class("snap-panel") or n.has_class("titlepage") or n.has_class("endnotes")]
                 self.assertEqual(len(owners), 1, node.words()[:80])
+
+    def test_every_modal_scroll_lock_disables_native_page_snapping(self):
+        flags = {"letter-modal-open", "letter-scroll-restoring", "cap-article-open", "cap-article-open-compact", "mobile-nav-open"}
+        for edition in self.docs:
+            css = (ROOT / edition / "snap-panels.css").read_text(encoding="utf-8")
+            guarded = set()
+            for selectors, declarations in re.findall(r"([^{}]+)\{([^{}]*)\}", css):
+                if re.search(r"scroll-snap-type\s*:\s*none\s*!important", declarations):
+                    guarded.update(re.findall(r"html\.([\w-]+)", selectors))
+            self.assertTrue(flags <= guarded)
 
     def test_note_dialog_and_quote_survive_the_white_panel_wrappers(self):
         for doc in self.docs.values():

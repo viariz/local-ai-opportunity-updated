@@ -1706,9 +1706,9 @@ html.cap-article-open-compact body{overscroll-behavior:none;}
       document.removeEventListener('wheel', state.compactScrollBlocker);
       state.compactScrollBlocker = null;
     }
-    document.documentElement.classList.remove('cap-article-open', 'cap-article-open-compact');
     document.documentElement.style.scrollBehavior = 'auto';
     window.scrollTo({ top: state.scrollY, left: 0, behavior: 'instant' });
+    document.documentElement.classList.remove('cap-article-open', 'cap-article-open-compact');
     document.documentElement.style.scrollBehavior = state.prevHtmlScrollBehavior;
   }
 
@@ -1728,11 +1728,11 @@ html.cap-article-open-compact body{overscroll-behavior:none;}
     state.sect = sect;
     state.parent = sect.parentNode;
     state.next = sect.nextSibling;
+    lockScroll(window.scrollY);
     sect.removeAttribute('hidden');
     var prose = sect.querySelector('.cap-prose');
     if (prose) prose.removeAttribute('hidden');
     var morphBtn = morphCardBtn(btn);
-    var openY = window.scrollY;
     inner.appendChild(sect);
     overlay.scrollTop = 0;
     if (panel) panel.scrollTop = 0;
@@ -1741,7 +1741,6 @@ html.cap-article-open-compact body{overscroll-behavior:none;}
     closeBtn.setAttribute('aria-expanded', 'true');
     overlay.classList.remove('is-revealed');
     clearPanelMorph();
-    lockScroll(openY);
 
     var useMorph = morphBtn && !reduceMotion.matches;
 
