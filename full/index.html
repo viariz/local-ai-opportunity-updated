@@ -77,9 +77,54 @@
 html{background:var(--paper); scrollbar-gutter:stable;}
 
 /* Leave breathing room when following contents or section links. */
-html{scroll-padding-top:clamp(40px,5vh,64px);}
+html{--reader-scroll-inset:clamp(40px,5vh,64px);scroll-padding-top:var(--reader-scroll-inset);}
 @media(max-width:999px){
-  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+  html{--reader-scroll-inset:calc(env(safe-area-inset-top,0px) + 76px);scroll-padding-top:var(--reader-scroll-inset);}
+}
+
+/* Native chapter paging, as in the Steve Jobs Archive. Every reading section
+   is also a snap AREA: oversized areas allow free scrolling through their
+   entire contents. Snapping only the title pages would trap the prose between
+   them. Keep this on the document scroller so touch, wheel, keyboard, links,
+   browser find and scrollbar navigation all share the browser's own behavior. */
+@media screen and (prefers-reduced-motion:no-preference){
+  html{scroll-snap-type:y mandatory;scroll-behavior:smooth;}
+  .book > section.titlepage{
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    /* Cancel the anchor inset only for full-screen titles. Their top and
+       bottom then align with the viewport without a white strip or extra stop. */
+    scroll-margin-top:calc(-1 * var(--reader-scroll-inset));
+  }
+  .book > section.part,
+  .book > section.endnotes{scroll-snap-align:start;}
+  .book > aside.section-transition{scroll-snap-align:center;}
+  /* Soften the visual handoff without intercepting scrolling or delaying
+     input. The page itself remains the snap target; only its copy moves. */
+  @supports (animation-timeline:view()) and (animation-range:entry 0% exit 100%){
+    .book > section.titlepage{view-timeline:--title-handoff block;view-timeline-inset:0;}
+    .titlepage > .titlepage-hero,
+    .titlepage.chapter-title > :is(h1,.eyebrow,.thesis){
+      animation:title-handoff 1s linear both;
+      animation-timeline:--title-handoff;
+      animation-range:entry 0% exit 100%;
+    }
+    @keyframes title-handoff{
+      0%{opacity:.45;transform:translateY(18px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}
+      45%{opacity:1;transform:translateY(0);}
+      55%{opacity:1;transform:translateY(0);animation-timing-function:cubic-bezier(.64,0,.78,0);}
+      100%{opacity:.45;transform:translateY(-18px);}
+    }
+  }
+}
+html.letter-modal-open,
+html.cap-article-open,
+html.mobile-nav-open{scroll-snap-type:none;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-snap-type:none;scroll-behavior:auto!important;}
+}
+@media print{
+  html{scroll-snap-type:none;scroll-behavior:auto!important;}
 }
 
 body{
@@ -837,7 +882,9 @@ table.worked td:first-child{padding-right:1.4em;}
 
 /* ---- per-chapter CSS (deduped) ---- */
 /* ---- delta: the-three-caps.html ---- */
-ffffff;
+/* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
+:root{
+  --paper:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
   --ink:#1F2122;
   --ink-soft:#5c6164;
@@ -1609,7 +1656,9 @@ html.cap-article-open-compact body{overscroll-behavior:none;}
 }
 
 /* ---- delta: the-three-paths.html ---- */
-ffffff;
+/* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
+:root{
+  --paper:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
   --ink:#1F2122;
   --ink-soft:#5c6164;
@@ -2431,7 +2480,9 @@ html.cap-article-open-compact body{overscroll-behavior:none;}
 .tabsect.hiddentab{display:none;}
 
 /* ---- delta: precedents.html ---- */
-ffffff;
+/* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
+:root{
+  --paper:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
   --ink:#1F2122;
   --ink-soft:#5c6164;
@@ -2887,7 +2938,9 @@ table.worked td:first-child{padding-right:1.4em;}
 #innovators-dilemma .dilemma-figure figcaption a:hover{text-decoration:underline;}
 
 /* ---- delta: a-new-computer.html ---- */
-ffffff;
+/* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
+:root{
+  --paper:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
   --ink:#1F2122;
   --ink-soft:#5c6164;
@@ -3207,7 +3260,9 @@ table.worked td:first-child{padding-right:1.4em;}
 .demo-slot{border:1px dashed var(--rule); border-radius:0; padding:3.4em 1em; text-align:center; font-size:.72em; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-soft); margin:1.8em 0 0;}
 
 /* ---- delta: next-gen-chips.html ---- */
-ffffff;
+/* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
+:root{
+  --paper:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
   --ink:#1F2122;
   --ink-soft:#5c6164;
@@ -4046,7 +4101,9 @@ figure.sc-map{
 @media(prefers-reduced-motion:reduce){.chip-packet{animation:none;}.chip-video-preview{transition:none;}}
 
 /* ---- delta: a-million-new-computers.html ---- */
-ffffff;
+/* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
+:root{
+  --paper:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
   --ink:#1F2122;
   --ink-soft:#5c6164;
@@ -4445,7 +4502,9 @@ table.worked td:first-child{padding-right:1.4em;}
 }
 
 /* ---- delta: endnotes.html ---- */
-ffffff;
+/* Layout: a single long reading page — centered 38em measure, fixed left timeline rail that fills as you scroll. */
+:root{
+  --paper:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#e34948;
   --ink:#1F2122;
   --ink-soft:#5c6164;
@@ -4757,6 +4816,10 @@ table.worked td:first-child{padding-right:1.4em;}
 .tabsect.hiddentab{display:none;}
 
 /* ---- single-page build (must stay last): rail visible; chip roadmap photos unstyled ---- */
+/* Older chapter sheets reserve a second gutter at the left edge. A full-bleed
+   title cannot paint that root gutter, so keep only the scrollbar-side gutter.
+   clip avoids horizontal spill from 100vw titles without adding a scroller. */
+html{scrollbar-gutter:stable!important;overflow-x:clip;}
 #rail,#rail.show{opacity:1!important;pointer-events:auto!important;visibility:visible!important}
 @media (max-width:999px){
   #topbar{opacity:1!important;pointer-events:auto!important;position:fixed!important;top:env(safe-area-inset-top,0px)!important;left:0!important;right:0!important;z-index:15!important;}
@@ -5013,7 +5076,6 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
 </style>
 <script src="navigation.js"></script>
 <script src="reading-rail.js"></script>
-<script src="title-snap.js?v=11" defer></script>
 <script src="title-scramble.js?v=2" defer></script>
 <script>
 (function(){
@@ -7209,10 +7271,6 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', function(){ readingRail.measure(); onScroll(); });
   onScroll();
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.setAttribute('data-smooth-scroll', '1');
-    document.documentElement.style.scrollBehavior = 'smooth';
-  }
 
   var supplyChart = document.querySelector('.supply-demand-chart');
   if (supplyChart) {

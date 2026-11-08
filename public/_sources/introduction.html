@@ -73,9 +73,54 @@
 html{background:var(--paper); scrollbar-gutter:stable both-edges;}
 
 /* Leave breathing room when following contents or section links. */
-html{scroll-padding-top:clamp(40px,5vh,64px);}
+html{--reader-scroll-inset:clamp(40px,5vh,64px);scroll-padding-top:var(--reader-scroll-inset);}
 @media(max-width:999px){
-  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+  html{--reader-scroll-inset:calc(env(safe-area-inset-top,0px) + 76px);scroll-padding-top:var(--reader-scroll-inset);}
+}
+
+/* Native chapter paging, as in the Steve Jobs Archive. Every reading section
+   is also a snap AREA: oversized areas allow free scrolling through their
+   entire contents. Snapping only the title pages would trap the prose between
+   them. Keep this on the document scroller so touch, wheel, keyboard, links,
+   browser find and scrollbar navigation all share the browser's own behavior. */
+@media screen and (prefers-reduced-motion:no-preference){
+  html{scroll-snap-type:y mandatory;scroll-behavior:smooth;}
+  .book > section.titlepage{
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    /* Cancel the anchor inset only for full-screen titles. Their top and
+       bottom then align with the viewport without a white strip or extra stop. */
+    scroll-margin-top:calc(-1 * var(--reader-scroll-inset));
+  }
+  .book > section.part,
+  .book > section.endnotes{scroll-snap-align:start;}
+  .book > aside.section-transition{scroll-snap-align:center;}
+  /* Soften the visual handoff without intercepting scrolling or delaying
+     input. The page itself remains the snap target; only its copy moves. */
+  @supports (animation-timeline:view()) and (animation-range:entry 0% exit 100%){
+    .book > section.titlepage{view-timeline:--title-handoff block;view-timeline-inset:0;}
+    .titlepage > .titlepage-hero,
+    .titlepage.chapter-title > :is(h1,.eyebrow,.thesis){
+      animation:title-handoff 1s linear both;
+      animation-timeline:--title-handoff;
+      animation-range:entry 0% exit 100%;
+    }
+    @keyframes title-handoff{
+      0%{opacity:.45;transform:translateY(18px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}
+      45%{opacity:1;transform:translateY(0);}
+      55%{opacity:1;transform:translateY(0);animation-timing-function:cubic-bezier(.64,0,.78,0);}
+      100%{opacity:.45;transform:translateY(-18px);}
+    }
+  }
+}
+html.letter-modal-open,
+html.cap-article-open,
+html.mobile-nav-open{scroll-snap-type:none;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-snap-type:none;scroll-behavior:auto!important;}
+}
+@media print{
+  html{scroll-snap-type:none;scroll-behavior:auto!important;}
 }
 
 body{
@@ -1329,9 +1374,6 @@ table.worked td:first-child{padding-right:1.4em;}
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', function(){ readingRail.measure(); onScroll(); });
   onScroll();
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.style.scrollBehavior = 'smooth';
-  }
 
   var supplyChart = document.querySelector('.supply-demand-chart');
   if (supplyChart) {

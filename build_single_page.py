@@ -228,6 +228,50 @@ def _longest_common_suffix_length(a: str, b: str) -> int:
 _MIN_MEANINGFUL_STYLE_SUFFIX = 48
 
 
+def _css_rule_boundaries(css: str) -> list[int]:
+    """Offsets after complete top-level rules, never inside strings or comments."""
+    boundaries = [0]
+    depth = parens = 0
+    quote = ""
+    i = 0
+    while i < len(css):
+        char = css[i]
+        if quote:
+            if char == "\\":
+                i += 2
+                continue
+            if char == quote:
+                quote = ""
+        elif css.startswith("/*", i):
+            end = css.find("*/", i + 2)
+            if end == -1:
+                break
+            i = end + 2
+            continue
+        elif char == "\\":
+            i += 2
+            continue
+        elif char in "\"'":
+            quote = char
+        elif char == "(":
+            parens += 1
+        elif char == ")":
+            parens -= 1
+        elif not parens:
+            if char == "{":
+                depth += 1
+            elif char == "}":
+                depth -= 1
+                if depth == 0:
+                    boundaries.append(i + 1)
+            elif char == ";" and depth == 0:
+                boundaries.append(i + 1)
+        i += 1
+    if boundaries[-1] != len(css):
+        boundaries.append(len(css))
+    return boundaries
+
+
 def _style_delta_relative_to_base(base: str, body: str) -> str:
     """
     Chapter `<style>` bodies duplicate most of the intro sheet (prefix + suffix) with a
@@ -235,6 +279,8 @@ def _style_delta_relative_to_base(base: str, body: str) -> str:
     `#rail { opacity: 0 }`.
     """
     if not body:
+        return ""
+    if body == base:
         return ""
     if body.startswith(base):
         # Do not trim a common suffix here: `body` can be `base + "}"` sharing the last brace.
@@ -246,7 +292,12 @@ def _style_delta_relative_to_base(base: str, body: str) -> str:
     end = len(body) - suf
     if pref >= end:
         return ""
-    return body[pref:end].strip()
+    # Character-wise overlap can end halfway through a declaration or @media
+    # block. Expand both cuts to whole rules so the delta is valid standalone CSS.
+    boundaries = _css_rule_boundaries(body)
+    start = max(offset for offset in boundaries if offset <= pref)
+    end = min(offset for offset in boundaries if offset >= end)
+    return body[start:end].strip()
 
 
 def merge_extra_styles(shell_path: Path, chapter_paths: list[Path]) -> str:
@@ -272,6 +323,10 @@ def merge_extra_styles(shell_path: Path, chapter_paths: list[Path]) -> str:
 
     single_page_tail = """
 /* ---- single-page build (must stay last): rail visible; chip roadmap photos unstyled ---- */
+/* Older chapter sheets reserve a second gutter at the left edge. A full-bleed
+   title cannot paint that root gutter, so keep only the scrollbar-side gutter.
+   clip avoids horizontal spill from 100vw titles without adding a scroller. */
+html{scrollbar-gutter:stable!important;overflow-x:clip;}
 #rail,#rail.show{opacity:1!important;pointer-events:auto!important;visibility:visible!important}
 @media (max-width:999px){
   #topbar{opacity:1!important;pointer-events:auto!important;position:fixed!important;top:env(safe-area-inset-top,0px)!important;left:0!important;right:0!important;z-index:15!important;}

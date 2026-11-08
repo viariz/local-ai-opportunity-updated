@@ -73,9 +73,54 @@
 html{background:var(--paper); scrollbar-gutter:stable both-edges;}
 
 /* Leave breathing room when following contents or section links. */
-html{scroll-padding-top:clamp(40px,5vh,64px);}
+html{--reader-scroll-inset:clamp(40px,5vh,64px);scroll-padding-top:var(--reader-scroll-inset);}
 @media(max-width:999px){
-  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+  html{--reader-scroll-inset:calc(env(safe-area-inset-top,0px) + 76px);scroll-padding-top:var(--reader-scroll-inset);}
+}
+
+/* Native chapter paging, as in the Steve Jobs Archive. Every reading section
+   is also a snap AREA: oversized areas allow free scrolling through their
+   entire contents. Snapping only the title pages would trap the prose between
+   them. Keep this on the document scroller so touch, wheel, keyboard, links,
+   browser find and scrollbar navigation all share the browser's own behavior. */
+@media screen and (prefers-reduced-motion:no-preference){
+  html{scroll-snap-type:y mandatory;scroll-behavior:smooth;}
+  .book > section.titlepage{
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    /* Cancel the anchor inset only for full-screen titles. Their top and
+       bottom then align with the viewport without a white strip or extra stop. */
+    scroll-margin-top:calc(-1 * var(--reader-scroll-inset));
+  }
+  .book > section.part,
+  .book > section.endnotes{scroll-snap-align:start;}
+  .book > aside.section-transition{scroll-snap-align:center;}
+  /* Soften the visual handoff without intercepting scrolling or delaying
+     input. The page itself remains the snap target; only its copy moves. */
+  @supports (animation-timeline:view()) and (animation-range:entry 0% exit 100%){
+    .book > section.titlepage{view-timeline:--title-handoff block;view-timeline-inset:0;}
+    .titlepage > .titlepage-hero,
+    .titlepage.chapter-title > :is(h1,.eyebrow,.thesis){
+      animation:title-handoff 1s linear both;
+      animation-timeline:--title-handoff;
+      animation-range:entry 0% exit 100%;
+    }
+    @keyframes title-handoff{
+      0%{opacity:.45;transform:translateY(18px);animation-timing-function:cubic-bezier(.22,.61,.36,1);}
+      45%{opacity:1;transform:translateY(0);}
+      55%{opacity:1;transform:translateY(0);animation-timing-function:cubic-bezier(.64,0,.78,0);}
+      100%{opacity:.45;transform:translateY(-18px);}
+    }
+  }
+}
+html.letter-modal-open,
+html.cap-article-open,
+html.mobile-nav-open{scroll-snap-type:none;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-snap-type:none;scroll-behavior:auto!important;}
+}
+@media print{
+  html{scroll-snap-type:none;scroll-behavior:auto!important;}
 }
 
 body{
@@ -708,7 +753,55 @@ table.worked td:first-child{padding-right:1.4em;}
 
 /* ---- per-chapter CSS (deduped) ---- */
 /* ---- delta: the-three-caps.html ---- */
-rgba(255,255,255,.5); border:1px solid rgba(31,33,34,.08); border-radius:999px;
+/* Leave breathing room when following contents or section links. */
+html{scroll-padding-top:clamp(40px,5vh,64px);}
+@media(max-width:999px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+}
+
+body{
+  margin:0;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:400; font-synthesis:weight; font-size:16px; line-height:1.7;
+  padding-left:max(40px, env(safe-area-inset-left, 0px));
+  padding-right:max(40px, env(safe-area-inset-right, 0px));
+  padding-block:0;
+  -webkit-font-smoothing:antialiased;
+}
+.book{max-width:44em; margin:0 auto;}
+.legacy-anchor{display:block; height:0;}
+p{margin:0 0 1em; text-align:left;}
+a{color:inherit; text-decoration:none;}
+.prose a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; text-decoration-color:var(--ink-soft);}
+.sc{text-transform:uppercase; letter-spacing:.14em; font-size:.82em; font-weight:400;}
+em{font-style:italic;font-synthesis:weight style;}
+strong, b{font-weight:500;}
+sup.fn{font-size:.6em; line-height:0; vertical-align:super;}
+sup.fn a{text-decoration:none; color:var(--ink-soft); font-weight:400;}
+
+/* ---- left rail ---- */
+#rail{
+  position:fixed; left:max(22px, env(safe-area-inset-left, 0px)); top:50%;
+  transform:translateY(-50%); z-index:8;
+  width:44px; padding:12px 0;
+  opacity:0; pointer-events:none; transition:opacity .15s ease;
+}
+#rail.show{opacity:1; pointer-events:auto;}
+#rail ol{list-style:none; margin:0; padding:0; position:relative;}
+#rail li{
+  position:relative; height:13px; margin:0; padding:0;
+  font-size:12px; line-height:1.4; font-weight:400; white-space:nowrap;
+  color:var(--ink-soft);
+}
+#rail .rail-track{position:absolute;left:0;overflow:visible;pointer-events:none;}
+#rail .rail-track path{fill:none;vector-effect:non-scaling-stroke;}
+#rail .dot{display:none;}
+#rail li a, #rail li > .rail-label{
+  display:block; width:44px; height:13px; color:inherit; text-decoration:none;
+}
+#rail .rail-title{
+  position:absolute; left:52px; top:50%; padding:8px 12px;
+  background:rgba(255,255,255,.5); border:1px solid rgba(31,33,34,.08); border-radius:999px;
   box-shadow:0 4px 20px rgba(31,33,34,.08), 0 1px 3px rgba(31,33,34,.04);
   color:#1F2122; font-size:12px; line-height:1.35; font-weight:400;
   opacity:0; visibility:hidden; pointer-events:none;
@@ -1192,7 +1285,55 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
 }
 
 /* ---- delta: the-three-paths.html ---- */
-rgba(255,255,255,.5); border:1px solid rgba(31,33,34,.08); border-radius:999px;
+/* Leave breathing room when following contents or section links. */
+html{scroll-padding-top:clamp(40px,5vh,64px);}
+@media(max-width:999px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+}
+
+body{
+  margin:0;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:400; font-synthesis:weight; font-size:16px; line-height:1.7;
+  padding-left:max(40px, env(safe-area-inset-left, 0px));
+  padding-right:max(40px, env(safe-area-inset-right, 0px));
+  padding-block:0;
+  -webkit-font-smoothing:antialiased;
+}
+.book{max-width:44em; margin:0 auto;}
+.legacy-anchor{display:block; height:0;}
+p{margin:0 0 1em; text-align:left;}
+a{color:inherit; text-decoration:none;}
+.prose a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; text-decoration-color:var(--ink-soft);}
+.sc{text-transform:uppercase; letter-spacing:.14em; font-size:.82em; font-weight:400;}
+em{font-style:italic;font-synthesis:weight style;}
+strong, b{font-weight:500;}
+sup.fn{font-size:.6em; line-height:0; vertical-align:super;}
+sup.fn a{text-decoration:none; color:var(--ink-soft); font-weight:400;}
+
+/* ---- left rail ---- */
+#rail{
+  position:fixed; left:max(22px, env(safe-area-inset-left, 0px)); top:50%;
+  transform:translateY(-50%); z-index:8;
+  width:44px; padding:12px 0;
+  opacity:0; pointer-events:none; transition:opacity .15s ease;
+}
+#rail.show{opacity:1; pointer-events:auto;}
+#rail ol{list-style:none; margin:0; padding:0; position:relative;}
+#rail li{
+  position:relative; height:13px; margin:0; padding:0;
+  font-size:12px; line-height:1.4; font-weight:400; white-space:nowrap;
+  color:var(--ink-soft);
+}
+#rail .rail-track{position:absolute;left:0;overflow:visible;pointer-events:none;}
+#rail .rail-track path{fill:none;vector-effect:non-scaling-stroke;}
+#rail .dot{display:none;}
+#rail li a, #rail li > .rail-label{
+  display:block; width:44px; height:13px; color:inherit; text-decoration:none;
+}
+#rail .rail-title{
+  position:absolute; left:52px; top:50%; padding:8px 12px;
+  background:rgba(255,255,255,.5); border:1px solid rgba(31,33,34,.08); border-radius:999px;
   box-shadow:0 4px 20px rgba(31,33,34,.08), 0 1px 3px rgba(31,33,34,.04);
   color:#1F2122; font-size:12px; line-height:1.35; font-weight:400;
   opacity:0; visibility:hidden; pointer-events:none;
@@ -1726,7 +1867,55 @@ html.cap-article-open body{touch-action:none; overscroll-behavior:none;}
 .tabsect.hiddentab{display:none;}
 
 /* ---- delta: precedents.html ---- */
-rgba(255,255,255,.5); border:1px solid rgba(31,33,34,.08); border-radius:999px;
+/* Leave breathing room when following contents or section links. */
+html{scroll-padding-top:clamp(40px,5vh,64px);}
+@media(max-width:999px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+}
+
+body{
+  margin:0;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:400; font-synthesis:weight; font-size:16px; line-height:1.7;
+  padding-left:max(40px, env(safe-area-inset-left, 0px));
+  padding-right:max(40px, env(safe-area-inset-right, 0px));
+  padding-block:0;
+  -webkit-font-smoothing:antialiased;
+}
+.book{max-width:44em; margin:0 auto;}
+.legacy-anchor{display:block; height:0;}
+p{margin:0 0 1em; text-align:left;}
+a{color:inherit; text-decoration:none;}
+.prose a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; text-decoration-color:var(--ink-soft);}
+.sc{text-transform:uppercase; letter-spacing:.14em; font-size:.82em; font-weight:400;}
+em{font-style:italic;font-synthesis:weight style;}
+strong, b{font-weight:500;}
+sup.fn{font-size:.6em; line-height:0; vertical-align:super;}
+sup.fn a{text-decoration:none; color:var(--ink-soft); font-weight:400;}
+
+/* ---- left rail ---- */
+#rail{
+  position:fixed; left:max(22px, env(safe-area-inset-left, 0px)); top:50%;
+  transform:translateY(-50%); z-index:8;
+  width:44px; padding:12px 0;
+  opacity:0; pointer-events:none; transition:opacity .15s ease;
+}
+#rail.show{opacity:1; pointer-events:auto;}
+#rail ol{list-style:none; margin:0; padding:0; position:relative;}
+#rail li{
+  position:relative; height:13px; margin:0; padding:0;
+  font-size:12px; line-height:1.4; font-weight:400; white-space:nowrap;
+  color:var(--ink-soft);
+}
+#rail .rail-track{position:absolute;left:0;overflow:visible;pointer-events:none;}
+#rail .rail-track path{fill:none;vector-effect:non-scaling-stroke;}
+#rail .dot{display:none;}
+#rail li a, #rail li > .rail-label{
+  display:block; width:44px; height:13px; color:inherit; text-decoration:none;
+}
+#rail .rail-title{
+  position:absolute; left:52px; top:50%; padding:8px 12px;
+  background:rgba(255,255,255,.5); border:1px solid rgba(31,33,34,.08); border-radius:999px;
   box-shadow:0 4px 20px rgba(31,33,34,.08), 0 1px 3px rgba(31,33,34,.04);
   color:#1F2122; font-size:12px; line-height:1.35; font-weight:400;
   opacity:0; visibility:hidden; pointer-events:none;
@@ -2121,7 +2310,16 @@ table.worked td:first-child{padding-right:1.4em;}
 #innovators-dilemma .dilemma-figure figcaption a:hover{text-decoration:underline;}
 
 /* ---- delta: a-new-computer.html ---- */
-300; font-synthesis:weight; font-size:16px; line-height:1.7;
+/* Leave breathing room when following contents or section links. */
+html{scroll-padding-top:clamp(40px,5vh,64px);}
+@media(max-width:999px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+}
+
+body{
+  margin:0;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:300; font-synthesis:weight; font-size:16px; line-height:1.7;
   padding-left:max(40px, env(safe-area-inset-left, 0px));
   padding-right:max(40px, env(safe-area-inset-right, 0px));
   padding-block:0;
@@ -2419,7 +2617,27 @@ table.worked td:first-child{padding-right:1.4em;}
 .demo-slot{border:1px dashed var(--rule); border-radius:0; padding:3.4em 1em; text-align:center; font-size:.72em; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-soft); margin:1.8em 0 0;}
 
 /* ---- delta: next-gen-chips.html ---- */
-300;}
+/* Leave breathing room when following contents or section links. */
+html{scroll-padding-top:clamp(40px,5vh,64px);}
+@media(max-width:999px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+}
+
+body{
+  margin:0;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:400; font-synthesis:weight; font-size:16px; line-height:1.7;
+  padding-left:max(40px, env(safe-area-inset-left, 0px));
+  padding-right:max(40px, env(safe-area-inset-right, 0px));
+  padding-block:0;
+  -webkit-font-smoothing:antialiased;
+}
+.book{max-width:44em; margin:0 auto;}
+.legacy-anchor{display:block; height:0;}
+p{margin:0 0 1em; text-align:left;}
+a{color:inherit; text-decoration:none;}
+.prose a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; text-decoration-color:var(--ink-soft);}
+.sc{text-transform:uppercase; letter-spacing:.14em; font-size:.82em; font-weight:300;}
 em{font-style:italic;font-synthesis:weight style;}
 strong, b{font-weight:400;}
 sup.fn{font-size:.6em; line-height:0; vertical-align:super;}
@@ -2959,7 +3177,16 @@ figure.sc-map{
 @media(prefers-reduced-motion:reduce){.chip-packet{animation:none;}.chip-video-preview{transition:none;}}
 
 /* ---- delta: a-million-new-computers.html ---- */
-300; font-synthesis:weight; font-size:16px; line-height:1.7;
+/* Leave breathing room when following contents or section links. */
+html{scroll-padding-top:clamp(40px,5vh,64px);}
+@media(max-width:999px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+}
+
+body{
+  margin:0;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:300; font-synthesis:weight; font-size:16px; line-height:1.7;
   padding-left:max(40px, env(safe-area-inset-left, 0px));
   padding-right:max(40px, env(safe-area-inset-right, 0px));
   padding-block:0;
@@ -3338,7 +3565,55 @@ table.worked td:first-child{padding-right:1.4em;}
 }
 
 /* ---- delta: endnotes.html ---- */
-rgba(255,255,255,.5); border:1px solid rgba(31,33,34,.08); border-radius:999px;
+/* Leave breathing room when following contents or section links. */
+html{scroll-padding-top:clamp(40px,5vh,64px);}
+@media(max-width:999px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);}
+}
+
+body{
+  margin:0;
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:400; font-synthesis:weight; font-size:16px; line-height:1.7;
+  padding-left:max(40px, env(safe-area-inset-left, 0px));
+  padding-right:max(40px, env(safe-area-inset-right, 0px));
+  padding-block:0;
+  -webkit-font-smoothing:antialiased;
+}
+.book{max-width:44em; margin:0 auto;}
+.legacy-anchor{display:block; height:0;}
+p{margin:0 0 1em; text-align:left;}
+a{color:inherit; text-decoration:none;}
+.prose a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; text-decoration-color:var(--ink-soft);}
+.sc{text-transform:uppercase; letter-spacing:.14em; font-size:.82em; font-weight:400;}
+em{font-style:italic;font-synthesis:weight style;}
+strong, b{font-weight:500;}
+sup.fn{font-size:.6em; line-height:0; vertical-align:super;}
+sup.fn a{text-decoration:none; color:var(--ink-soft); font-weight:400;}
+
+/* ---- left rail ---- */
+#rail{
+  position:fixed; left:max(22px, env(safe-area-inset-left, 0px)); top:50%;
+  transform:translateY(-50%); z-index:8;
+  width:44px; padding:12px 0;
+  opacity:0; pointer-events:none; transition:opacity .15s ease;
+}
+#rail.show{opacity:1; pointer-events:auto;}
+#rail ol{list-style:none; margin:0; padding:0; position:relative;}
+#rail li{
+  position:relative; height:13px; margin:0; padding:0;
+  font-size:12px; line-height:1.4; font-weight:400; white-space:nowrap;
+  color:var(--ink-soft);
+}
+#rail .rail-track{position:absolute;left:0;overflow:visible;pointer-events:none;}
+#rail .rail-track path{fill:none;vector-effect:non-scaling-stroke;}
+#rail .dot{display:none;}
+#rail li a, #rail li > .rail-label{
+  display:block; width:44px; height:13px; color:inherit; text-decoration:none;
+}
+#rail .rail-title{
+  position:absolute; left:52px; top:50%; padding:8px 12px;
+  background:rgba(255,255,255,.5); border:1px solid rgba(31,33,34,.08); border-radius:999px;
   box-shadow:0 4px 20px rgba(31,33,34,.08), 0 1px 3px rgba(31,33,34,.04);
   color:#1F2122; font-size:12px; line-height:1.35; font-weight:400;
   opacity:0; visibility:hidden; pointer-events:none;
@@ -3589,6 +3864,10 @@ table.worked td:first-child{padding-right:1.4em;}
 .tabsect.hiddentab{display:none;}
 
 /* ---- single-page build (must stay last): rail visible; chip roadmap photos unstyled ---- */
+/* Older chapter sheets reserve a second gutter at the left edge. A full-bleed
+   title cannot paint that root gutter, so keep only the scrollbar-side gutter.
+   clip avoids horizontal spill from 100vw titles without adding a scroller. */
+html{scrollbar-gutter:stable!important;overflow-x:clip;}
 #rail,#rail.show{opacity:1!important;pointer-events:auto!important;visibility:visible!important}
 @media (max-width:999px){
   #topbar{opacity:1!important;pointer-events:auto!important;position:fixed!important;top:env(safe-area-inset-top,0px)!important;left:0!important;right:0!important;z-index:15!important;}
@@ -5074,9 +5353,6 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', function(){ readingRail.measure(); onScroll(); });
   onScroll();
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.style.scrollBehavior = 'smooth';
-  }
 
   var supplyChart = document.querySelector('.supply-demand-chart');
   if (supplyChart) {
