@@ -7050,7 +7050,7 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
     var active = -1;
     for (var j = chapterPages.length - 1; j >= 0; j--) {
       var p = chapterPages[j];
-      if (y >= p.offsetTop + p.offsetHeight) {
+      if (scrollY >= p.offsetTop + p.offsetHeight) {
         active = j;
         break;
       }
