@@ -421,6 +421,37 @@ figure.arc-tl img.arc-tl-photo{
   #scrolly .scrolly-chart{display:none!important;}
   #mini-chart svg{width:100%!important;max-width:44em!important;margin-left:auto!important;margin-right:auto!important;}
 }
+.teaser-learn-more .teaser-copy{
+  max-width:29em!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:0!important;
+}
+.teaser-learn-more .teaser-lead{margin:0 0 .1rem!important;}
+.teaser-learn-more .teaser-email{margin:0!important;line-height:1.15!important;}
+.teaser-learn-more .teaser-preview{
+  display:block!important;
+  margin:0 auto!important;
+  width:23.75rem!important;
+  max-width:100%!important;
+  height:auto!important;
+}
+.part#next-gen-chips > .prose.chip-intro:first-child{
+  margin-top:.4em!important;
+  padding-top:1.5em!important;
+  border-top:1px solid var(--rule)!important;
+}
+.titlepage.chapter-title{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;}
+.titlepage.chapter-title h1{display:block!important;margin-inline:auto!important;}
+.titlepage.chapter-title .thesis{
+  display:block!important;
+  text-align:center!important;
+  margin-top:12px!important;
+  max-width:34em;
+  color:var(--ink-soft)!important;
+}
+section.titlepage.chapter-title h1.title-reveal{min-height:1.25em;}
 """
     insert = (
         base
