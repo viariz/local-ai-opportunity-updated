@@ -14,9 +14,26 @@
     var style = document.createElement('style');
     style.textContent =
       'section.titlepage h1.title-scramble-pending{visibility:hidden}' +
-      'section.titlepage h1.title-reveal{position:relative;display:inline-block;visibility:visible;white-space:nowrap!important;text-wrap:nowrap!important}' +
-      'section.titlepage h1.title-reveal .ts-ghost{visibility:hidden;white-space:pre}' +
-      'section.titlepage h1.title-reveal .ts-live{position:absolute;left:0;top:0;visibility:visible;white-space:pre;line-height:inherit}';
+      'section.titlepage h1.title-reveal{position:relative;display:inline-block;visibility:visible}' +
+      'section.titlepage h1.title-reveal .ts-ghost{visibility:hidden}' +
+      'section.titlepage h1.title-reveal .ts-live{position:absolute;left:0;top:0;visibility:visible;line-height:inherit}' +
+      '@media (min-width:701px){' +
+      'section.titlepage h1.title-reveal,' +
+      'section.titlepage h1.title-reveal .ts-ghost,' +
+      'section.titlepage h1.title-reveal .ts-live{' +
+      'white-space:nowrap!important;text-wrap:nowrap!important}' +
+      'section.titlepage h1.title-reveal .ts-ghost{white-space:pre}' +
+      'section.titlepage h1.title-reveal .ts-live{white-space:pre}' +
+      '}' +
+      '@media (max-width:700px){' +
+      'section.titlepage h1.title-reveal{display:block;width:100%;max-width:100%;text-align:inherit}' +
+      'section.titlepage h1.title-reveal,' +
+      'section.titlepage h1.title-reveal .ts-ghost,' +
+      'section.titlepage h1.title-reveal .ts-live{' +
+      'white-space:normal!important;text-wrap:balance!important}' +
+      'section.titlepage h1.title-reveal .ts-ghost{display:block}' +
+      'section.titlepage h1.title-reveal .ts-live{right:0;text-align:inherit}' +
+      '}';
     document.head.appendChild(style);
   }
 
@@ -43,6 +60,7 @@
   function finish(el, finalText) {
     el.classList.remove('title-reveal');
     el.removeAttribute('aria-label');
+    el.style.minHeight = '';
     el.textContent = finalText;
     el.dataset.scrambleDone = '1';
   }
@@ -96,6 +114,13 @@
 
     el.appendChild(ghost);
     el.appendChild(live);
+
+    if (window.matchMedia('(max-width:700px)').matches) {
+      requestAnimationFrame(function () {
+        var locked = el.offsetHeight;
+        if (locked > 0) el.style.minHeight = locked + 'px';
+      });
+    }
 
     var tickCache = {};
     var shown = '';

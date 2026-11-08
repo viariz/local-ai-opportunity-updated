@@ -3764,7 +3764,17 @@ figure.arc-tl img.arc-tl-photo{
   max-width:34em;
   color:var(--ink-soft)!important;
 }
-section.titlepage.chapter-title h1.title-reveal{min-height:1.25em;}
+@media (max-width:700px){
+  section.titlepage h1.title-reveal,
+  section.titlepage h1.title-reveal .ts-ghost,
+  section.titlepage h1.title-reveal .ts-live{
+    white-space:normal!important;
+    text-wrap:balance!important;
+  }
+  section.titlepage h1.title-reveal{display:block;width:100%;max-width:100%}
+  section.titlepage h1.title-reveal .ts-ghost{display:block}
+  section.titlepage h1.title-reveal .ts-live{right:0}
+}
 
 </style>
 <script src="navigation.js"></script>
