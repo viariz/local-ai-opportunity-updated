@@ -880,9 +880,9 @@ table.worked td:first-child{padding-right:1.4em;}
   #introduction svg.supply-demand-chart .fig-caps-tooltip text.figtext:nth-of-type(2){transform:translate(0,2px);}
 }
 </style>
-<link rel="stylesheet" href="snap-panels.css?v=2">
+<link rel="stylesheet" href="snap-panels.css?v=4">
 <script src="navigation.js"></script>
-<script src="reading-rail.js"></script>
+<script src="reading-rail.js?v=2"></script>
 <script src="title-scramble.js?v=2" defer></script>
 <script>
 (function(){
@@ -1171,154 +1171,7 @@ table.worked td:first-child{padding-right:1.4em;}
 <dialog class="letter-modal" id="agentic-letter-dialog" aria-label="May 6, 2026 note to investors">
       <div class="letter-stage"></div>
     </dialog>
-<script>
-(function(){
-  var trigger = document.querySelector('#agentic-paradox-note .letter-cover');
-  var slot = document.querySelector('#agentic-paradox-note .letter-slot');
-  var modal = document.getElementById('agentic-letter-dialog');
-  var stage = modal ? modal.querySelector('.letter-stage') : null;
-  var sheet = document.querySelector('#agentic-paradox-note .letter-sheet');
-  var closeBtn = sheet ? sheet.querySelector('.letter-modal-close') : null;
-  if (!trigger || !slot || !modal || !stage || !sheet) return;
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var closing = false;
-  var timer = 0;
-  var hold = null;
-  var anchorRect = null;
-  var coarsePointer = window.matchMedia('(hover: none), (pointer: coarse)');
-  sheet.setAttribute('aria-hidden', 'true');
-
-  function expandedViewportBox(){
-    var root = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    var vh = window.innerHeight;
-    var narrow = window.innerWidth < 600;
-    var padY = narrow ? 32 : 56;
-    var height = Math.min((narrow ? 40 : 42) * root, vh - padY);
-    return {
-      height: height,
-      top: Math.max(narrow ? 16 : 28, (vh - height) / 2)
-    };
-  }
-  /* position:fixed inside <dialog> is relative to the dialog box, not the viewport */
-  function applyBox(prefix, viewportRect){
-    var frame = modal.getBoundingClientRect();
-    sheet.style.setProperty('--' + prefix + '-top', (viewportRect.top - frame.top) + 'px');
-    sheet.style.setProperty('--' + prefix + '-left', (viewportRect.left - frame.left) + 'px');
-    sheet.style.setProperty('--' + prefix + '-width', viewportRect.width + 'px');
-    sheet.style.setProperty('--' + prefix + '-height', viewportRect.height + 'px');
-  }
-  function atEnd(){
-    var end = sheet.scrollTop + sheet.clientHeight >= sheet.scrollHeight - 12;
-    sheet.classList.toggle('at-end', end);
-  }
-  function park(){
-    sheet.classList.remove('is-lifted');
-    if (hold && hold.parentNode){
-      hold.parentNode.insertBefore(sheet, hold);
-      hold.remove();
-      hold = null;
-    }
-    sheet.scrollTop = 0;
-    sheet.classList.remove('at-end');
-  }
-  function openNote(){
-    if (modal.open || closing) return;
-    closing = false;
-    window.clearTimeout(timer);
-    var origin = sheet.getBoundingClientRect();
-    anchorRect = {
-      top: origin.top,
-      left: origin.left,
-      width: origin.width,
-      height: origin.height
-    };
-    var grow = expandedViewportBox();
-    var expanded = {
-      top: grow.top,
-      left: origin.left,
-      width: origin.width,
-      height: grow.height
-    };
-    hold = document.createElement('div');
-    hold.className = 'letter-hold';
-    hold.style.height = origin.height + 'px';
-    sheet.parentNode.insertBefore(hold, sheet);
-    document.documentElement.classList.add('letter-modal-open');
-    modal.showModal();
-    stage.appendChild(sheet);
-    applyBox('from', anchorRect);
-    applyBox('to', expanded);
-    sheet.removeAttribute('aria-hidden');
-    sheet.classList.add('is-lifted');
-    sheet.scrollTop = 0;
-    trigger.setAttribute('aria-expanded', 'true');
-    if (closeBtn) closeBtn.setAttribute('aria-expanded', 'true');
-    var settleIn = reduce.matches ? 0 : 1160;
-    if (reduce.matches){
-      modal.classList.add('is-dim', 'is-expanded', 'is-settled');
-      atEnd();
-      return;
-    }
-    void sheet.offsetWidth;
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        if (modal.open && !closing){
-          modal.classList.add('is-dim');
-          modal.classList.add('is-expanded');
-        }
-      });
-    });
-    timer = window.setTimeout(function(){
-      if (modal.open && !closing){
-        modal.classList.add('is-settled');
-        if (!coarsePointer.matches) sheet.focus({preventScroll:true});
-        atEnd();
-      }
-    }, settleIn);
-  }
-  function closeNote(){
-    if (!modal.open || closing) return;
-    closing = true;
-    window.clearTimeout(timer);
-    sheet.scrollTop = 0;
-    var dest = anchorRect || (hold ? hold.getBoundingClientRect() : slot.getBoundingClientRect());
-    applyBox('from', dest);
-    modal.classList.add('is-closing');
-    modal.classList.remove('is-settled');
-    modal.classList.remove('is-expanded');
-    if (reduce.matches) modal.classList.remove('is-dim');
-    timer = window.setTimeout(function(){
-      park();
-      if (modal.open) modal.close();
-    }, reduce.matches ? 0 : 1180);
-  }
-  trigger.addEventListener('click', openNote);
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function(event){
-      event.preventDefault();
-      event.stopPropagation();
-      closeNote();
-    });
-  }
-  modal.addEventListener('cancel', function(event){ event.preventDefault(); closeNote(); });
-  modal.addEventListener('click', function(event){ if (event.target === modal) closeNote(); });
-  sheet.addEventListener('scroll', atEnd, {passive:true});
-  sheet.tabIndex = -1;
-  modal.addEventListener('close', function(){
-    window.clearTimeout(timer);
-    closing = false;
-    if (sheet.classList.contains('is-lifted')) park();
-    modal.classList.remove('is-dim', 'is-expanded', 'is-settled', 'is-closing');
-    document.documentElement.classList.remove('letter-modal-open');
-    anchorRect = null;
-    trigger.setAttribute('aria-expanded', 'false');
-    if (closeBtn) closeBtn.setAttribute('aria-expanded', 'false');
-    sheet.setAttribute('aria-hidden', 'true');
-    if (coarsePointer.matches) trigger.blur();
-    else trigger.focus({preventScroll:true});
-  });
-})();
-</script>
+<script src="investor-note.js?v=1" defer></script>
 <section class="snap-panel snap-panel--white snap-panel--reading" id="reading-introduction-flow-2">
 <div class="snap-panel-content"><div class="prose">
 <p>We think much of that unmet demand will eventually find its way onto a personal inference machine. A computer you buy and keep running, producing tokens throughout the day, with electricity as its main ongoing cost.</p>
@@ -1461,6 +1314,7 @@ table.worked td:first-child{padding-right:1.4em;}
   }
 
   function onScroll(){
+    if (document.documentElement.classList.contains('letter-modal-open')) return;
     var y = window.scrollY || document.documentElement.scrollTop;
     if (topbar && title) {
       var past = y > title.offsetHeight - 220;

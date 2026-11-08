@@ -196,6 +196,7 @@
     }
 
     function update(){
+      if(document.documentElement.classList.contains('letter-modal-open')) return;
       updateNavTone();
       setChapterIndicator();
       paint();

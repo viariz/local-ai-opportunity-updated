@@ -18,18 +18,23 @@
 .book .snap-panel--black{--paper:#000;--ink:#fff;--ink-soft:rgba(255,255,255,.64);--rule:rgba(255,255,255,.2);color-scheme:dark;}
 .snap-panel-content{width:min(100%,68rem);min-width:0;margin-inline:auto;}
 .book .snap-panel--reading .snap-panel-content{max-width:39rem;}
+.book .snap-panel--reading{padding-bottom:clamp(112px,18vh,192px);}
 .book .snap-panel--reading .prose{width:100%;max-width:none;margin:0;}
 .book .snap-panel--reading .prose > :last-child{margin-bottom:0;}
-.book section.titlepage h1,
-.book .snap-panel h4{
+.book section.titlepage h1{
   font-size:var(--chapter-heading-size)!important;
 }
 .book .snap-panel h4{
-  margin:0 0 2.25rem!important;padding:0!important;border:0!important;
+  margin:0 0 1.6rem!important;padding:0!important;border:0!important;
   font-family:var(--display);font-weight:100;font-variation-settings:"wght" 100;
-  font-synthesis:none;line-height:1.3;letter-spacing:.015em;
-  color:var(--ink);text-align:center;text-transform:none;text-wrap:balance;
+  font-size:clamp(1.08rem,1.8vw,1.28rem)!important;
+  font-synthesis:none;line-height:1.35;letter-spacing:.01em;
+  color:var(--ink);text-align:left;text-transform:none;text-wrap:balance;
 }
+.book .snap-panel--heading h4{margin:0!important;font-family:var(--display);font-weight:100;font-variation-settings:"wght" 100;font-size:var(--chapter-heading-size)!important;text-align:center;}
+.book #demo-dreaming-cycle h4{text-align:center;}
+.book #panel-an-intelligent-desktop h4{font-size:var(--chapter-heading-size)!important;text-align:center;}
+.book #personal-computing-today p.callline{border-top:0;padding-top:0;margin-top:0;}
 .snap-panel-copy{max-width:42em;margin:clamp(24px,4vh,40px) auto 0;font-size:clamp(.94rem,1.25vw,1.02rem);line-height:1.65;}
 .book .snap-panel-copy p{text-align:center;}
 .book .snap-panel-copy p:last-child{margin-bottom:0;}
@@ -40,7 +45,7 @@
 .book .snap-panel--media figure video{
   display:block;width:auto!important;height:auto!important;max-width:100%!important;
   max-height:62vh;max-height:62svh;object-fit:contain;margin-inline:auto;
-  border-radius:0!important;box-shadow:none!important;background:transparent!important;mix-blend-mode:normal;
+  border-radius:12px!important;box-shadow:none!important;background:transparent!important;mix-blend-mode:normal;
 }
 .book .snap-panel--media .fig-motion{margin:0!important;filter:none;}
 .book .snap-panel--media figcaption{
@@ -54,17 +59,29 @@
   align-items:center;gap:clamp(32px,5vw,72px);max-width:76rem;
 }
 .book .snap-panel--video .snap-panel-copy{margin:0;max-width:none;min-width:0;}
+.book .snap-panel--video{padding-bottom:clamp(80px,14vh,160px);}
 .book .snap-panel--video .snap-panel-copy p,
 .book .snap-panel--video .snap-panel-copy h4{text-align:left;}
 .book .snap-panel--video figure video{width:100%!important;max-height:68svh;}
 .book .snap-panel--quote .bigquote{max-width:28em;margin:0 auto!important;text-align:center;}
 .book .snap-panel--note .snap-panel-content{max-width:36rem;}
 .book .snap-panel--note figure.investor-letter{margin:0!important;}
+#agentic-paradox-note .letter-script,
+dialog.letter-modal .letter-script{font-size:clamp(1rem,1.5vw,1.12rem);}
+.letter-source-hidden{visibility:hidden!important;}
+html.letter-modal-open,
+html.letter-scroll-restoring{scroll-snap-type:none!important;scroll-behavior:auto!important;overflow-anchor:none;}
+dialog.letter-modal.is-dim::backdrop{background:color-mix(in srgb,var(--letter-backdrop-color,#fff) 90%,transparent);}
 .book .snap-panel--cards .cap-cards{width:100%;margin:0 auto;align-items:stretch;}
 .book .snap-panel--cards .cap-card{min-height:0;}
 .book .snap-panel--media figure.dream-fig{width:min(100%,72svh);max-width:48rem;margin-inline:auto!important;}
 .book .snap-panel--media .dream-fig-shell{max-height:none;}
 .book .snap-panel--black .dream-fig-shell canvas{filter:invert(1);}
+@media(prefers-reduced-motion:reduce){
+  dialog.letter-modal .letter-sheet,
+  dialog.letter-modal::backdrop{transition:none!important;}
+  dialog.letter-modal .letter-inner{animation:none!important;-webkit-mask-image:none;mask-image:none;}
+}
 @media screen and (prefers-reduced-motion:no-preference){
   .book > section.part{scroll-snap-align:none!important;}
   .book .snap-panel{
@@ -81,6 +98,8 @@
   .book .snap-panel--media figure img,
   .book .snap-panel--media figure video{max-height:54svh;}
   .book .snap-panel--media .product-img img{max-height:46svh;}
+  .book .snap-panel--reading{padding-bottom:clamp(104px,18vh,160px);}
+  .book .snap-panel--video{padding-bottom:clamp(80px,14vh,136px);}
   .snap-panel-copy{font-size:.94rem;}
 }
 @media print{

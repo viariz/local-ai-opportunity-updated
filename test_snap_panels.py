@@ -72,7 +72,8 @@ class SnapPanelTests(unittest.TestCase):
     def test_full_edition_has_all_requested_media_without_nested_snap_areas(self):
         panels = [n for n in self.docs["full"].elements if n.has_class("snap-panel")]
         self.assertEqual(sum(n.has_class("snap-panel--black") for n in panels), 9)
-        self.assertFalse(any(n.has_class("snap-panel--heading") for n in panels))
+        headings = {n.attrs["id"] for n in panels if n.has_class("snap-panel--heading")}
+        self.assertEqual(headings, {"panel-so-whats-the-reality", "panel-financing-the-buildout"})
         self.assertFalse(any(any(a.has_class("snap-panel") for a in n.ancestors()) for n in panels))
 
     def test_jobs_photo_follows_the_complete_mainframe_section(self):
@@ -128,8 +129,11 @@ class SnapPanelTests(unittest.TestCase):
                     self.assertFalse(owners)
                 else:
                     self.assertEqual(len(owners), 1)
-                    self.assertTrue(any(n.tag in ("p", "figure", "video") for n in owners[0].descendants()))
-                    self.assertFalse(owners[0].has_class("snap-panel--heading"))
+                    if owners[0].has_class("snap-panel--heading"):
+                        self.assertIn(owners[0].attrs["id"], {"panel-so-whats-the-reality", "panel-financing-the-buildout"})
+                        self.assertFalse(any(n.tag in ("p", "figure", "video") for n in owners[0].descendants()))
+                    else:
+                        self.assertTrue(any(n.tag in ("p", "figure", "video") for n in owners[0].descendants()))
 
     def test_consecutive_light_pages_alternate_and_restart_after_black(self):
         for doc in self.docs.values():

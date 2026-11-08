@@ -4122,9 +4122,9 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
 }
 
 </style>
-<link rel="stylesheet" href="snap-panels.css?v=2">
+<link rel="stylesheet" href="snap-panels.css?v=4">
 <script src="navigation.js"></script>
-<script src="reading-rail.js"></script>
+<script src="reading-rail.js?v=2"></script>
 <script src="title-scramble.js" defer></script>
 <script>
 (function(){
@@ -4411,154 +4411,7 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
 <dialog class="letter-modal" id="agentic-letter-dialog" aria-label="May 6, 2026 note to investors">
       <div class="letter-stage"></div>
     </dialog>
-<script>
-(function(){
-  var trigger = document.querySelector('#agentic-paradox-note .letter-cover');
-  var slot = document.querySelector('#agentic-paradox-note .letter-slot');
-  var modal = document.getElementById('agentic-letter-dialog');
-  var stage = modal ? modal.querySelector('.letter-stage') : null;
-  var sheet = document.querySelector('#agentic-paradox-note .letter-sheet');
-  var closeBtn = sheet ? sheet.querySelector('.letter-modal-close') : null;
-  if (!trigger || !slot || !modal || !stage || !sheet) return;
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var closing = false;
-  var timer = 0;
-  var hold = null;
-  var anchorRect = null;
-  var coarsePointer = window.matchMedia('(hover: none), (pointer: coarse)');
-  sheet.setAttribute('aria-hidden', 'true');
-
-  function expandedViewportBox(){
-    var root = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    var vh = window.innerHeight;
-    var narrow = window.innerWidth < 600;
-    var padY = narrow ? 32 : 56;
-    var height = Math.min((narrow ? 40 : 42) * root, vh - padY);
-    return {
-      height: height,
-      top: Math.max(narrow ? 16 : 28, (vh - height) / 2)
-    };
-  }
-  /* position:fixed inside <dialog> is relative to the dialog box, not the viewport */
-  function applyBox(prefix, viewportRect){
-    var frame = modal.getBoundingClientRect();
-    sheet.style.setProperty('--' + prefix + '-top', (viewportRect.top - frame.top) + 'px');
-    sheet.style.setProperty('--' + prefix + '-left', (viewportRect.left - frame.left) + 'px');
-    sheet.style.setProperty('--' + prefix + '-width', viewportRect.width + 'px');
-    sheet.style.setProperty('--' + prefix + '-height', viewportRect.height + 'px');
-  }
-  function atEnd(){
-    var end = sheet.scrollTop + sheet.clientHeight >= sheet.scrollHeight - 12;
-    sheet.classList.toggle('at-end', end);
-  }
-  function park(){
-    sheet.classList.remove('is-lifted');
-    if (hold && hold.parentNode){
-      hold.parentNode.insertBefore(sheet, hold);
-      hold.remove();
-      hold = null;
-    }
-    sheet.scrollTop = 0;
-    sheet.classList.remove('at-end');
-  }
-  function openNote(){
-    if (modal.open || closing) return;
-    closing = false;
-    window.clearTimeout(timer);
-    var origin = sheet.getBoundingClientRect();
-    anchorRect = {
-      top: origin.top,
-      left: origin.left,
-      width: origin.width,
-      height: origin.height
-    };
-    var grow = expandedViewportBox();
-    var expanded = {
-      top: grow.top,
-      left: origin.left,
-      width: origin.width,
-      height: grow.height
-    };
-    hold = document.createElement('div');
-    hold.className = 'letter-hold';
-    hold.style.height = origin.height + 'px';
-    sheet.parentNode.insertBefore(hold, sheet);
-    document.documentElement.classList.add('letter-modal-open');
-    modal.showModal();
-    stage.appendChild(sheet);
-    applyBox('from', anchorRect);
-    applyBox('to', expanded);
-    sheet.removeAttribute('aria-hidden');
-    sheet.classList.add('is-lifted');
-    sheet.scrollTop = 0;
-    trigger.setAttribute('aria-expanded', 'true');
-    if (closeBtn) closeBtn.setAttribute('aria-expanded', 'true');
-    var settleIn = reduce.matches ? 0 : 1160;
-    if (reduce.matches){
-      modal.classList.add('is-dim', 'is-expanded', 'is-settled');
-      atEnd();
-      return;
-    }
-    void sheet.offsetWidth;
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        if (modal.open && !closing){
-          modal.classList.add('is-dim');
-          modal.classList.add('is-expanded');
-        }
-      });
-    });
-    timer = window.setTimeout(function(){
-      if (modal.open && !closing){
-        modal.classList.add('is-settled');
-        if (!coarsePointer.matches) sheet.focus({preventScroll:true});
-        atEnd();
-      }
-    }, settleIn);
-  }
-  function closeNote(){
-    if (!modal.open || closing) return;
-    closing = true;
-    window.clearTimeout(timer);
-    sheet.scrollTop = 0;
-    var dest = anchorRect || (hold ? hold.getBoundingClientRect() : slot.getBoundingClientRect());
-    applyBox('from', dest);
-    modal.classList.add('is-closing');
-    modal.classList.remove('is-settled');
-    modal.classList.remove('is-expanded');
-    if (reduce.matches) modal.classList.remove('is-dim');
-    timer = window.setTimeout(function(){
-      park();
-      if (modal.open) modal.close();
-    }, reduce.matches ? 0 : 1180);
-  }
-  trigger.addEventListener('click', openNote);
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function(event){
-      event.preventDefault();
-      event.stopPropagation();
-      closeNote();
-    });
-  }
-  modal.addEventListener('cancel', function(event){ event.preventDefault(); closeNote(); });
-  modal.addEventListener('click', function(event){ if (event.target === modal) closeNote(); });
-  sheet.addEventListener('scroll', atEnd, {passive:true});
-  sheet.tabIndex = -1;
-  modal.addEventListener('close', function(){
-    window.clearTimeout(timer);
-    closing = false;
-    if (sheet.classList.contains('is-lifted')) park();
-    modal.classList.remove('is-dim', 'is-expanded', 'is-settled', 'is-closing');
-    document.documentElement.classList.remove('letter-modal-open');
-    anchorRect = null;
-    trigger.setAttribute('aria-expanded', 'false');
-    if (closeBtn) closeBtn.setAttribute('aria-expanded', 'false');
-    sheet.setAttribute('aria-hidden', 'true');
-    if (coarsePointer.matches) trigger.blur();
-    else trigger.focus({preventScroll:true});
-  });
-})();
-</script>
+<script src="investor-note.js?v=1" defer></script>
 <section class="snap-panel snap-panel--white snap-panel--reading snap-panel--tint" id="reading-introduction-flow-2">
 <div class="snap-panel-content"><div class="prose">
 <p>We think much of that unmet demand will eventually find its way onto a personal inference machine. A computer you buy and keep running, producing tokens throughout the day, with electricity as its main ongoing cost.</p>
@@ -4746,9 +4599,12 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
 <!-- ============ PART III ============ -->
 <section class="part" id="the-reality" data-title="So what&rsquo;s the reality?">
 <div class="sect" id="breaking-ground">
-<section class="snap-panel snap-panel--white snap-panel--reading snap-panel--tint" id="panel-so-whats-the-reality" aria-labelledby="heading-so-whats-the-reality">
+<section class="snap-panel snap-panel--white snap-panel--heading snap-panel--tint" id="panel-so-whats-the-reality" aria-labelledby="heading-so-whats-the-reality">
+<div class="snap-panel-content"><h4 id="heading-so-whats-the-reality">So what&rsquo;s the reality?</h4></div>
+</section>
+<section class="snap-panel snap-panel--white snap-panel--reading" id="reading-the-reality" aria-labelledby="heading-so-whats-the-reality">
 <div class="snap-panel-content"><div class="prose">
-<h4 id="heading-so-whats-the-reality">So what&rsquo;s the reality?</h4>
+
 <div class="prose">
       <p>Against those 100 gigawatts, what is actually being built?</p>
       <p>Goldman Sachs projects American datacenter additions of 13.6 GW in 2026 and 36.3 in 2027, the most optimistic reputable schedule in print.<sup class="fn"><a href="#note-power-demand" aria-label="Source 11: power demand" id="reference-power-demand">11</a></sup></p>
@@ -4789,11 +4645,8 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
 </section>
 </div>
 <div class="sect" id="the-hike-cycle">
-<section class="snap-panel snap-panel--white snap-panel--reading" id="panel-financing-the-buildout" aria-labelledby="heading-financing-the-buildout">
-<div class="snap-panel-content"><div class="prose">
-<h4 id="heading-financing-the-buildout">Financing the buildout</h4>
-<p id="financing-wait">The companies borrowing to build all this capacity also have to finance the wait. If a grid connection slips by a year, interest keeps accumulating while the revenue meant to repay the loan moves further away. With floating-rate debt, the interest bill can rise during the delay. September&rsquo;s Fed rate increase added to that pressure.<sup class="fn"><a href="#note-interest-rates" aria-label="Source 13: interest rates" id="reference-interest-rates">13</a></sup></p>
-</div></div>
+<section class="snap-panel snap-panel--white snap-panel--heading snap-panel--tint" id="panel-financing-the-buildout" aria-labelledby="heading-financing-the-buildout">
+<div class="snap-panel-content"><h4 id="heading-financing-the-buildout">Financing the buildout</h4></div>
 </section>
 <section class="snap-panel snap-panel--black snap-panel--media" id="media-fomc-press-conference" aria-label="Federal Reserve press conference">
 <div class="snap-panel-content">
@@ -4802,6 +4655,7 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
 </section>
 <section class="snap-panel snap-panel--white snap-panel--reading" id="reading-the-hike-cycle-2">
 <div class="snap-panel-content"><div class="prose">
+<p id="financing-wait">The companies borrowing to build all this capacity also have to finance the wait. If a grid connection slips by a year, interest keeps accumulating while the revenue meant to repay the loan moves further away. With floating-rate debt, the interest bill can rise during the delay. September&rsquo;s Fed rate increase added to that pressure.<sup class="fn"><a href="#note-interest-rates" aria-label="Source 13: interest rates" id="reference-interest-rates">13</a></sup></p>
 <div class="prose">
 
       <p id="telecom-precedent">The internet boom also became a construction boom. Telecom companies borrowed heavily to lay fiber, and Greenspan&rsquo;s Fed raised rates from 4.75 to 6.5% as the buildout approached its peak. When revenues disappointed and financing dried up, many of those companies went bankrupt, even as internet use kept growing.<sup class="fn"><a href="#note-telecom-buildout" aria-label="Source 14: telecom buildout" id="reference-telecom-buildout">14</a></sup></p>
@@ -5291,6 +5145,7 @@ figure.investor-letter .letter-inner{background-color:#fff!important;}
   var sections = Array.prototype.slice.call(document.querySelectorAll('[data-title]'));
   var title = document.getElementById('top');
   function onScroll(){
+    if (document.documentElement.classList.contains('letter-modal-open')) return;
     var y = window.scrollY || document.documentElement.scrollTop;
     var past = y > title.offsetHeight - 220;
     topbar.classList.toggle('show', past);
