@@ -209,7 +209,6 @@ body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-in
 @media (prefers-reduced-motion: reduce){
   #topbar .toc-link, .titlepage .eyebrow a, .readline a, .captabs button, .prose a{transition:none;}
 }
-
 /* ---- title page (inverted: black field, white type) ---- */
 section.titlepage{
   position:relative;
@@ -838,7 +837,8 @@ table.worked td:first-child{padding-right:1.4em;}
 </style>
 <script src="navigation.js"></script>
 <script src="reading-rail.js"></script>
-<script src="title-scramble.js" defer></script>
+<script src="title-snap.js?v=11" defer></script>
+<script src="title-scramble.js?v=2" defer></script>
 <script>
 (function(){
   try{
@@ -1345,21 +1345,22 @@ table.worked td:first-child{padding-right:1.4em;}
   var chapterPages = chapterDockTitle ? Array.prototype.slice.call(document.querySelectorAll('section#top.titlepage, section.titlepage.chapter-title')) : [];
   var chapterDockLast = -1;
 
+  function titlePageCoversViewport(){
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    var mid = vh * 0.5;
+    for (var c = 0; c < chapterPages.length; c++) {
+      var rect = chapterPages[c].getBoundingClientRect();
+      if (rect.top <= mid && rect.bottom >= mid) return true;
+      var visible = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+      if (visible >= vh * 0.14) return true;
+    }
+    return false;
+  }
+
   function updateChapterStickyDock(scrollY){
     if (!chapterDock || !chapterDockTitle || !chapterPages.length) return;
     if (window.matchMedia('(max-width:999px)').matches) return;
-    var y = scrollY;
-    var onTitlePage = false;
-    for (var c = 0; c < chapterPages.length; c++) {
-      var pg = chapterPages[c];
-      var top = pg.offsetTop;
-      var bot = top + pg.offsetHeight;
-      if (y >= top && y < bot) {
-        onTitlePage = true;
-        break;
-      }
-    }
-    if (onTitlePage) {
+    if (titlePageCoversViewport()) {
       chapterDock.classList.remove('is-visible');
       chapterDock.setAttribute('aria-hidden', 'true');
       chapterDockLast = -1;
@@ -1528,6 +1529,7 @@ table.worked td:first-child{padding-right:1.4em;}
   window.addEventListener('resize', function(){ readingRail.measure(); onScroll(); });
   onScroll();
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.setAttribute('data-smooth-scroll', '1');
     document.documentElement.style.scrollBehavior = 'smooth';
   }
 

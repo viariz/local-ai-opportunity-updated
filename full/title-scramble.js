@@ -41,6 +41,17 @@
     return el && !el.closest('[hidden]') && !el.dataset.scrambleDone && !el.dataset.scrambleStarted;
   }
 
+  function titleScreenReady(h1) {
+    var section = h1.closest('section.titlepage');
+    if (!section) return false;
+    var h = window.innerHeight || document.documentElement.clientHeight || 800;
+    var sr = section.getBoundingClientRect();
+    var visible = Math.min(sr.bottom, h) - Math.max(sr.top, 0);
+    if (visible < h * 0.68) return false;
+    var hr = h1.getBoundingClientRect();
+    return hr.bottom > h * 0.12 && hr.top < h * 0.88;
+  }
+
   function randChar(avoid) {
     var ch = POOL[(Math.random() * POOL.length) | 0];
     if (avoid && ch === avoid && POOL.length > 1) {
@@ -67,6 +78,8 @@
 
   function reveal(el) {
     if (!playable(el)) return;
+    if (!titleScreenReady(el)) return;
+
     var finalText = el.getAttribute('data-scramble-text') || el.textContent;
     if (!finalText || !String(finalText).trim()) return;
     el.setAttribute('data-scramble-text', finalText);
@@ -155,19 +168,35 @@
     requestAnimationFrame(frame);
   }
 
-  function collect() {
-    return Array.prototype.slice.call(
-      document.querySelectorAll('section.titlepage h1')
-    );
+  function begin(el) {
+    if (!playable(el)) return;
+    function run() {
+      reveal(el);
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(run);
+    } else {
+      run();
+    }
+  }
+
+  function tryAllPending() {
+    var list = document.querySelectorAll('section.titlepage h1');
+    for (var i = 0; i < list.length; i++) {
+      var h1 = list[i];
+      if (playable(h1) && titleScreenReady(h1)) begin(h1);
+    }
   }
 
   function boot() {
-    var els = collect();
-    if (!els.length) return;
+    var sections = document.querySelectorAll('section.titlepage');
+    if (!sections.length) return;
 
-    els.forEach(function (el) {
-      if (!el.getAttribute('data-scramble-text')) {
-        el.setAttribute('data-scramble-text', el.textContent);
+    sections.forEach(function (sec) {
+      var h1 = sec.querySelector('h1');
+      if (!h1) return;
+      if (!h1.getAttribute('data-scramble-text')) {
+        h1.setAttribute('data-scramble-text', h1.textContent);
       }
     });
 
@@ -175,47 +204,39 @@
 
     ensureCss();
     var first = document.querySelector('section#top.titlepage h1');
-    els.forEach(function (el) {
+    document.querySelectorAll('section.titlepage h1').forEach(function (el) {
       if (el !== first) el.classList.add('title-scramble-pending');
     });
 
-    function begin(el) {
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(function () { reveal(el); });
-      } else {
-        reveal(el);
-      }
-    }
-
-    /* Later titles: wait until the heading has risen into the upper two-thirds. */
     var io = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (en) {
-          if (!en.isIntersecting) return;
-          begin(en.target);
-          io.unobserve(en.target);
+          if (en.intersectionRatio < 0.68) return;
+          var h1 = en.target.querySelector('h1');
+          if (!h1) return;
+          if (titleScreenReady(h1)) begin(h1);
         });
       },
-      { root: null, rootMargin: '0px 0px -36% 0px', threshold: 0.45 }
+      { threshold: [0, 0.35, 0.68, 0.85] }
     );
 
-    els.forEach(function (el) {
-      if (el !== first) io.observe(el);
+    sections.forEach(function (sec) {
+      io.observe(sec);
     });
 
     requestAnimationFrame(function () {
-      var vh = window.innerHeight;
-      els.forEach(function (el) {
-        if (el.dataset.scrambleDone || el.dataset.scrambleStarted) return;
-        var r = el.getBoundingClientRect();
-        var ready = el === first
-          ? r.top < vh * 0.92 && r.bottom > 0
-          : r.top < vh * 0.64 && r.bottom > 0;
-        if (!ready) return;
-        begin(el);
-        io.unobserve(el);
-      });
+      tryAllPending();
     });
+
+    var scrollTimer = 0;
+    window.addEventListener(
+      'scroll',
+      function () {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(tryAllPending, 90);
+      },
+      { passive: true }
+    );
   }
 
   if (document.readyState === 'loading') {
