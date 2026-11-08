@@ -128,6 +128,25 @@ def rewrite_internal_hrefs(html: str) -> str:
     return re.sub(r'href="([^"]+)"', repl, html)
 
 
+def alternate_white_panels(html: str) -> str:
+    """Alternate adjacent light pages, restarting after each black page."""
+    run = 0
+
+    def panel(match: re.Match) -> str:
+        nonlocal run
+        classes = match.group(2).split()
+        if "titlepage" in classes or "snap-panel--black" in classes:
+            run = 0
+        elif "snap-panel--white" in classes:
+            classes = [name for name in classes if name != "snap-panel--tint"]
+            if run % 2:
+                classes.append("snap-panel--tint")
+            run += 1
+        return match.group(1) + " ".join(classes) + match.group(3)
+
+    return re.sub(r'(<(?:section|aside)\b[^>]*\bclass=")([^"]*)("[^>]*>)', panel, html)
+
+
 def rail_html() -> str:
     lines = ['<nav id="rail" aria-label="Contents">', "  <ol>"]
     for p in PAGES:
@@ -654,7 +673,7 @@ def build_edition(edition: str) -> None:
         inner = rewrite_internal_hrefs(inner)
         parts.append(inner)
 
-    merged_book = "\n\n".join(parts)
+    merged_book = alternate_white_panels("\n\n".join(parts))
 
     m = BOOK_OPEN.search(template)
     if not m:

@@ -14,7 +14,7 @@
       var vh = window.innerHeight || document.documentElement.clientHeight || 0;
       var centerY = vh * 0.5;
       var dark = false;
-      document.querySelectorAll('section.titlepage').forEach(function(pg){
+      document.querySelectorAll('section.titlepage, .snap-panel--black').forEach(function(pg){
         var rect = pg.getBoundingClientRect();
         if(rect.top <= centerY && rect.bottom >= centerY) dark = true;
       });
@@ -59,7 +59,7 @@
       var vh = window.innerHeight || document.documentElement.clientHeight || 0;
       var centerY = vh * 0.5;
       var onDark = false;
-      document.querySelectorAll('section.titlepage').forEach(function(pg){
+      document.querySelectorAll('section.titlepage, .snap-panel--black').forEach(function(pg){
         var rect = pg.getBoundingClientRect();
         if(rect.bottom <= 0 || rect.top >= vh) return;
         if(rect.top <= centerY && rect.bottom >= centerY) onDark = true;

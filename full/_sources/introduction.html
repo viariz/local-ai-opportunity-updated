@@ -736,7 +736,7 @@ dialog.letter-modal.is-settled .letter-sheet::-webkit-scrollbar{width:0; height:
   .step .when, .part header .kicker{font-size:13px;}
   .chat{font-size:1em; margin:3.5em 0 4em; gap:1.55em;}
   .chat .tools{gap:.45em;}
-  
+
   #scrolly.scrolly{
     display:block;
     grid-template-columns:unset;
@@ -880,6 +880,7 @@ table.worked td:first-child{padding-right:1.4em;}
   #introduction svg.supply-demand-chart .fig-caps-tooltip text.figtext:nth-of-type(2){transform:translate(0,2px);}
 }
 </style>
+<link rel="stylesheet" href="snap-panels.css?v=2">
 <script src="navigation.js"></script>
 <script src="reading-rail.js"></script>
 <script src="title-scramble.js?v=2" defer></script>
@@ -933,13 +934,15 @@ table.worked td:first-child{padding-right:1.4em;}
 
 <!-- ============ OVERTURE ============ -->
 <section class="part" id="introduction" data-title="Introduction">
-  <div class="prose">
+<section class="snap-panel snap-panel--white snap-panel--reading" id="reading-introduction-1">
+<div class="snap-panel-content"><div class="prose">
+<div class="prose">
     <p>Every era of computing has had its own way of running the meter. On a mainframe, you bought time: a few minutes on an expensive machine that belonged to somebody else. The internet made us familiar with bandwidth. We learned to think of a connection as a pipe, and paid for a wider one when we wanted more to flow through it. Now we are learning to count tokens, the little pieces of language a model reads and produces as it works.</p>
     <p>As tokens get cheaper, we can afford to give the machine jobs that would once have seemed extravagant. Something similar happened when Britain learned to get more work out of a ton of coal. A more efficient steam engine saved its owner fuel, but it also made steam power affordable to the next factory owner, who had previously done without. Multiply that decision across an industrializing country and the coal saved by individual engines was overtaken by the coal burned in new ones. William Stanley Jevons described the result in 1865:</p>
     <blockquote class="bigquote">&ldquo;It is wholly a confusion of ideas to suppose that the economical use of fuel is equivalent to a diminished consumption. The very contrary is the truth.&rdquo;<span class="attr">W. Stanley Jevons, The Coal Question, 1865</span></blockquote>
     <p>Since ChatGPT arrived, we have kept spending the savings on more ambitious requests. A question that once seemed worth a short answer becomes worth an afternoon of research; a useful coding suggestion makes us wonder whether the model could build the whole thing. As these jobs become affordable and reliable, they enter the routine, and our idea of normal use expands to include them.</p>
   </div>
-  <div class="scrolly" id="scrolly">
+<div class="scrolly" id="scrolly">
     <div class="scrolly-steps">
       <div class="step">
         <div class="when">2023 &middot; Chatbots</div>
@@ -1047,12 +1050,12 @@ table.worked td:first-child{padding-right:1.4em;}
       </svg>
     </div>
   </div>
-  <div class="prose">
+<div class="prose">
     <p>We keep finding more work for AI, but supplying the tokens is becoming the harder problem. A more capable agent gives millions of people a reason to ask more of it, and that extra demand can arrive with a software update.</p>
     <p>Those extra tokens, however, still have to come from machines running in datacenters.</p>
     <p>Expanding those facilities means securing electricity, land, and permission to build, which can take years. The chart shows the opportunity created when demand for tokens pulls sharply away from the cloud’s capacity to supply them.<sup class="fn"><a href="/endnotes#note-interactive-model" aria-label="Source 1: interactive model" id="reference-interactive-model">1</a></sup></p>
   </div>
-  <figure>
+<figure>
     <svg class="supply-demand-chart" viewBox="0 0 720 420" role="img" aria-label="Token demand rising exponentially against a flattening cloud supply curve; the area between them is unmet demand, the opportunity for local inference.">
       <defs>
         <pattern id="hatch1" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
@@ -1114,11 +1117,19 @@ table.worked td:first-child{padding-right:1.4em;}
       </g>
     </svg>
   </figure>
-  <div class="prose">
-    <p>Even if energy, land, and regulation were no obstacle, there would still be no obvious ceiling on the work we could find for intelligence. This creates a situation I described to some of my investors in May:</p>
-    <p class="callline">The Agentic Paradox</p>
-    <p>The better an agent becomes, the longer it is worth keeping it at work. Better memory and tool use can increase its consumption even without making the model larger. If the model also requires more computation per token, we are asking each machine to do more work for each user while every user wants more of its time.</p>
-        <figure class="investor-letter" id="agentic-paradox-note">
+</div></div>
+</section>
+<div class="prose">
+<section class="snap-panel snap-panel--white snap-panel--reading" id="reading-introduction-flow-1">
+<div class="snap-panel-content"><div class="prose">
+<p>Even if energy, land, and regulation were no obstacle, there would still be no obvious ceiling on the work we could find for intelligence. This creates a situation I described to some of my investors in May:</p>
+<p class="callline">The Agentic Paradox</p>
+<p>The better an agent becomes, the longer it is worth keeping it at work. Better memory and tool use can increase its consumption even without making the model larger. If the model also requires more computation per token, we are asking each machine to do more work for each user while every user wants more of its time.</p>
+</div></div>
+</section>
+<section class="snap-panel snap-panel--white snap-panel--note" id="panel-investor-note" aria-label="Note to investors">
+  <div class="snap-panel-content">
+<figure class="investor-letter" id="agentic-paradox-note">
       <div class="letter-slot">
         <article class="letter-paper letter-sheet">
           <div class="letter-inner">
@@ -1155,7 +1166,9 @@ table.worked td:first-child{padding-right:1.4em;}
         <button type="button" class="letter-cover" aria-haspopup="dialog" aria-controls="agentic-letter-dialog" aria-expanded="false" aria-label="Note to investors, May 6, 2026. Click to read"></button>
       </div>
     </figure>
-    <dialog class="letter-modal" id="agentic-letter-dialog" aria-label="May 6, 2026 note to investors">
+  </div>
+</section>
+<dialog class="letter-modal" id="agentic-letter-dialog" aria-label="May 6, 2026 note to investors">
       <div class="letter-stage"></div>
     </dialog>
 <script>
@@ -1306,23 +1319,26 @@ table.worked td:first-child{padding-right:1.4em;}
   });
 })();
 </script>
-
-
-
-    <p>We think much of that unmet demand will eventually find its way onto a personal inference machine. A computer you buy and keep running, producing tokens throughout the day, with electricity as its main ongoing cost.</p>
-    <p>It is an incredibly unsexy idea at a time when sexy ideas command enormous premiums. But who really wants a computer you plug into the wall when you can have mass drivers on the Moon, or cover the Sahara with “intelligence factories,” the modern Mecca of AI psychosis victims?</p>
-    <p>A remarkably similar thing happened in the 1970s. Much of computing revolved around large machines owned by institutions, with users buying or being allocated time on them. The first personal computers looked unimpressive beside those installations. They had little memory, limited software, and owners who often had to work quite hard to make them useful.</p>
-    <p>But as the machines improved, someone who wanted to write a document or keep the accounts for a small business could increasingly do it on a computer of their own. Each useful new application gave another person a reason to buy one. Computing began spreading through purchases made by its users, into buildings that already existed, drawing on electricity already available there.</p>
-  </div>
+<section class="snap-panel snap-panel--white snap-panel--reading" id="reading-introduction-flow-2">
+<div class="snap-panel-content"><div class="prose">
+<p>We think much of that unmet demand will eventually find its way onto a personal inference machine. A computer you buy and keep running, producing tokens throughout the day, with electricity as its main ongoing cost.</p>
+<p>It is an incredibly unsexy idea at a time when sexy ideas command enormous premiums. But who really wants a computer you plug into the wall when you can have mass drivers on the Moon, or cover the Sahara with “intelligence factories,” the modern Mecca of AI psychosis victims?</p>
+<p>A remarkably similar thing happened in the 1970s. Much of computing revolved around large machines owned by institutions, with users buying or being allocated time on them. The first personal computers looked unimpressive beside those installations. They had little memory, limited software, and owners who often had to work quite hard to make them useful.</p>
+<p>But as the machines improved, someone who wanted to write a document or keep the accounts for a small business could increasingly do it on a computer of their own. Each useful new application gave another person a reason to buy one. Computing began spreading through purchases made by its users, into buildings that already existed, drawing on electricity already available there.</p>
+</div></div>
+</section>
+</div>
 </section>
 
 <!-- ============ PART I ============ -->
 <section class="part" id="the-math-behind-agents" data-title="The Math Behind Agents" style="margin-top:1em">
-  <div class="sect" style="margin-top:0">
-    <div class="prose">
+<div class="sect" style="margin-top:0">
+<section class="snap-panel snap-panel--white snap-panel--reading" id="reading-introduction-flow-3">
+<div class="snap-panel-content"><div class="prose">
+<div class="prose">
       <p>Suppose 1 billion people each have a personal agent that reads their messages, follows their work on screen, and uses their apps to get things done. For this calculation, assume each agent generates 50 tokens a second, continuously. Serving that workload from datacenters would require:</p>
     </div>
-    <table class="worked">
+<table class="worked">
       <tr><td>Tok/s required</td><td>5&thinsp;&times;&thinsp;10<sup>10</sup> tokens per second</td></tr>
       <tr><td>Tokens per day</td><td>&asymp; 4.3 quadrillion</td></tr>
       <tr><td>H200 equivalents</td><td>&asymp; 80,000,000 GPUs</td></tr>
@@ -1330,11 +1346,13 @@ table.worked td:first-child{padding-right:1.4em;}
       <tr><td>Energy per year</td><td>&asymp; 880 TWh</td></tr>
       <tr><td>Cost to build</td><td>&asymp; $3.5 trillion</td></tr>
     </table>
-    <div class="prose">
+<div class="prose">
       <p id="hundred-gigawatts">100 gigawatts is roughly the generating capacity of the entire <a href="https://www.eia.gov/electricity/Annual/table.php?t=epa_04_03.html" target="_blank" rel="noopener noreferrer">American nuclear fleet</a>. Under our assumptions, personal agents would keep the equivalent of that fleet occupied around the clock, before accounting for model training or other uses of AI.</p>
       <p>The natural response is to build more datacenters. I expect we will build a great many. What I doubt is that they will arrive fast enough to keep up with what we want from them. Approving a construction budget does not settle when the electricity will be available, or whether the community chosen to host the project wants it there. Those decisions belong to utility planners, neighbors, and elected officials, none of whom is obliged to share an AI company’s timetable.</p>
     </div>
-  </div>
+</div></div>
+</section>
+</div>
 </section>
 
 <div class="endmark endmark-nav">
@@ -1387,13 +1405,14 @@ table.worked td:first-child{padding-right:1.4em;}
   var chapterDockInner = chapterDock ? chapterDock.querySelector('.chapter-sticky-inner') : null;
   var chapterDockTitle = chapterDockInner ? chapterDockInner.querySelector('.chapter-sticky-title') : null;
   var chapterPages = chapterDockTitle ? Array.prototype.slice.call(document.querySelectorAll('section#top.titlepage, section.titlepage.chapter-title')) : [];
+  var quietPanels = chapterPages.concat(Array.prototype.slice.call(document.querySelectorAll('.snap-panel:not(.snap-panel--reading)')));
   var chapterDockLast = -1;
 
   function titlePageCoversViewport(){
     var vh = window.innerHeight || document.documentElement.clientHeight || 0;
     var mid = vh * 0.5;
-    for (var c = 0; c < chapterPages.length; c++) {
-      var rect = chapterPages[c].getBoundingClientRect();
+    for (var c = 0; c < quietPanels.length; c++) {
+      var rect = quietPanels[c].getBoundingClientRect();
       if (rect.top <= mid && rect.bottom >= mid) return true;
       var visible = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
       if (visible >= vh * 0.14) return true;

@@ -1,7 +1,7 @@
 """Regression checks for the bundled stylesheet's rule boundaries."""
 import unittest
 
-from build_single_page import _css_rule_boundaries, _style_delta_relative_to_base
+from build_single_page import _css_rule_boundaries, _style_delta_relative_to_base, alternate_white_panels
 
 
 class StyleDeltaTests(unittest.TestCase):
@@ -41,6 +41,14 @@ class StyleDeltaTests(unittest.TestCase):
     def test_top_level_at_rule_is_a_boundary(self):
         prefix = '@import url("fonts.css");'
         self.assertIn(len(prefix), _css_rule_boundaries(prefix + "p{color:red}"))
+
+    def test_white_page_alternation_restarts_after_black_and_is_repeatable(self):
+        white = '<section class="snap-panel snap-panel--white">Content</section>'
+        black = '<section class="snap-panel snap-panel--black">Photo</section>'
+        title = '<section class="titlepage chapter-title">Chapter</section>'
+        result = alternate_white_panels(white + white + white + black + white + white + title + white)
+        self.assertEqual(result.count("snap-panel--tint"), 2)
+        self.assertEqual(alternate_white_panels(result), result)
 
 
 if __name__ == "__main__":

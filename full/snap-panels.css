@@ -1,0 +1,89 @@
+/* Every visible page has one native snap area. Chapter/section wrappers
+   are semantic containers only; overlapping snap areas cause edge jumps. */
+:root{--chapter-heading-size:clamp(1.55rem,3.6vw,2.05rem);}
+.book > section.part{margin-top:0!important;padding-top:0!important;}
+.book .part .sect:has(> .snap-panel){margin:0!important;padding:0!important;}
+.book > .part > .prose:has(> .snap-panel){margin:0!important;padding:0!important;border:0!important;}
+.book #next-gen-chips.part > .prose.chip-intro:first-child{margin:0!important;padding:0!important;border:0!important;}
+.book .snap-panel{
+  position:relative;z-index:1;box-sizing:border-box;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  width:100vw;max-width:100vw;min-height:100vh;min-height:100svh;
+  margin:0 calc(50% - 50vw);
+  padding:clamp(64px,9vh,104px) max(40px,env(safe-area-inset-right,0px)) clamp(56px,8vh,96px) max(40px,env(safe-area-inset-left,0px));
+  color:var(--ink);background:var(--paper);overflow:visible;
+}
+.book .snap-panel--white{--paper:#ffffff;--ink:#1f2122;--ink-soft:#62686b;}
+.book .snap-panel--white.snap-panel--tint{--paper:#f4f4f4;}
+.book .snap-panel--black{--paper:#000;--ink:#fff;--ink-soft:rgba(255,255,255,.64);--rule:rgba(255,255,255,.2);color-scheme:dark;}
+.snap-panel-content{width:min(100%,68rem);min-width:0;margin-inline:auto;}
+.book .snap-panel--reading .snap-panel-content{max-width:39rem;}
+.book .snap-panel--reading .prose{width:100%;max-width:none;margin:0;}
+.book .snap-panel--reading .prose > :last-child{margin-bottom:0;}
+.book section.titlepage h1,
+.book .snap-panel h4{
+  font-size:var(--chapter-heading-size)!important;
+}
+.book .snap-panel h4{
+  margin:0 0 2.25rem!important;padding:0!important;border:0!important;
+  font-family:var(--display);font-weight:100;font-variation-settings:"wght" 100;
+  font-synthesis:none;line-height:1.3;letter-spacing:.015em;
+  color:var(--ink);text-align:center;text-transform:none;text-wrap:balance;
+}
+.snap-panel-copy{max-width:42em;margin:clamp(24px,4vh,40px) auto 0;font-size:clamp(.94rem,1.25vw,1.02rem);line-height:1.65;}
+.book .snap-panel-copy p{text-align:center;}
+.book .snap-panel-copy p:last-child{margin-bottom:0;}
+/* Keep these media rules out of reading pages: charts, the T1 package and
+   inline illustrations retain their original dimensions and styling. */
+.book .snap-panel--media figure{margin:0!important;padding:0;max-width:100%;background:transparent;border:0;box-shadow:none;}
+.book .snap-panel--media figure img,
+.book .snap-panel--media figure video{
+  display:block;width:auto!important;height:auto!important;max-width:100%!important;
+  max-height:62vh;max-height:62svh;object-fit:contain;margin-inline:auto;
+  border-radius:0!important;box-shadow:none!important;background:transparent!important;mix-blend-mode:normal;
+}
+.book .snap-panel--media .fig-motion{margin:0!important;filter:none;}
+.book .snap-panel--media figcaption{
+  max-width:52em;margin:1.25rem auto 0;color:var(--ink-soft);text-align:center;
+  font-size:.75rem;line-height:1.6;letter-spacing:.02em;
+}
+.book .snap-panel--media .product-img{display:block;min-height:0;}
+.book .snap-panel--media .product-img img{max-height:52svh;}
+.book .snap-panel--video .snap-panel-content{
+  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.85fr);
+  align-items:center;gap:clamp(32px,5vw,72px);max-width:76rem;
+}
+.book .snap-panel--video .snap-panel-copy{margin:0;max-width:none;min-width:0;}
+.book .snap-panel--video .snap-panel-copy p,
+.book .snap-panel--video .snap-panel-copy h4{text-align:left;}
+.book .snap-panel--video figure video{width:100%!important;max-height:68svh;}
+.book .snap-panel--quote .bigquote{max-width:28em;margin:0 auto!important;text-align:center;}
+.book .snap-panel--note .snap-panel-content{max-width:36rem;}
+.book .snap-panel--note figure.investor-letter{margin:0!important;}
+.book .snap-panel--cards .cap-cards{width:100%;margin:0 auto;align-items:stretch;}
+.book .snap-panel--cards .cap-card{min-height:0;}
+.book .snap-panel--media figure.dream-fig{width:min(100%,72svh);max-width:48rem;margin-inline:auto!important;}
+.book .snap-panel--media .dream-fig-shell{max-height:none;}
+.book .snap-panel--black .dream-fig-shell canvas{filter:invert(1);}
+@media screen and (prefers-reduced-motion:no-preference){
+  .book > section.part{scroll-snap-align:none!important;}
+  .book .snap-panel{
+    scroll-snap-align:start!important;scroll-snap-stop:always;
+    scroll-margin-top:calc(-1 * var(--reader-scroll-inset,0px));
+  }
+}
+@media(max-width:850px){
+  .book .snap-panel--video .snap-panel-content{grid-template-columns:minmax(0,1fr);gap:28px;max-width:44rem;}
+  .book .snap-panel--video figure video{max-height:50svh;}
+}
+@media(max-width:700px){
+  .book .snap-panel{padding:64px max(22px,env(safe-area-inset-right,0px)) 56px max(22px,env(safe-area-inset-left,0px));}
+  .book .snap-panel--media figure img,
+  .book .snap-panel--media figure video{max-height:54svh;}
+  .book .snap-panel--media .product-img img{max-height:46svh;}
+  .snap-panel-copy{font-size:.94rem;}
+}
+@media print{
+  .book .snap-panel{width:100%;max-width:100%;min-height:0;margin:2rem 0;padding:2rem 0;--paper:#fff;--ink:#000;--ink-soft:#555;color:#000;background:#fff;}
+  .book .snap-panel--black .dream-fig-shell canvas{filter:none;}
+}
